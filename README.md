@@ -1,8 +1,6 @@
-# ekan
-Enhanced Knowledge Archive Network
+# Enhanced Knowledge Archive Network (EKAN)
 
 An enhanced version of a Knowledge Archive Network, inspired from CKAN and DKAN.
-
 Built with Python, Django, Django-REST, Vue, Bootstrap, and Font Awesome. 
 
 ## Installation

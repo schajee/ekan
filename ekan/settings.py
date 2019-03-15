@@ -11,32 +11,38 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+env = environ.Env()
+# reading .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '!elh*tlq2#b9%_b*!fpt2$-(+^0vzq$x!3+9#audp8^r6ot9)h'
+SECRET_KEY = env('SECRET_KEY', default='')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG', default=False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default='')
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'web.apps.WebConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'rest_framework'
 ]
 
@@ -77,7 +83,7 @@ WSGI_APPLICATION = 'ekan.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, env('DATABASE', default='db.sqlite3')),
     }
 }
 
@@ -104,9 +110,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = env('LANGUAGE', default='en-us')
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = env('LANGUAGE', default='UTC')
 
 USE_I18N = True
 
@@ -118,9 +124,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = env('STATIC_URL', default='/static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': env('PAGE_SIZE', default=10)
 }
+
+PAGE_SIZE = env('PAGE_SIZE', default=10)
+
+EMAIL_BACKEND = env('EMAIL_BACKEND')
+EMAIL_TARGET = env('EMAIL_TARGET')
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = env('EMAIL_USE_TLS')

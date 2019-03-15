@@ -1,0 +1,57 @@
+{% load static %}
+{% load custom_tags %}
+<section class="py-5 bg-blue text-white">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <h3>Get Involved</h3>
+        <p><a class="text-white" href="{% url 'web:page' 'faqs' %}"><u>Frequently Asked Questions</u></a></p>
+      </div>
+      <div class="col-md-4">
+        <h3>Start Publishing</h3>
+        <p><a class="text-white" href="{% url 'web:signup' %}"><u>Register your organisation</u></a> to publish data</p>
+      </div>
+      <div class="col-md-4">
+        <h3>Get in touch</h3>
+        <p><a class="text-white" href="{% url 'web:page' 'contact' %}"><u>Contact us</u></a> for help and support</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="py-5 bg-dark">
+  <div class="container">
+    {% stats as stats %}
+    <div class="d-flex justify-content-between pb-5 text-light">
+      <p><span class="display-4 d-block">{{ stats.datasets }}</span> Dataset{{ stats.datasets|pluralize }}</p>
+      <p><span class="display-4 d-block">{{ stats.organisations }}</span> Organisation{{ stats.organisations|pluralize }}</p>
+      <p><span class="display-4 d-block">{{ stats.topics }}</span> Topic{{ stats.topics|pluralize }}</p>
+      <p><span class="display-4 d-block">{{ stats.users }}</span> User{{ stats.users|pluralize }}</p>
+    </div>
+  </div>
+  <div class="container">
+    <footer class="row">
+      <div class="col-md-4">
+        <ul class="list-inline d-flex align-items-center justify-content-between mb-0">
+          <li class="list-inline-item"><a href="http://www.codeforpakistan.org"><img
+                src="{% static 'images/cfp-logo.svg' %}" height="50rem"></a></li>
+          <li class="list-inline-item"><a href="https://www.facebook.com/CodeforPK" class="text-light"><i
+                class="fab fa-2x fa-facebook"></i></a></li>
+          <li class="list-inline-item"><a href="https://www.twitter.com/CodeforPakistan" class="text-light"><i
+                class="fab fa-2x fa-twitter"></i></a></li>
+          <li class="list-inline-item"><a href="https://www.github.com/codeforpakistan" class="text-light"><i
+                class="fab fa-2x fa-github"></i></a></li>
+        </ul>
+      </div>
+      <div class="col-md-8">
+        <ul class="nav justify-content-end">
+          <li class="nav-item"><a class="nav-link text-light" href="{% url 'web:page' 'about' %}">About</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="{% url 'web:page' 'faqs' %}">FAQs</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="{% url 'web:page' 'contact' %}">Contact</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="{% url 'web:page' 'terms' %}">Terms of Use</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="https://github.com/codeforpk/openasterisk"
+              target="_blank">Source Code</a></li>
+        </ul>
+      </div>
+    </footer>
+  </div>
+</section>

@@ -1,0 +1,26 @@
+{% extends 'layouts/page.html' %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item text-white-50">Frequently Asked Questions</li>
+{% endblock %}
+
+{% block page_title %} Frequently Asked Questions {% endblock %}
+
+{% block content %}
+<div class="faq">
+
+  <p>Here you find answers to frequently asked questions about open government data and this site. For more information
+    please <a href="{% url 'web:page' 'contact' %}">contact us</a>.</p>
+
+  <ol class="mb-5">
+    <li><a href="#q1">What is Open Asterisk?</a></li>
+  </ol>
+
+
+  <h3 id="q1">What is Open Asterisk?</h3>
+  <p>Open Asterisk offers a central point of access to open, i.e. freely accessible data from the public administration
+    ("open government data", or OGD). The authorities involved make their data available on the portal. It is operated
+    by Code for Pakistan. You can find more information <a href="{% url 'web:page' 'about' %}">here</a>.</p>
+</div>
+
+{% endblock %}
