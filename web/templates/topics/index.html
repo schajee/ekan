@@ -1,0 +1,19 @@
+{% extends 'layouts/page.html' %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item text-white-50">Topics</li>
+{% endblock %}
+
+{% block page_title %} Topics {% endblock %}
+
+{% block content %}
+<div class="card-columns">
+  {% for topic in topics %}
+  <div class="card card-body">
+    <i class="{{ topic.icon }} fa-3x float-right text-light-gray"></i>
+    <h5 class="card-title"><a class="text-blue" href="{% url 'web:topic' topic.slug %}">{{ topic.title }}</a></h5>
+    <p class="mb-0">{{ topic.datasets.all.count }} datasets</p>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

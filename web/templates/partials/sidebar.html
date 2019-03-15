@@ -1,0 +1,48 @@
+{% load static %}
+{% load custom_tags %}
+
+{% filters as filters %}
+
+{% if 'topics' not in request.path %}
+<h5 class="mb-3">Topics</h5>
+<ul class="list-unstyled mb-5">
+  {% for topic in filters.topics %}
+  <li><a class="d-block px-2 py-1 text-truncate" href="?{% query_add request topic=topic.slug %}">
+    <i class="{{ topic.icon }} mr-1 text-muted"></i>{{ topic.title }}</a></li>
+  {% empty %}
+  <li>No topics defined!</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+{% if 'organisations' not in request.path %}
+<h5 class="mb-3">Organisations</h5>
+<ul class="list-unstyled mb-5">
+  {% for org in filters.organisations %}
+  <li><a class="d-block px-2 py-1 text-truncate" href="?{% query_add request organisation=org.slug %}">
+    <i class="fa fa-fw fa-folder-open text-muted mr-1"></i>{{ org.title}}</a></li>
+  {% empty %}
+  <li>No organisations defined!</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+<h5 class="mb-3">Formats</h5>
+<ul class="list-unstyled mb-5">
+  {% for format in filters.formats %}
+  <li><a class="d-block px-2 py-1 text-truncate" href="?{% query_add request format=format.slug %}">
+    <i class="{{ format.icon }} mr-1 text-muted"></i>{{ format.title|upper }}</a></li>
+  {% empty %}
+  <li>No formats defined!</li>
+  {% endfor %}
+</ul>
+
+<h5 class="mb-3">Licenses</h5>
+<ul class="list-unstyled mb-5">
+  {% for license in filters.licenses %}
+  <li><a class="d-block px-2 py-1 text-truncate" href="?{% query_add request license=license.slug %}">
+    <i class="{{ license.icon }} mr-1 text-muted"></i>{{ license.title }}</a></li>
+  {% empty %}
+  <li>No licenses defined!</li>
+  {% endfor %}
+</ul>

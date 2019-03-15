@@ -1,0 +1,74 @@
+[
+    {
+        "model": "web.license",
+        "pk": 1,
+        "fields": {
+            "slug": "public-domain",
+            "title": "Public Domain",
+            "icon": "fab fa-creative-commons"
+        }
+    },
+    {
+        "model": "web.type",
+        "pk": 1,
+        "fields": {
+            "title": "File",
+            "slug": "file",
+            "icon": "fa fa-file-alt"
+        }
+    },
+    {
+        "model": "web.type",
+        "pk": 2,
+        "fields": {
+            "title": "URL",
+            "slug": "url",
+            "icon": "fa fa-ext"
+        }
+    },
+    {
+        "model": "web.type",
+        "pk": 3,
+        "fields": {
+            "title": "API",
+            "slug": "api",
+            "icon": "fa fa-plug"
+        }
+    },
+    {
+        "model": "web.format",
+        "pk": 1,
+        "fields": {
+            "title": "CSV",
+            "slug": "csv",
+            "icon": "fa fa-file-csv"
+        }
+    },
+    {
+        "model": "web.format",
+        "pk": 2,
+        "fields": {
+            "title": "JSON",
+            "slug": "json",
+            "icon": "fa fa-file-alt"
+        }
+    },
+    {
+        "model": "web.format",
+        "pk": 3,
+        "fields": {
+            "title": "XLSX",
+            "slug": "xlsx",
+            "icon": "fa fa-file-excel"
+        }
+    },
+    {
+        "model": "web.format",
+        "pk": 4,
+        "fields": {
+            "title": "PDF",
+            "slug": "pdf",
+            "icon": "fa fa-file-pdf"
+        }
+    }
+]

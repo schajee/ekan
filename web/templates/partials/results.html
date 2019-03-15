@@ -1,0 +1,22 @@
+{% load custom_tags %}
+{% load humanize %}
+
+<h3 class="mb-4">{{ paginator.count|intcomma }} dataset{{ paginator.count|pluralize }} found&hellip;</h3>
+
+{% if request.GET|length > 0 %}
+<p class="mb-3">
+{% for key,value in request.GET.items %}
+<a class="badge badge-light badge-opaque font-weight-light" href="?{% query_del request key=key %}">
+  {{ key|capfirst }}: {{ value }} <i class="fa fa-times"></i></a>
+{% endfor %}
+</p>
+{% endif %}
+
+{% if datasets %}
+  {% for dataset in datasets %}
+    {% include 'partials/card.html' %}
+  {% endfor %}
+  {% include 'partials/pager.html' %}
+{% else %}
+  <p>No datasets found!</p>
+{% endif %}

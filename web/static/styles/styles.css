@@ -1,0 +1,45 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+.bg-blue { background-color: #00A6E1; }
+.text-blue { color: #00A6E1; }
+.bg-green { background-color: #6DBE4A; }
+.text-green { color: #6DBE4A; }
+.bg-gray { background-color: #EEEEEE; }
+.text-gray { color: #9E9E9E; }
+.text-light-gray { color: #BDBDBD; }
+.bg-none { background-color: transparent; }
+
+.bg-cover { background-color: #6dbe4a;
+    background-image: url("data:image/svg+xml,%3Csvg width='84' height='48' viewBox='0 0 84 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h12v6H0V0zm28 8h12v6H28V8zm14-8h12v6H42V0zm14 0h12v6H56V0zm0 8h12v6H56V8zM42 8h12v6H42V8zm0 16h12v6H42v-6zm14-8h12v6H56v-6zm14 0h12v6H70v-6zm0-16h12v6H70V0zM28 32h12v6H28v-6zM14 16h12v6H14v-6zM0 24h12v6H0v-6zm0 8h12v6H0v-6zm14 0h12v6H14v-6zm14 8h12v6H28v-6zm-14 0h12v6H14v-6zm28 0h12v6H42v-6zm14-8h12v6H56v-6zm0-8h12v6H56v-6zm14 8h12v6H70v-6zm0 8h12v6H70v-6zM14 24h12v6H14v-6zm14-8h12v6H28v-6zM14 8h12v6H14V8zM0 8h12v6H0V8z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E"); }
+
+.navbar-dark .navbar-nav .nav-link { color: rgba(255, 255, 255, 0.75); }
+.navbar-dark .navbar-nav .nav-link:focus, .navbar-dark .navbar-nav .nav-link:hover { color: rgba(255, 255, 255, 1); }
+
+a.media { text-decoration: none; }
+a.media:hover { box-shadow: 0 .125rem .25rem rgba(0,0,0,.075); }
+a.media:hover .fa-circle { color: #6DBE4A; }
+a.media:hover h5 { color: #00A6E1; }
+
+.breadcrumb-item+.breadcrumb-item::before,
+.breadcrumb-item a, .breadcrumb-item.active { color: #fff; }
+
+aside li a { border-left: medium solid transparent; color: #00A6E1; }
+aside li a:hover { border-left-color: #00A6E1; background-color: #EEEEEE; text-decoration: none; }
+aside li i { color:#f8f9fa; }
+aside li a:hover i { color: #00A6E1; }
+
+.jumbotron {
+    padding: 2rem 1rem;
+}
+.badge-opaque { background-color: #dae0e5; }
+.card p:last-child { margin-bottom: 0; }
+
+.faq {
+	counter-reset: counter;
+}
+.faq h3:before {
+	content: counter(counter) ".";
+    counter-increment: counter;
+    margin-right: 1rem;
+}
