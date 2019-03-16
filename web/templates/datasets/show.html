@@ -27,7 +27,7 @@
     <h5 class="mb-3">Topics</h5>
     {% if dataset.topics.all %}<p>
       {% for topic in dataset.topics.all %}
-      <a class="badge badge-light badge-opaque font-weight-light" href="{% url 'web:topic' topic.slug %}">
+      <a class="badge badge-light font-weight-light" href="{% url 'web:topic' topic.slug %}">
         {{ topic.title|truncatechars:40 }}</a>
       {% empty %}
       No topics assigned!
