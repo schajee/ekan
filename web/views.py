@@ -27,6 +27,9 @@ class DatasetView:
     def index(cls, request):
         # Load file objects
         datasets = models.Dataset.objects.order_by('-updated').all()
+        query = request.GET.get('search', None)
+        if query is not None:
+            datasets = datasets.filter(title__contains=query)
         # Paginate the list
         paginator = Paginator(datasets, settings.PAGE_SIZE)
         # Render view with file objects
@@ -68,8 +71,14 @@ class OrganisationView:
     def show(cls, request, slug):
         # Fetch object or die
         organisation = get_object_or_404(models.Organisation, slug=slug)
+        # Fetch related datasets
+        datasets = organisation.dataset_set.order_by('-updated').all()
+        # Filter results on search criteria
+        query = request.GET.get('search', None)
+        if query is not None:
+            datasets = datasets.filter(title__contains=query)
         # Paginate the list
-        paginator = Paginator(organisation.dataset_set.order_by('-updated').all(), 10)
+        paginator = Paginator(datasets, 10)
         # Render view with objects
         return render(request, 'organisations/show.html', {
             'organisation': organisation,
@@ -90,8 +99,14 @@ class TopicView:
     def show(cls, request, slug):
         # Fetch object or die
         topic = get_object_or_404(models.Topic, slug=slug)
+        # Fetch related datasets
+        datasets = topic.dataset_set.order_by('-updated').all()
+        # Filter results on search criteria
+        query = request.GET.get('search', None)
+        if query is not None:
+            datasets = datasets.filter(title__contains=query)
         # Paginate the list with related datasets
-        paginator = Paginator(topic.dataset_set.all(), 10)
+        paginator = Paginator(datasets, 10)
         # Render view with objects
         return render(request, 'topics/show.html', {
             'topic': topic,
