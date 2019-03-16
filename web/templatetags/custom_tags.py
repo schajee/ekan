@@ -1,3 +1,4 @@
+from django.conf import settings
 from django import template
 from web.models import Dataset, Organisation, Topic, Format, License
 from django.contrib.auth.models import User
@@ -40,3 +41,12 @@ def query_del(request, key):
     updated = request.GET.copy()
     updated.pop(key, None)
     return updated.urlencode()
+
+@register.simple_tag(name='app_title')
+def app_title():
+    return settings.APP_TITLE
+
+
+@register.simple_tag(name='app_name')
+def app_name():
+    return settings.APP_NAME
