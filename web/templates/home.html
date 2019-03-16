@@ -1,17 +1,21 @@
 {% extends 'layouts/page.html' %}
 {% load humanize %}
-{% block page_title %} Open Data Portal {% endblock %}
+{% block page_title %} Search Pakistan's Open Data {% endblock %}
 
 {% block content %}
 <section class="bg-light">
   <div class="container">
+
+    {% include 'partials/search.html' %}
+
     <h3 class="mb-4 text-center">Browse Topics</h3>
     {% if topics %}
     <div class="card-columns">
       {% for topic in topics %}
       <div class="card card-body">
         <i class="{{ topic.icon }} fa-3x float-left mr-3 text-light-gray"></i>
-        <h5 class="card-title text-truncate"><a class="text-blue" href="{% url 'web:topic' topic.slug %}">{{ topic.title }}</a></h5>
+        <h5 class="card-title text-truncate"><a class="text-blue"
+            href="{% url 'web:topic' topic.slug %}">{{ topic.title }}</a></h5>
         <p class="mb-0">{{ topic.datasets.all.count }} datasets</p>
       </div>
       {% endfor %}

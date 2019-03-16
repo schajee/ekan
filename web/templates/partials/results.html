@@ -1,16 +1,20 @@
+{% load static %}
 {% load custom_tags %}
 {% load humanize %}
 
 <h3 class="mb-4">{{ paginator.count|intcomma }} dataset{{ paginator.count|pluralize }} found&hellip;</h3>
+{% include 'partials/search.html' %}
 
 {% if request.GET|length > 0 %}
-<p class="mb-3">
+<p class="lead mb-3">
 {% for key,value in request.GET.items %}
-<a class="badge badge-light badge-opaque font-weight-light" href="?{% query_del request key=key %}">
-  {{ key|capfirst }}: {{ value }} <i class="fa fa-times"></i></a>
+{% query_del request key=key as query %}
+<a class="badge badge-light font-weight-light" href="{{ request.path }}{% if query|length > 0 %}?{% endif %}{{ query }}">
+  {{ key|capfirst }}: {{ value }} <i class="fa fa-xs fa-times ml-1"></i></a>
 {% endfor %}
 </p>
 {% endif %}
+
 
 {% if datasets %}
   {% for dataset in datasets %}
