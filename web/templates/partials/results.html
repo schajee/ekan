@@ -22,5 +22,5 @@
   {% endfor %}
   {% include 'partials/pager.html' %}
 {% else %}
-  <p>No datasets found!</p>
+  {% include 'partials/empty.html' %}
 {% endif %}

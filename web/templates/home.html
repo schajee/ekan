@@ -1,6 +1,6 @@
 {% extends 'layouts/page.html' %}
 {% load humanize %}
-{% block page_title %} Search Pakistan's Open Data {% endblock %}
+{% block page_title %} Open Data Portal {% endblock %}
 
 {% block content %}
 <section class="bg-light">
@@ -8,11 +8,11 @@
 
     {% include 'partials/search.html' %}
 
-    <h3 class="mb-4 text-center">Browse Topics</h3>
+    <h3 class="my-5 text-center">Browse Topics</h3>
     {% if topics %}
     <div class="card-columns">
       {% for topic in topics %}
-      <div class="card card-body">
+      <div class="card card-body shadow-sm border-0">
         <i class="{{ topic.icon }} fa-3x float-left mr-3 text-light-gray"></i>
         <h5 class="card-title text-truncate"><a class="text-blue"
             href="{% url 'web:topic' topic.slug %}">{{ topic.title }}</a></h5>
@@ -21,7 +21,7 @@
       {% endfor %}
     </div>
     {% else %}
-    <p class="lead">No topics defined</p>
+    {% include 'partials/empty.html' %}
     {% endif %}
   </div>
 </section>

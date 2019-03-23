@@ -1,5 +1,5 @@
 {% extends 'layouts/page.html' %}
-
+{% block title %}{{ block.super }} - Topics{% endblock %}
 {% block breadcrumbs %}
 <li class="breadcrumb-item text-white-50">Topics</li>
 {% endblock %}
@@ -7,6 +7,8 @@
 {% block page_title %} Topics {% endblock %}
 
 {% block content %}
+<h3 class="mb-4">{{ topics|length }} topic{{ topics|pluralize }} found&hellip;</h3>
+{% if topics %}
 <div class="card-columns">
   {% for topic in topics %}
   <div class="card card-body">
@@ -16,4 +18,7 @@
   </div>
   {% endfor %}
 </div>
+{% else %}
+{% include 'partials/empty.html' %}
+{% endif %}
 {% endblock %}
