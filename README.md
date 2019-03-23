@@ -1,4 +1,4 @@
-# Enhanced Knowledge Archive Network (EKAN)
+# Easy Knowledge Archive Network (EKAN)
 
 A simplified and 'Easier' version of a Knowledge Archive Network, inspired from CKAN and DKAN. 
 
