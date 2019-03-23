@@ -1,0 +1,35 @@
+{% extends 'layouts/page.html' %}
+{% block title %}{{ block.super }} - My Account{% endblock %}
+{% block page_title %} My Account {% endblock %}
+
+{% block content %}
+<form method="post">
+  {% csrf_token %}
+
+  {% if form.errors %}
+  {% for error in form.non_field_errors %}
+  <div class="alert alert-danger">{{ error|escape }}</div>
+  {% endfor %}
+  {% endif %}
+
+  {% for field in form %}
+  <div class="form-group row">
+    <label class="col-2 col-form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+    <div class="col-10">
+      {{ field }}
+      {% if field.errors %}
+      <div class="invalid-feedback d-block text-left">{{ field.errors.as_text }}</div>
+      {% else %}
+      <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+  <div class="form-group row">
+    <div class="col-10 offset-2">
+      <button class="btn btn-secondary px-3" type="submit">Update Account</button>
+    </div>
+  </div>
+
+</form>
+{% endblock %}

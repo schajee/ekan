@@ -1,0 +1,12 @@
+{% extends 'layouts/master.html' %}
+{% load custom_tags %}
+{% block page %}
+<section class="row w-100 h-100 mx-auto">
+	<div class="col bg-cover d-flex flex-column text-center justify-content-center text-white">
+		{% include 'auth/aside.html' %}
+	</div>
+	<div class="col bg-light d-flex flex-column justify-content-center">
+		{% block content %}{% endblock %}
+	</div>
+</section>
+{% endblock %}
