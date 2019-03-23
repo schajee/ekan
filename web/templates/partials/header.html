@@ -27,16 +27,19 @@
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false"><i class="fa fa-info-circle"></i> About</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="{% url 'web:page' 'about' %}">What is Open Asterisk?</a>
+              <a class="dropdown-item" href="{% url 'web:page' 'about' %}">What is {% app_name %}?</a>
               <a class="dropdown-item" href="{% url 'web:page' 'faqs' %}">Frequently Asked Questions</a>
               <a class="dropdown-item" href="{% url 'web:page' 'contact' %}">Contact Us</a>
               <div class="dropdown-divider"></div>
               {% if request.user.is_authenticated %}
+              {% if request.user.is_staff %}
               <a class="dropdown-item" href="{% url 'admin:index' %}">Manage</a>
+              {% endif %}
               <a class="dropdown-item" href="{% url 'web:account' %}">My Account</a>
-              <a class="dropdown-item" href="{% url 'admin:logout' %}">Log out</a>
+              <a class="dropdown-item" href="{% url 'web:logout' %}">Log out</a>
               {% else %}  
-              <a class="dropdown-item" href="{% url 'admin:login' %}">Log in</a>
+              <a class="dropdown-item" href="{% url 'web:signup' %}">Sign up</a>
+              <a class="dropdown-item" href="{% url 'web:login' %}">Log in</a>
               {% endif %}
             </div>
           </li>
