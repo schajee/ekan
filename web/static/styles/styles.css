@@ -1,5 +1,6 @@
-body {
+html, body {
     font-family: 'Roboto', sans-serif;
+    height: 100%; 
 }
 .bg-blue { background-color: #00A6E1; }
 .text-blue { color: #00A6E1; }
@@ -42,4 +43,9 @@ aside li a:hover i { color: #00A6E1; }
 	content: counter(counter) ".";
     counter-increment: counter;
     margin-right: 1rem;
+}
+
+.slow-spin {
+  -webkit-animation: fa-spin 6s infinite linear;
+  animation: fa-spin 6s infinite linear;
 }
