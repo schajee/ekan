@@ -1,15 +1,20 @@
 import os
-from django.shortcuts import render, redirect, reverse, get_object_or_404
-from django.http import HttpResponse, JsonResponse
-from web import models
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
-from django.db.models import Count
-from django.core.paginator import Paginator
-from web import forms
-from django.core.mail import BadHeaderError, send_mail
-from django.contrib import messages
+
 from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import BadHeaderError, EmailMessage, send_mail
+from django.core.paginator import Paginator
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render, reverse
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+
+from web.tokens import account_activation_token
+from web import forms, models
 
 
 class Home:
@@ -37,13 +42,13 @@ class DatasetView:
             'datasets': paginator.get_page(request.GET.get('page')),
             'paginator': paginator
         })
-    
+
     @classmethod
     def show(cls, request, slug):
         dataset = get_object_or_404(models.Dataset, slug=slug)
         return render(request, 'datasets/show.html', {
             'dataset': dataset
-        })        
+        })
 
 
 class ResourceView:
@@ -54,10 +59,11 @@ class ResourceView:
         return render(request, 'resources/show.html', {
             'resource': resource
         })
-    
+
     @classmethod
     def download(cls, request, dataset, resource):
         return JsonResponse(str(resource), safe=False, status=200)
+
 
 class OrganisationView:
     """Organisations"""
@@ -114,34 +120,117 @@ class TopicView:
             'paginator': paginator
         })
 
+
 class Auth:
     @classmethod
     def signup(cls, request):
         if request.method == 'GET':
-            return render(request, 'auth/signup.html')
+            form = forms.SignupForm()
         elif request.method == 'POST':
-            JsonResponse(request.POST, safe=False, status=200)
+            form = forms.SignupForm(request.POST)
+            if form.is_valid():
+
+                user = User.objects.create_user(
+                    username=form.cleaned_data['email'],
+                    email=form.cleaned_data['email'],
+                    password=form.cleaned_data['password'],
+                    is_active=False
+                )
+                user.save()
+
+                site = get_current_site(request)
+
+                subject, from_email, to = 'Welcome to ' + \
+                    settings.APP_NAME, settings.EMAIL_FROM, user.email
+
+                message = render_to_string('emails/verify.html', {
+                    'user': user,
+                    'domain': site.domain,
+                    'uid': user.pk,
+                    'token': account_activation_token.make_token(user),
+                })
+
+                email = EmailMessage(
+                    subject, message, from_email, [to])
+                email.send()
+
+                return render(request, 'auth/verify.html')
+        return render(request, 'auth/signup.html', {
+            'form': form
+        })
+
+    @classmethod 
+    def verify(cls, request, uid, token):
+        try:
+            user = User.objects.get(pk=uid)
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+
+        if user is not None and account_activation_token.check_token(user, token):
+            user.is_active = True
+            user.save()
+            login(request, user)
+            return redirect(reverse('web:home'))
+        else:
+            return HttpResponse(status=500)
 
     @classmethod
     def login(cls, request):
         if request.method == 'GET':
-            return render(request, 'auth/login.html')
+            form = forms.LoginForm()
         elif request.method == 'POST':
-            return JsonResponse(request.POST, safe=False, status=200)
+            form = forms.LoginForm(request.POST)
+            if form.is_valid():
+                # Authenticate username and password
+                username = form.cleaned_data['username']
+                password = form.cleaned_data['password']
+                user = authenticate(
+                    request, username=username, password=password)
+                # If authenticated
+                if user is not None:
+                    # Login user - return back
+                    login(request, user)
+                    return redirect(reverse('web:home'))
+        return render(request, 'auth/login.html', {
+            'form': form
+        })
+
+    @classmethod
+    def recover(cls, request):
+        if request.method == 'GET':
+            form = forms.ResetForm()
+        elif request.method == 'POST':
+            form = forms.ResetForm(request.POST)
+            if form.is_valid():
+                return JsonResponse(request.POST, safe=False, status=200)
+        return render(request, 'auth/recover.html', {
+            'form': form
+        })
 
     @classmethod
     def account(cls, request):
         if request.method == 'GET':
-            return render(request, 'auth/account.html')
+            form = forms.AccountForm(instance=request.user)
         elif request.method == 'POST':
-            return JsonResponse(request.POST, safe=False, status=200)
+            form = forms.AccountForm(request.POST, instance=request.user)
+            if form.is_valid():
+                user = form.save(commit=False)
+                user.save(update_fields=['username', 'email', 'first_name', 'last_name'])
+                if request.POST['password']:
+                    user.set_password(form.cleaned_data['password'])
+                    user.save()
+                messages.success(request, 'Account has been updated!')
+        return render(request, 'auth/account.html', {
+            'form': form
+        })
 
     @classmethod
     def logout(cls, request):
         # Logout user
         logout(request)
         # Return to homepage
-        return redirect(reverse('home'))
+        return redirect(reverse('web:home'))
+
 
 class Static:
     @classmethod
@@ -160,14 +249,14 @@ class Static:
                             [settings.EMAIL_TARGET],
                             fail_silently=False,
                         )
-                        messages.success(request, 'Thank you for contacting us. Your query has been forwarded to the relevent department!')
+                        messages.success(
+                            request, 'Thank you for contacting us. Your query has been forwarded to the relevent department!')
                         return redirect(reverse('web:page', args=('contact',)))
                     except BadHeaderError as error:
                         messages.error(request, str(error))
-                    
+
             return render(request, 'pages/' + slug + '.html', {
                 'form': form,
             })
         else:
             return render(request, 'pages/' + slug + '.html')
-            

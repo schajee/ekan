@@ -1,0 +1,36 @@
+{% extends 'layouts/auth.html' %}
+{% load custom_tags %}
+{% block title %}{{ block.super }} - Sign up{% endblock %}
+
+{% block content %}
+<form method="post">
+  {% csrf_token %}
+  <h3 class="text-center my-3">Sign Up</h3>
+  <p class="text-center">Already have an account? <a href="{% url 'web:login' %}">Log in</a></p>
+  <fieldset class="px-lg-5 py-5 mx-5 d-flex flex-column ">
+
+    {% if form.errors %}
+    {% for error in form.non_field_errors %}
+    <div class="alert alert-danger">{{ error|escape }}</div>
+    {% endfor %}
+    {% endif %}
+
+    {% for field in form %}
+    <div class="form-group">
+      {{ field.label_tag }} {{ field }}
+      {% if field.errors %}
+      <div class="invalid-feedback d-block text-left">{{ field.errors.as_text }}</div>
+      {% else %}
+      <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+      {% endif %}
+    </div>
+    {% endfor %}
+    <button class="btn btn-secondary btn-block" type="submit">Sign Up</button>
+    <a class="btn btn-outline-secondary btn-block" href="{% url 'web:home' %}">Cancel</a>
+    <a class="btn btn-link btn-block" href="{% url 'web:recover' %}">Forgot Password?</a>
+  </fieldset>
+  <p class="px-5 mx-5 small text-center">A project of <a href="http://codeforpakistan.org">Code for Pakistan</a>. <a
+      href="{% url 'web:page' 'terms' %}">Terms
+      of Use</a></p>
+</form>
+{% endblock %}

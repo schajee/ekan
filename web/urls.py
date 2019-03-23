@@ -8,7 +8,9 @@ urlpatterns = [
     path('', views.Home.index, name='home'),
 
     path('signup', views.Auth.signup, name='signup'),
+    path('verify/<int:uid>/<str:token>', views.Auth.verify, name='verify'),
     path('login', views.Auth.login, name='login'),
+    path('recover', views.Auth.recover, name='recover'),
     path('account', views.Auth.account, name='account'),
     path('logout', views.Auth.logout, name='logout'),
 
