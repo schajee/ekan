@@ -40,6 +40,8 @@ class Command(BaseCommand):
             self.link_datasets(options['num'])
         else:
             self.create_admin()
+            self.create_author()
+            self.create_member()
             self.create_topics(14)
             self.create_types(3)
             self.create_licenses(4)
@@ -60,6 +62,30 @@ class Command(BaseCommand):
         user.save()
         self.stdout.write(self.style.SUCCESS(
             'Admin created: "%s"' % user.username))
+    
+    def create_author(self):
+        user = User.objects.create_user(
+            username='author',
+            email='author@example.com',
+            password='author',
+            is_superuser=False,
+            is_staff=True,
+        )
+        user.save()
+        self.stdout.write(self.style.SUCCESS(
+            'Author created: "%s"' % user.username))
+    
+    def create_member(self):
+        user = User.objects.create_user(
+            username='member',
+            email='member@example.com',
+            password='member',
+            is_superuser=False,
+            is_staff=False,
+        )
+        user.save()
+        self.stdout.write(self.style.SUCCESS(
+            'Member created: "%s"' % user.username))
 
     def create_user(self, num=1):
         for _ in range(num):
