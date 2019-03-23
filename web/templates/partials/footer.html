@@ -30,25 +30,24 @@
   </div>
   <div class="container">
     <footer class="row">
-      <div class="col-md-4">
+      <div class="col-md-2">
         <ul class="list-inline d-flex align-items-center justify-content-between mb-0">
-          <li class="list-inline-item"><a href="http://www.codeforpakistan.org"><img
-                src="{% static 'images/cfp-logo.svg' %}" height="50rem"></a></li>
-          <li class="list-inline-item"><a href="https://www.facebook.com/CodeforPK" class="text-light"><i
+          <li class="list-inline-item"><a href="https://www.facebook.com" class="text-light"><i
                 class="fab fa-2x fa-facebook"></i></a></li>
-          <li class="list-inline-item"><a href="https://www.twitter.com/CodeforPakistan" class="text-light"><i
+          <li class="list-inline-item"><a href="https://www.twitter.com" class="text-light"><i
                 class="fab fa-2x fa-twitter"></i></a></li>
-          <li class="list-inline-item"><a href="https://www.github.com/codeforpakistan" class="text-light"><i
+          <li class="list-inline-item"><a href="https://www.github.com" class="text-light"><i
                 class="fab fa-2x fa-github"></i></a></li>
         </ul>
       </div>
-      <div class="col-md-8">
+      <div class="col-md-10">
         <ul class="nav justify-content-end">
           <li class="nav-item"><a class="nav-link text-light" href="{% url 'web:page' 'about' %}">About</a></li>
           <li class="nav-item"><a class="nav-link text-light" href="{% url 'web:page' 'faqs' %}">FAQs</a></li>
           <li class="nav-item"><a class="nav-link text-light" href="{% url 'web:page' 'contact' %}">Contact</a></li>
           <li class="nav-item"><a class="nav-link text-light" href="{% url 'web:page' 'terms' %}">Terms of Use</a></li>
-          <li class="nav-item"><a class="nav-link text-light" href="https://github.com/codeforpk/openasterisk"
+          <li class="nav-item"><a class="nav-link text-light" href="{% url 'web:page' 'privacy' %}">Privacy Policy</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="https://github.com/schajee/ekan"
               target="_blank">Source Code</a></li>
         </ul>
       </div>
