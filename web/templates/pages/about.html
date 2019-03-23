@@ -1,5 +1,5 @@
 {% extends 'layouts/page.html' %}
-
+{% load custom_tags %}
 {% block breadcrumbs %}
 <li class="breadcrumb-item text-white-50">About</li>
 {% endblock %}
@@ -7,6 +7,7 @@
 {% block page_title %} About {% endblock %}
 
 {% block content %}
-<p class="lead mb-5">Open Asterisk is the Islamabad Capital Territory's portal for open – i.e. freely available – data.
+<p class="lead mb-5">{% app_name %} is the Islamabad Capital Territory's portal for open – i.e. freely available – data.
     This site is maintained and operated by <a href="http://codeforpakistan.org" target="_blank">Code for Pakistan</a> for the ICT Administration.</p>
+<p>{% lorem 3 p %}</p>
 {% endblock %}

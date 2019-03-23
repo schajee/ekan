@@ -1,5 +1,5 @@
 {% extends 'layouts/page.html' %}
-
+{% load custom_tags %}
 {% block breadcrumbs %}
 <li class="breadcrumb-item text-white-50">Frequently Asked Questions</li>
 {% endblock %}
@@ -13,12 +13,12 @@
     please <a href="{% url 'web:page' 'contact' %}">contact us</a>.</p>
 
   <ol class="mb-5">
-    <li><a href="#q1">What is Open Asterisk?</a></li>
+    <li><a href="#q1">What is {% app_name %}?</a></li>
   </ol>
 
 
-  <h3 id="q1">What is Open Asterisk?</h3>
-  <p>Open Asterisk offers a central point of access to open, i.e. freely accessible data from the public administration
+  <h3 id="q1">What is {% app_name %}?</h3>
+  <p>{% app_name %} offers a central point of access to open, i.e. freely accessible data from the public administration
     ("open government data", or OGD). The authorities involved make their data available on the portal. It is operated
     by Code for Pakistan. You can find more information <a href="{% url 'web:page' 'about' %}">here</a>.</p>
 </div>
