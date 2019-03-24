@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
-FAVORITE_COLORS_CHOICES = (
+SUBJECTS = (
     ('I have a general question', 'I have a general question'),
     ('I would like to publish data', 'I would like to publish data'),
 )
@@ -30,7 +30,7 @@ class ContactForm(forms.Form):
     subject = forms.ChoiceField(
         label='Subject',
         widget=forms.Select(attrs={'class': 'form-control'}),
-        choices=FAVORITE_COLORS_CHOICES,
+        choices=SUBJECTS,
         help_text='Select the nature of your query or comment'
     )
     message = forms.CharField(
@@ -65,12 +65,12 @@ class SignupForm(forms.Form):
     email = forms.EmailField(
         label='Email Address',
         widget=forms.EmailInput(attrs={'class': 'form-control'}),
-        # help_text='Provide a valid email address'
+        help_text='A valid email address; e.g. name@example.com'
     )
     password = forms.CharField(
         label='Password',
         widget=forms.PasswordInput(attrs={'class': 'form-control'}),
-        # help_text='Provide a valid email address'
+        help_text='Use a strong password for this account.'
     )
 
     def clean_email(self):
