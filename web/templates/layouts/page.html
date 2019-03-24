@@ -4,10 +4,10 @@
 {% block page %}
 <main id="app">
   {% include 'partials/header.html' %}
-  <section class="jumbotron jumbotron-fluid bg-green bg-cover text-white mb-0">
+  <section class="jumbotron jumbotron-fluid bg-info bg-cover text-white mb-0">
     <div class="container">
       <nav>
-        <ol class="breadcrumb bg-none text-white p-0">
+        <ol class="breadcrumb bg-transparent text-white p-0">
           <li class="breadcrumb-item"><a href="{% url 'web:home' %}">Home</a></li>
           {% block breadcrumbs %}{% endblock %}
         </ol>

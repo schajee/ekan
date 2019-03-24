@@ -1,4 +1,5 @@
 {% extends 'layouts/page.html' %}
+{% load static %}
 {% block breadcrumbs %}
 <li class="breadcrumb-item"><a href="{% url 'web:datasets' %}">Datasets</a></li>
 <li class="breadcrumb-item text-white-50">{{ dataset.title }}</li>
@@ -8,7 +9,9 @@
 
 {% block content %}
 
+{% if dataset.description %}
 <div class="lead mb-5">{{ dataset.description|linebreaks }}</div>
+{% endif %}
 
 <div class="row">
   <aside class="col-md-3">
@@ -45,10 +48,10 @@
         <i class="{{ resource.format.icon }} mr-2 text-secondary"></i>
         <a class="flex-grow-1" href="{% url 'web:resource' dataset.slug resource.slug %}">{{ resource.title }}</a>
         <span class="text-right mr-3">{{ resource.format|upper }}</span>
-        {% if resource.type.slug == 'File' %}
-        <a class="btn btn-sm btn-outline-secondary" href="{{ request.build_absolute_uri }}.{{ resource.format.slug }}"><i class="fa fa-download"></i> Download</a>
+        {% if resource.file %}
+        <a class="btn btn-sm btn-outline-secondary" href="{{ request.get_host }}{% get_media_prefix %}{{ resource.file }}"><i class="fa fa-download"></i> Download</a>
         {% else %}
-        <a class="btn btn-sm btn-outline-secondary" href="{{ resource.identifier }}" target="_blank"><i class="fa fa-link"></i> View Resource</a>
+        <a class="btn btn-sm btn-outline-secondary" href="{{ resource.url }}" target="_blank"><i class="fa fa-link"></i> View Resource</a>
         {% endif %}
       </li>
       {% endfor %}

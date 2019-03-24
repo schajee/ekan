@@ -1,4 +1,5 @@
 {% extends 'layouts/page.html' %}
+{% load static %}
 {% load humanize %}
 {% block breadcrumbs %}
 <li class="breadcrumb-item"><a href="{% url 'web:dataset' resource.dataset.slug %}">{{ resource.dataset.title }}</a>
@@ -10,12 +11,23 @@
 
 {% block content %}
 
+{% if resource.file %}
+<a class="btn btn-lg btn-danger float-right" href="{{ request.get_host }}{% get_media_prefix %}{{ resource.file }}"><i class="fa fa-arrow-down mr-2"></i> Download</a>
+{% else %}
+<a class="btn btn-lg btn-danger float-right" href="{{ resource.url }}" target="_blank"><i class="fa fa-external-link-alt mr-2"></i> Visit Resource</a>
+{% endif %}
+
+{% if resource.description %}
 <div class="lead mb-5">{{ resource.description|linebreaks }}</div>
+{% endif %}
 
 <h3 class="mb-4">Additional Information</h3>
-<dl class="row mb-5">
+<dl class="row">
   <dt class="col-sm-4 col-md-3 col-lg-2">Identifier</dt>
   <dd class="col-sm-8 col-md-9 col-lg-10">{{ resource.slug }}</dd>
+  <dt class="col-sm-4 col-md-3 col-lg-2">Dataset</dt>
+  <dd class="col-sm-8 col-md-9 col-lg-10"><a
+      href="{% url 'web:dataset' resource.dataset.slug %}">{{ resource.dataset.title }}</a></dd>
   <dt class="col-sm-4 col-md-3 col-lg-2">Organisation</dt>
   <dd class="col-sm-8 col-md-9 col-lg-10"><a
       href="{{ resource.dataset.organisation.url }}">{{ resource.dataset.organisation.title }}</a></dd>
@@ -25,10 +37,10 @@
   <dd class="col-sm-8 col-md-9 col-lg-10">{{ resource.updated|date:"j F Y" }}</dd>
   <dt class="col-sm-4 col-md-3 col-lg-2">Access URL</dt>
   <dd class="col-sm-8 col-md-9 col-lg-10">
-    {% if resource.type.slug == 'file' %}
-    <a href="{{ request.build_absolute_uri }}.{{ resource.format.slug }}">{{ request.build_absolute_uri }}.{{ resource.format.slug }}</a>
+    {% if resource.file %}
+    <a href="{{ request.get_host }}{% get_media_prefix %}{{ resource.file }}">{{ request.get_host }}{% get_media_prefix %}{{ resource.file }}</a>
     {% else %}
-    <a href="{{ resource.identifier }}">{{ resource.identifier }}</a>
+    <a href="{{ resource.url }}">{{ resource.url }}</a>
     {% endif %}
   </dd>
   <dt class="col-sm-4 col-md-3 col-lg-2">File Format</dt>
