@@ -1,45 +1,45 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Topic, Dataset, Resource, Organisation, License, Type, Format, Dataset_Topic
+from . import models, forms
 
-
-@admin.register(Topic)
+@admin.register(models.Topic)
 class TopicAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
 
 
-@admin.register(Type)
-class TypeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(Format)
+@admin.register(models.Format)
 class FormatAdmin(admin.ModelAdmin):
-    pass
+    prepopulated_fields = {"slug": ("title",)}
 
 
-@admin.register(License)
+@admin.register(models.License)
 class LicenseAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
 
 
-@admin.register(Resource)
+@admin.register(models.Resource)
 class ResourceAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Organisation)
+@admin.register(models.Organisation)
 class OrganisationAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
 
 
 class DatasetTopicInline(admin.TabularInline):
-    model = Dataset_Topic
+    model = models.Dataset_Topic
     extra = 1
 
 
-@admin.register(Dataset)
+@admin.register(models.Dataset)
 class DatasetAdmin(admin.ModelAdmin):
+    form = forms.DatasetForm
     prepopulated_fields = {"slug": ("title",)}
     inlines = (DatasetTopicInline,)
+
+    def get_form(self, request, *args, **kwargs):
+        form = super(DatasetAdmin, self).get_form(request, *args, **kwargs)
+        form.current_user = request.user
+        return form
