@@ -25,6 +25,7 @@ router.register(r'datasets', views.DatasetViewSet)
 
 urlpatterns = [
     path('', include('web.urls', namespace='web')),
+    path('oauth/', include('social_django.urls', namespace='social')),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
 ]
