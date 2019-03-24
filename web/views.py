@@ -203,9 +203,23 @@ class Auth:
         })
 
     @classmethod
-    def account(cls, request):
+    def account(cls, request, page='account'):
+        items = None
+        form = None
         if request.method == 'GET':
-            form = forms.AccountForm(instance=request.user)
+            if page:
+                if page == 'account':
+                    form = forms.AccountForm(instance=request.user)
+                elif page == 'organisations':
+                    items = request.user.organisation_set.all()
+                elif page == 'datasets':
+                    orgs = request.user.organisation_set.all()
+                    items = models.Dataset.objects.filter(organisation__in=orgs)
+                elif page == 'resources':
+                    orgs = request.user.organisation_set.all()
+                    data = models.Dataset.objects.filter(organisation__in=orgs)
+                    items = models.Resource.objects.filter(
+                        dataset__in=data)
         elif request.method == 'POST':
             form = forms.AccountForm(request.POST, instance=request.user)
             if form.is_valid():
@@ -215,10 +229,12 @@ class Auth:
                     user.set_password(form.cleaned_data['password'])
                     user.save()
                 messages.success(request, 'Account has been updated!')
-        return render(request, 'auth/account.html', {
+        return render(request, 'account/index.html', {
+            'page': page,
+            'items': items,
             'form': form
         })
-
+    
     @classmethod
     def logout(cls, request):
         # Logout user

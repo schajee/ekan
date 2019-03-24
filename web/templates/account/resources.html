@@ -1,0 +1,38 @@
+{% load custom_tags %}
+{% if items %}
+<div class="table-responsive">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th class="fit"></th>
+        <th>Resource</th>
+        <th>Format</th>
+        <th>Dataset</th>
+        <th>Organisation</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td><input type="checkbox"></td>
+        <td>
+          {% if perms.web.change_resource %}
+          <a href="{% url 'admin:web_resource_change' item.id %}">{{ item.title }}</a>
+          {% else %}
+          {{ item.title }}
+          {% endif %}
+        </td>
+        <td>{{ item.format }}</td>
+        <td>{{ item.dataset.title }}</td>
+        <td>{{ item.dataset.organisation.title }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+
+{% if perms.web.add_resource %}
+<a class="btn btn-danger" href="{% url 'admin:web_resource_add' %}">Add Resource</a>
+{% endif %}
+{% endif %}

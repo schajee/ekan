@@ -1,0 +1,35 @@
+{% load custom_tags %}
+{% if items %}
+
+<h5 class="card-title mb-3">{{ items|length }} dataset{{ items|length|pluralize }}</h5>
+<div class="table-responsive">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th class="fit"></th>
+        <th>Dataset</th>
+        <th>License</th>
+        <th>Organisation</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td><input type="checkbox"></td>
+        <td>
+          {% if perms.web.change_dataset %}
+          <a href="{% url 'admin:web_dataset_change' item.id %}">{{ item.title }}</a>
+          {% else %}
+          {{ item.title }}
+          {% endif %}
+        </td>
+        <td>{{ item.license.title }}</td>
+        <td>{{ item.organisation.title }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+{% include 'partials/empty.html' %}
+{% endif %}
