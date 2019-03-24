@@ -24,8 +24,6 @@ class Command(BaseCommand):
             self.create_admin()
         elif options['model'] == 'topic':
             self.create_topics(options['num'])
-        elif options['model'] == 'type':
-            self.create_types(options['num'])
         elif options['model'] == 'license':
             self.create_licenses(options['num'])
         elif options['model'] == 'format':
@@ -43,7 +41,6 @@ class Command(BaseCommand):
             self.create_author()
             self.create_member()
             self.create_topics(14)
-            self.create_types(3)
             self.create_licenses(4)
             self.create_formats(5)
             self.create_organisations(15)
@@ -98,12 +95,6 @@ class Command(BaseCommand):
             item = factories.TopicFactory.create()
             self.stdout.write(self.style.SUCCESS(
                 'Topic created: "%s"' % item.title))
-
-    def create_types(self, num=1):
-        for _ in range(num):
-            item = factories.TypeFactory.create()
-            self.stdout.write(self.style.SUCCESS(
-                'Type created: "%s"' % item.title))
 
     def create_licenses(self, num=1):
         for _ in range(num):

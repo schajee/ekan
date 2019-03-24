@@ -45,15 +45,6 @@ class LicenseFactory(factory.django.DjangoModelFactory):
     icon = 'fab fa-creative-commons'
 
 
-class TypeFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = models.Type
-
-    title = factory.Faker('color_name')
-    slug = factory.LazyAttribute(lambda a: slugify(a.title))
-    icon = 'fa fa-link'
-
-
 class OrganisationFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Organisation
@@ -91,7 +82,7 @@ class ResourceFactory(factory.django.DjangoModelFactory):
     title = factory.Faker('sentence', nb_words=4)
     description = factory.Faker('text')
     dataset = factory.fuzzy.FuzzyChoice(models.Dataset.objects.all())
-    type = factory.fuzzy.FuzzyChoice(models.Type.objects.all())
     format = factory.fuzzy.FuzzyChoice(models.Format.objects.all())
-    identifier = factory.Faker('url')
+    file = factory.Faker('file_name')
+    url = factory.Faker('url')
     size = factory.Faker('pyint')
