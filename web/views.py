@@ -32,9 +32,8 @@ class DatasetView:
     def index(cls, request):
         # Load file objects
         datasets = models.Dataset.objects.order_by('-updated').all()
-        query = request.GET.get('search', None)
-        if query is not None:
-            datasets = datasets.filter(title__contains=query)
+        # Filter datasets results 
+        datasets = filter_results(request, datasets)
         # Paginate the list
         paginator = Paginator(datasets, settings.PAGE_SIZE)
         # Render view with file objects
@@ -79,10 +78,8 @@ class OrganisationView:
         organisation = get_object_or_404(models.Organisation, slug=slug)
         # Fetch related datasets
         datasets = organisation.dataset_set.order_by('-updated').all()
-        # Filter results on search criteria
-        query = request.GET.get('search', None)
-        if query is not None:
-            datasets = datasets.filter(title__contains=query)
+        # Filter datasets results
+        datasets = filter_results(request, datasets)
         # Paginate the list
         paginator = Paginator(datasets, 10)
         # Render view with objects
@@ -107,10 +104,8 @@ class TopicView:
         topic = get_object_or_404(models.Topic, slug=slug)
         # Fetch related datasets
         datasets = topic.dataset_set.order_by('-updated').all()
-        # Filter results on search criteria
-        query = request.GET.get('search', None)
-        if query is not None:
-            datasets = datasets.filter(title__contains=query)
+        # Filter datasets results
+        datasets = filter_results(request, datasets)
         # Paginate the list with related datasets
         paginator = Paginator(datasets, 10)
         # Render view with objects
@@ -260,3 +255,32 @@ class Static:
             })
         else:
             return render(request, 'pages/' + slug + '.html')
+
+
+def filter_results(request, datasets):
+    """Filters datasets based on query parameters"""
+
+    # Filter for search criteria
+    query = request.GET.get('search', None)
+    if query is not None:
+        datasets = datasets.filter(title__icontains=query)
+
+    # Filter results on organisation
+    query = request.GET.get('organisation', None)
+    if query is not None:
+        organisations = models.Organisation.objects.filter(slug__exact=query)
+        datasets = datasets.filter(organisation__in=organisations)
+    
+    # Filter results on topics
+    query = request.GET.get('topic', None)
+    if query is not None:
+        topics = models.Topic.objects.filter(slug__exact=query)
+        datasets = datasets.filter(topic__in=topics)
+
+    # Filter results on format
+    query = request.GET.get('license', None)
+    if query is not None:
+        licenses = models.License.objects.filter(slug__exact=query)
+        datasets = datasets.filter(license__in=licenses)
+
+    return datasets
