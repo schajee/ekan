@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from web import views
 
@@ -11,8 +13,10 @@ urlpatterns = [
     path('verify/<int:uid>/<str:token>', views.Auth.verify, name='verify'),
     path('login', views.Auth.login, name='login'),
     path('recover', views.Auth.recover, name='recover'),
-    path('account', views.Auth.account, name='account'),
     path('logout', views.Auth.logout, name='logout'),
+
+    path('account', views.Auth.account, name='account'),
+    path('account/<str:page>', views.Auth.account, name='account_page'),
 
     path('datasets', views.DatasetView.index, name='datasets'),
     path('datasets/<str:slug>', views.DatasetView.show, name='dataset'),
@@ -30,3 +34,6 @@ urlpatterns = [
 
     path('<str:slug>', views.Static.pages, name='page'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
