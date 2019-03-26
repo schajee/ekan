@@ -1,7 +1,7 @@
 # Easy Knowledge Archive Network (EKAN)
-A simplified and 'Easier' version of a Knowledge Archive Network, inspired from CKAN and DKAN. 
+A simplified and 'Easier' version of a Knowledge Archive Network, inspired from CKAN and DKAN. Built with Python, Django, Django-REST, Vue, Bootstrap, and Font Awesome. 
 
-Built with Python, Django, Django-REST, Vue, Bootstrap, and Font Awesome. 
+![alt text](https://github.com/schajee/ekan/blob/master/web/static/images/screenshot.png "Logo Title Text 1")
 
 ## Installation
 1. Install Python 3.5+ and PIP
