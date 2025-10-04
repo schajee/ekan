@@ -1,0 +1,15 @@
+{% load i18n %}
+{% autoescape off %}
+Hello from {{ site_name }}!
+
+You're receiving this email because you registered for an account at {{ site_name }}.
+
+To verify your email address and activate your account, click the link below:
+
+{{ activate_url }}
+
+If you didn't create an account, you can safely ignore this email.
+
+Thanks,
+The {{ site_name }} Team
+{% endautoescape %}

@@ -13,14 +13,14 @@
   <aside class="col-md-3">
 
     <h5 class="mb-3">Organisation</h5>
-    <p class="lead mb-1"><a href="{% url 'app:organisation' dataset.organisation.slug %}">{{ dataset.organisation.title }}</a></p>
+    <p class="lead mb-1"><a class="link-dark" href="{% url 'app:organisation' dataset.organisation.slug %}">{{ dataset.organisation.title }}</a></p>
     
     {% if dataset.organisation.description %}
     <p>{{ dataset.organisation.description|truncatewords:30 }}</p>
     {% endif %}
 
     {% if dataset.organisation.url %}
-    <p class="mb-5">More Information: <a class="text-truncate" href="{{ dataset.organisation.url }}">{{ dataset.organisation.url }}</a></p>
+    <p class="mb-5">More Information: <a class="text-truncate link-dark" href="{{ dataset.organisation.url }}">{{ dataset.organisation.url }}</a></p>
     {% endif %}
 
     <h5 class="mb-3">Topics</h5>
@@ -43,7 +43,7 @@
       <li class="list-group-item d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center flex-grow-1">
           <i class="{{ resource.format.icon }} me-2 text-secondary"></i>
-          <a href="{% url 'app:resource' dataset.slug resource.slug %}">{{ resource.title }}</a>
+          <a class="link-dark" href="{% url 'app:resource' dataset.slug resource.slug %}">{{ resource.title }}</a>
           <span class="ms-2">{% include 'partials/resource_tag.html' with resource=resource %}</span>
         </div>
       </li>

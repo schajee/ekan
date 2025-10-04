@@ -1,9 +1,9 @@
-<div class="card mb-3" style="border: none; box-shadow: none;">
+<div class="card mb-3">
   <div class="card-body">
-    <h4 class="card-title"><a href="{% url 'app:dataset' dataset.slug %}">{{ dataset.title }}</a></h4>
+    <h4 class="card-title"><a class="link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url 'app:dataset' dataset.slug %}">{{ dataset.title }}</a></h4>
     <p class="small">
       {% if 'organisations' not in request.path %}
-      <a class="link-secondary" href="{% url 'app:organisation' dataset.organisation.slug %}">{{ dataset.organisation.title }}</a>
+      <a class="link-secondary link-underline link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url 'app:organisation' dataset.organisation.slug %}">{{ dataset.organisation.title }}</a>
       {% endif %}
     </p>
     <p>{{ dataset.description|truncatewords:50 }}</p>

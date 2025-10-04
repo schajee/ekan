@@ -1,0 +1,37 @@
+{% extends 'layouts/auth.html' %}
+{% load i18n %}
+
+{% block auth_content %}
+<div class="text-center mb-4">
+    <div class="mb-3">
+        <i class="bi bi-envelope-paper text-primary" style="font-size: 3rem;"></i>
+    </div>
+    <h2 class="h3 mb-2">Verify your email</h2>
+    <p class="text-muted">We've sent a verification link to <strong>{{ email }}</strong></p>
+</div>
+
+<div class="alert alert-primary" role="alert">
+    <div class="d-flex">
+        <i class="bi bi-info-circle me-2 mt-1"></i>
+        <div>
+            Click the link in your email to verify your account and complete the registration process.
+        </div>
+    </div>
+</div>
+
+<div class="d-grid gap-2">
+    <a href="{% url 'account_email' %}" class="btn btn-outline-primary">
+        Manage Email Addresses
+    </a>
+    <a href="{% url 'account_login' %}" class="btn btn-primary">
+        Continue to Sign In
+    </a>
+</div>
+
+<div class="text-center mt-4">
+    <small class="text-muted">
+        Didn't receive the email? Check your spam folder or 
+        <a href="{% url 'account_email' %}" class="text-decoration-none">resend verification</a>.
+    </small>
+</div>
+{% endblock %}

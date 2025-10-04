@@ -1,0 +1,4 @@
+{% load i18n %}
+{% autoescape off %}
+[{{ site_name }}] Please Confirm Your Email Address
+{% endautoescape %}

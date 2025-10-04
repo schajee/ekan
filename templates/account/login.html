@@ -1,0 +1,94 @@
+{% extends 'layouts/auth.html' %}
+{% load i18n socialaccount %}
+
+{% block auth_content %}
+<div class="text-center mb-4">
+    <h2 class="h3 mb-2">Welcome back</h2>
+    <p class="text-muted">Sign in to your EKAN account</p>
+</div>
+
+{% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+                <div>{{ error }}</div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<form method="post" action="{% url 'account_login' %}">
+    {% csrf_token %}
+    
+    <div class="mb-3">
+        <label for="{{ form.login.id_for_label }}" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="{{ form.login.id_for_label }}" 
+               name="{{ form.login.name }}" value="{{ form.login.value|default:'' }}" 
+               placeholder="Enter your email" required>
+    </div>
+    
+    <div class="mb-3">
+        <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
+        <input type="password" class="form-control" id="{{ form.password.id_for_label }}" 
+               name="{{ form.password.name }}" placeholder="Enter your password" required>
+    </div>
+    
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="{{ form.remember.id_for_label }}" 
+               name="{{ form.remember.name }}" {% if form.remember.value %}checked{% endif %}>
+        <label class="form-check-label" for="{{ form.remember.id_for_label }}">
+            Remember me
+        </label>
+    </div>
+    
+    <button type="submit" class="btn btn-primary w-100 mb-3">Sign In</button>
+    
+    {% if form.redirect_field_value %}
+        <input type="hidden" name="{{ form.redirect_field_name }}" value="{{ form.redirect_field_value }}">
+    {% endif %}
+</form>
+
+<div class="text-center">
+    <a href="{% url 'account_reset_password' %}" class="text-decoration-none">
+        Forgot your password?
+    </a>
+</div>
+
+{% get_providers as socialaccount_providers %}
+{% if socialaccount_providers %}
+    <div class="divider">
+        <span>or continue with</span>
+    </div>
+    
+    <div class="d-grid gap-2">
+        {% for provider in socialaccount_providers %}
+            <form action="{% provider_login_url provider.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn-social d-flex align-items-center justify-content-center w-100">
+                    {% if provider.id == "github" %}
+                        <i class="bi bi-github me-2"></i>
+                    {% elif provider.id == "google" %}
+                        <i class="bi bi-google me-2"></i>
+                    {% elif provider.id == "facebook" %}
+                        <i class="bi bi-facebook me-2"></i>
+                    {% endif %}
+                    Continue with {{ provider.name }}
+                </button>
+            </form>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class="text-center mt-4">
+    <span class="text-muted">Don't have an account? </span>
+    <a href="{% url 'account_signup' %}" class="text-decoration-none">Sign up</a>
+</div>
+{% endblock %}

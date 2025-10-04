@@ -1,0 +1,41 @@
+{% extends 'layouts/auth.html' %}
+{% load i18n %}
+
+{% block auth_content %}
+<div class="text-center mb-4">
+    <div class="mb-3">
+        {% if provider.id == "github" %}
+            <i class="bi bi-github text-dark" style="font-size: 3rem;"></i>
+        {% elif provider.id == "google" %}
+            <i class="bi bi-google text-danger" style="font-size: 3rem;"></i>
+        {% elif provider.id == "facebook" %}
+            <i class="bi bi-facebook text-primary" style="font-size: 3rem;"></i>
+        {% endif %}
+    </div>
+    <h2 class="h3 mb-2">Connect {{ provider.name }}</h2>
+    <p class="text-muted">You are about to connect a {{ provider.name }} account to your EKAN account.</p>
+</div>
+
+<div class="alert alert-info" role="alert">
+    <div class="d-flex">
+        <i class="bi bi-info-circle me-2 mt-1"></i>
+        <div>
+            <strong>Account:</strong> {{ account.extra_data.email|default:account.extra_data.login|default:"Connected Account" }}
+        </div>
+    </div>
+</div>
+
+<form method="post" action="{% url 'socialaccount_connections' %}">
+    {% csrf_token %}
+    <input type="hidden" name="account" value="{{ account.id }}">
+    
+    <div class="d-grid gap-2">
+        <button type="submit" name="connect" class="btn btn-primary">
+            Connect {{ provider.name }} Account
+        </button>
+        <a href="{% url 'account_login' %}" class="btn btn-outline-secondary">
+            Cancel
+        </a>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'layouts/auth.html' %}
+{% load i18n socialaccount %}
+
+{% block auth_content %}
+<div class="text-center mb-4">
+    <h2 class="h3 mb-2">Create account</h2>
+    <p class="text-muted">Join EKAN and start exploring open data</p>
+</div>
+
+{% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+                <div>{{ error }}</div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<form method="post" action="{% url 'account_signup' %}">
+    {% csrf_token %}
+    
+    <div class="mb-3">
+        <label for="{{ form.email.id_for_label }}" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="{{ form.email.id_for_label }}" 
+               name="{{ form.email.name }}" value="{{ form.email.value|default:'' }}" 
+               placeholder="Enter your email" required>
+        {% if form.email.help_text %}
+            <div class="form-text">{{ form.email.help_text }}</div>
+        {% endif %}
+    </div>
+    
+    <div class="mb-3">
+        <label for="{{ form.password1.id_for_label }}" class="form-label">Password</label>
+        <input type="password" class="form-control" id="{{ form.password1.id_for_label }}" 
+               name="{{ form.password1.name }}" placeholder="Create a password" required>
+        {% if form.password1.help_text %}
+            <div class="form-text">{{ form.password1.help_text }}</div>
+        {% endif %}
+    </div>
+    
+    <div class="mb-3">
+        <label for="{{ form.password2.id_for_label }}" class="form-label">Confirm password</label>
+        <input type="password" class="form-control" id="{{ form.password2.id_for_label }}" 
+               name="{{ form.password2.name }}" placeholder="Confirm your password" required>
+    </div>
+    
+    <button type="submit" class="btn btn-primary w-100 mb-3">Create Account</button>
+    
+    {% if form.redirect_field_value %}
+        <input type="hidden" name="{{ form.redirect_field_name }}" value="{{ form.redirect_field_value }}">
+    {% endif %}
+</form>
+
+{% get_providers as socialaccount_providers %}
+{% if socialaccount_providers %}
+    <div class="divider">
+        <span>or continue with</span>
+    </div>
+    
+    <div class="d-grid gap-2">
+        {% for provider in socialaccount_providers %}
+            <form action="{% provider_login_url provider.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn-social d-flex align-items-center justify-content-center w-100">
+                    {% if provider.id == "github" %}
+                        <i class="bi bi-github me-2"></i>
+                    {% elif provider.id == "google" %}
+                        <i class="bi bi-google me-2"></i>
+                    {% elif provider.id == "facebook" %}
+                        <i class="bi bi-facebook me-2"></i>
+                    {% endif %}
+                    Continue with {{ provider.name }}
+                </button>
+            </form>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class="text-center mt-4">
+    <span class="text-muted">Already have an account? </span>
+    <a href="{% url 'account_login' %}" class="text-decoration-none">Sign in</a>
+</div>
+
+<div class="mt-4 small text-muted">
+    By creating an account, you agree to our 
+    <a href="{% url 'app:terms' %}" class="text-decoration-none">Terms of Service</a> and 
+    <a href="{% url 'app:privacy' %}" class="text-decoration-none">Privacy Policy</a>.
+</div>
+{% endblock %}

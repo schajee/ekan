@@ -4,7 +4,7 @@
 {% for breadcrumb in breadcrumbs %}
   {% if breadcrumb.url %}
   <li class="breadcrumb-item">
-    <a href="{{ breadcrumb.url }}">{{ breadcrumb.title }}</a>
+    <a class="link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover" href="{{ breadcrumb.url }}">{{ breadcrumb.title }}</a>
   </li>
   {% else %}
   <li class="breadcrumb-item text-secondary">{{ breadcrumb.title }}</li>

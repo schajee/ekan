@@ -1,10 +1,110 @@
-{% extends 'layouts/master.html' %} {% load custom_tags %} {% block page %}
-<section class="row w-100 h-100 mx-auto">
-  <div class="col bg-primary bg-cover d-flex flex-column text-center justify-content-center text-white">
-    {% include 'auth/aside.html' %}
-  </div>
-  <form class="col bg-light d-flex flex-column justify-content-center" method="post">
-    {% block content %}{% endblock %}
+{% extends 'layouts/base.html' %}
+{% load custom_tags %}
+
+{% block title %}Authentication - {{ block.super }}{% endblock %}
+
+{% block page %}
+<div class="container-fluid vh-100">
+    <div class="row h-100">
+        <!-- Left side - Branding -->
+        <div class="col-lg-6 bg-secondary-subtle d-flex align-items-center justify-content-center">
+            <div class="text-center px-4">
+                <div class="mb-4">
+                    <h1 class="display-4 fw-bold mb-3">EKAN</h1>
+                    <p class="lead mb-4">Easy Knowledge Archive Network</p>
+                    <p class="fs-5 opacity-75">Your gateway to open data and knowledge sharing</p>
+                </div>
+                
+                <div class="row text-center mt-5">
+                    <div class="col-4">
+                        <div class="mb-2">
+                            <i class="bi bi-database fs-1"></i>
+                        </div>
+                        <small>Open Datasets</small>
+                    </div>
+                    <div class="col-4">
+                        <div class="mb-2">
+                            <i class="bi bi-people fs-1"></i>
+                        </div>
+                        <small>Organizations</small>
+                    </div>
+                    <div class="col-4">
+                        <div class="mb-2">
+                            <i class="bi bi-tags fs-1"></i>
+                        </div>
+                        <small>Topics</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right side - Authentication Form -->
+        <div class="col-lg-6 d-flex align-items-center">
+            <div class="w-100 px-4 px-lg-5">
+                <div class="mx-auto" style="max-width: 400px;">
+                    {% block auth_content %}{% endblock %}
+                </div>
+            </div>
+        </div>
     </div>
-</section>
+</div>
+
+<style>
+.auth-page {
+    background: linear-gradient(135deg, var(--bs-primary) 0%, var(--bs-primary-dark, #0056b3) 100%);
+}
+
+.form-control:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+.btn-social {
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+    background: white;
+    color: #495057;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+    font-size: inherit;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.btn-social:hover {
+    background: #f8f9fa;
+    border-color: #adb5bd;
+    color: #495057;
+    text-decoration: none;
+}
+
+.btn-social:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+.divider {
+    position: relative;
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #dee2e6;
+}
+
+.divider span {
+    background: white;
+    padding: 0 1rem;
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+</style>
 {% endblock %}

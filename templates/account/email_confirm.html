@@ -1,0 +1,42 @@
+{% extends 'layouts/auth.html' %}
+{% load i18n %}
+
+{% block auth_content %}
+{% if confirmation %}
+    <div class="text-center mb-4">
+        <div class="mb-3">
+            <i class="bi bi-check-circle text-success" style="font-size: 3rem;"></i>
+        </div>
+        <h2 class="h3 mb-2">Confirm email address</h2>
+        <p class="text-muted">Please confirm that <strong>{{ confirmation.email_address.email }}</strong> is your email address.</p>
+    </div>
+    
+    <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success w-100 mb-3">Confirm Email Address</button>
+    </form>
+{% else %}
+    <div class="text-center mb-4">
+        <div class="mb-3">
+            <i class="bi bi-x-circle text-danger" style="font-size: 3rem;"></i>
+        </div>
+        <h2 class="h3 mb-2">Invalid confirmation link</h2>
+        <p class="text-muted">This email confirmation link is invalid or has expired.</p>
+    </div>
+    
+    <div class="alert alert-danger" role="alert">
+        <div class="d-flex">
+            <i class="bi bi-exclamation-triangle me-2 mt-1"></i>
+            <div>
+                The confirmation link you used is no longer valid. Please request a new verification email.
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+<div class="text-center">
+    <a href="{% url 'account_login' %}" class="btn btn-outline-primary">
+        <i class="bi bi-arrow-left me-1"></i>Back to sign in
+    </a>
+</div>
+{% endblock %}

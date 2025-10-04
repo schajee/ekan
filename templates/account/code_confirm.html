@@ -1,0 +1,66 @@
+{% extends 'layouts/auth.html' %}
+{% load i18n %}
+
+{% block auth_content %}
+<div class="text-center mb-4">
+    <h2 class="h3 mb-2">Enter Verification Code</h2>
+    <p class="text-muted">Please enter the code sent to your email address</p>
+</div>
+
+{% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+                <div>{{ error }}</div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    
+    <div class="mb-4">
+        <label for="id_code" class="form-label">Verification Code</label>
+        <input type="text" class="form-control form-control-lg text-center" 
+               id="id_code" name="code" 
+               placeholder="000000" maxlength="6" required
+               style="font-size: 2rem; letter-spacing: 1rem; font-weight: bold;">
+        <div class="form-text">Enter the 6-digit code sent to your email</div>
+    </div>
+    
+    <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
+        <i class="bi bi-check-circle me-2"></i>Verify Code
+    </button>
+</form>
+
+<div class="text-center">
+    <div class="mb-3">
+        <span class="text-muted">Code expired or didn't receive it?</span>
+    </div>
+    
+    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+        <a href="{% url 'account_login' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>Back to Login
+        </a>
+        <button type="button" class="btn btn-outline-primary" onclick="location.reload()">
+            <i class="bi bi-arrow-clockwise me-1"></i>Resend Code
+        </button>
+    </div>
+</div>
+
+<div class="mt-5 text-center">
+    <div class="d-flex align-items-center justify-content-center text-muted small">
+        <i class="bi bi-shield-lock me-2"></i>
+        <span>Your account security is protected by email verification</span>
+    </div>
+</div>
+{% endblock %}

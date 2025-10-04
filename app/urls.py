@@ -39,9 +39,6 @@ urlpatterns = [
     path('account/', RedirectView.as_view(pattern_name='account_profile'), name='account'),
     path('account/<str:page>/', views.AccountView.as_view(), name='account_page'),
     
-    # Email verification (for old templates)
-    path('verify/<int:uid>/<str:token>/', views.VerifyView.as_view(), name='verify'),
-    
     # Static pages (using slug parameter for compatibility)
     path('about/', views.AboutView.as_view(), name='about'),
     path('contact/', views.ContactView.as_view(), name='contact'),

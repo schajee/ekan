@@ -1,0 +1,66 @@
+{% extends 'layouts/auth.html' %}
+{% load i18n %}
+
+{% block auth_content %}
+<div class="text-center mb-4">
+    <h2 class="h3 mb-2">Two-Factor Authentication</h2>
+    <p class="text-muted">Enter your authentication code to continue</p>
+</div>
+
+{% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+                <div>{{ error }}</div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    
+    <div class="mb-4">
+        <label for="id_code" class="form-label">Authentication Code</label>
+        <input type="text" class="form-control form-control-lg text-center" 
+               id="id_code" name="code" 
+               placeholder="000000" maxlength="6" required autocomplete="one-time-code"
+               style="font-size: 2rem; letter-spacing: 0.5rem; font-weight: bold;">
+        <div class="form-text">
+            <i class="bi bi-phone me-1"></i>
+            Enter the 6-digit code from your authenticator app or SMS
+        </div>
+    </div>
+    
+    <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
+        <i class="bi bi-shield-check me-2"></i>Authenticate
+    </button>
+</form>
+
+<div class="text-center">
+    <details class="mt-4">
+        <summary class="btn btn-link text-decoration-none p-0">
+            <small>Having trouble with your code?</small>
+        </summary>
+        <div class="mt-3 small text-muted">
+            <p>• Make sure your device's time is synchronized</p>
+            <p>• Try generating a new code in your authenticator app</p>
+            <p>• Contact support if you've lost access to your device</p>
+        </div>
+    </details>
+</div>
+
+<div class="mt-4 text-center">
+    <a href="{% url 'account_login' %}" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left me-1"></i>Back to Login
+    </a>
+</div>
+{% endblock %}

@@ -15,7 +15,7 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         context.update({
             'featured_datasets': Dataset.objects.filter(is_published=True, is_featured=True)[:6],
-            'featured_topics': Topic.objects.filter(is_featured=True)[:9],
+            'topics': Topic.objects.filter(is_featured=True)[:9],
             'recent_datasets': Dataset.objects.filter(is_published=True).order_by('-created')[:8],
         })
         return context
@@ -228,11 +228,6 @@ class AccountView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context['page'] = self.kwargs.get('page', 'account')
         return context
-
-
-class VerifyView(TemplateView):
-    """Email verification view (placeholder)"""
-    template_name = 'auth/verify.html'
 
 
 class DebugView(TemplateView):

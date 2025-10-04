@@ -1,45 +1,112 @@
 {% load custom_tags %}
-<header class="bg-light">
+<header class="bg-white border-bottom">
   <div class="container">
     <nav class="navbar navbar-expand-lg">
-      <a class="navbar-brand" href="{% url 'app:home' %}">{% app_name %}</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+      <a class="navbar-brand fw-bold" href="{% url 'app:home' %}">{% app_name %}</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbar">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item mx-2">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
             <a class="nav-link" href="{% url 'app:datasets' %}">
-              <i class="bi bi-files"></i> Datasets
+              <i class="bi bi-database me-1"></i>Datasets
             </a>
           </li>
-          <li class="nav-item mx-2">
+          <li class="nav-item">
             <a class="nav-link" href="{% url 'app:organisations' %}">
-              <i class="bi bi-folder2-open"></i> Organisations
+              <i class="bi bi-building me-1"></i>Organizations
             </a>
           </li>
-          <li class="nav-item mx-2">
+          <li class="nav-item">
             <a class="nav-link" href="{% url 'app:topics' %}">
-              <i class="bi bi-tags"></i> Topics
+              <i class="bi bi-tags me-1"></i>Topics
             </a>
           </li>
-          <li class="nav-item mx-2 dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bi bi-info-circle"></i> About</a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="{% url 'app:page' 'about' %}">What is {% app_name %}?</a>
-              <a class="dropdown-item" href="{% url 'app:page' 'faqs' %}">Frequently Asked Questions</a>
-              <a class="dropdown-item" href="{% url 'app:page' 'contact' %}">Contact Us</a>
-              <div class="dropdown-divider"></div>
-              {% if request.user.is_authenticated %} {% if request.user.is_staff %}
-              <a class="dropdown-item" href="{% url 'admin:index' %}">Manage</a> {% endif %}
-              <a class="dropdown-item" href="{% url 'app:account' %}">My Account</a>
-              <a class="dropdown-item" href="{% url 'app:logout' %}">Log out</a> {% else %}
-              <a class="dropdown-item" href="{% url 'app:signup' %}">Sign up</a>
-              <a class="dropdown-item" href="{% url 'app:login' %}">Log in</a> {% endif %}
-            </div>
-          </li>
+        </ul>
+        
+        <ul class="navbar-nav">
+          {% if request.user.is_authenticated %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle me-2"></i>
+                <span>{{ request.user.email|truncatechars:20 }}</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><h6 class="dropdown-header">{{ request.user.email }}</h6></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'app:account' %}">
+                  <i class="bi bi-person me-2"></i>My Account
+                </a></li>
+                <li><a class="dropdown-item" href="{% url 'account_email' %}">
+                  <i class="bi bi-envelope me-2"></i>Email Settings
+                </a></li>
+                {% if request.user.is_superuser %}
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'admin:index' %}">
+                  <i class="bi bi-shield-check me-2"></i>Admin Console
+                </a></li>
+                {% elif request.user.is_staff %}
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'admin:index' %}">
+                  <i class="bi bi-gear me-2"></i>Admin Panel
+                </a></li>
+                {% endif %}
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <form method="post" action="{% url 'account_logout' %}" class="d-inline w-100">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item text-danger border-0 bg-transparent w-100 text-start">
+                      <i class="bi bi-box-arrow-right me-2"></i>Sign Out
+                    </button>
+                  </form>
+                </li>
+              </ul>
+            </li>
+          {% else %}
+            <li class="nav-item d-flex align-items-center">
+              <a class="btn btn-primary btn-sm" href="{% url 'account_login' %}">
+                <i class="bi bi-box-arrow-in-right me-1"></i>Sign In
+              </a>
+            </li>
+          {% endif %}
         </ul>
       </div>
     </nav>
   </div>
 </header>
+
+<style>
+/* Ensure logout button in dropdown looks consistent with other dropdown items */
+.dropdown-item.border-0.bg-transparent {
+  padding: 0.25rem 1rem;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+.dropdown-item.border-0.bg-transparent:hover {
+  background-color: var(--bs-dropdown-link-hover-bg) !important;
+}
+
+.dropdown-item.border-0.bg-transparent:focus {
+  background-color: var(--bs-dropdown-link-hover-bg) !important;
+}
+
+/* Fix vertical alignment for navbar items */
+.navbar-nav .nav-item {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-nav .nav-link {
+  display: flex;
+  align-items: center;
+}
+
+/* Ensure consistent height for navigation buttons */
+.navbar-nav .btn-sm {
+  padding: 0.375rem 0.75rem;
+  line-height: 1.5;
+}
+</style>
