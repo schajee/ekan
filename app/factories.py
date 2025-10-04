@@ -16,40 +16,68 @@ GOVT_ORGANISATIONS = [
 ]
 
 TOPICS_DATA = [
-    ("Education", "fa fa-graduation-cap", "#007bff"),
-    ("Health", "fa fa-heartbeat", "#dc3545"),
-    ("Environment", "fa fa-leaf", "#28a745"),
-    ("Transport", "fa fa-car", "#6c757d"),
-    ("Economy", "fa fa-chart-line", "#fd7e14"),
-    ("Agriculture", "fa fa-seedling", "#20c997"),
-    ("Energy", "fa fa-bolt", "#ffc107"),
-    ("Tourism", "fa fa-map-marker-alt", "#e83e8c"),
-    ("Social Services", "fa fa-users", "#6f42c1"),
-    ("Justice", "fa fa-gavel", "#17a2b8"),
-    ("Defense", "fa fa-shield-alt", "#343a40"),
-    ("Technology", "fa fa-microchip", "#007bff"),
+    ("Education", "bi bi-mortarboard", "#007bff"),
+    ("Health", "bi bi-heart-pulse", "#dc3545"),
+    ("Environment", "bi bi-tree", "#28a745"),
+    ("Transport", "bi bi-car-front", "#6c757d"),
+    ("Economy", "bi bi-graph-up", "#fd7e14"),
+    ("Agriculture", "bi bi-flower1", "#20c997"),
+    ("Energy", "bi bi-lightning", "#ffc107"),
+    ("Tourism", "bi bi-geo-alt", "#e83e8c"),
+    ("Social Services", "bi bi-people", "#6f42c1"),
+    ("Justice", "bi bi-scales", "#17a2b8"),
+    ("Defense", "bi bi-shield", "#343a40"),
+    ("Technology", "bi bi-cpu", "#007bff"),
 ]
 
 LICENSES_DATA = [
-    ("Public Domain", "No copyright restrictions", True, "fab fa-creative-commons-pd"),
-    ("Creative Commons Attribution", "Free to use with attribution", True, "fab fa-creative-commons"),
-    ("Open Government License", "Open government data license", True, "fa fa-unlock"),
-    ("Restricted Access", "Government use only", False, "fa fa-lock"),
+    ("Public Domain", "No copyright restrictions", True, "bi bi-c-circle"),
+    ("Creative Commons Attribution", "Free to use with attribution", True, "bi bi-cc-circle"),
+    ("Open Government License", "Open government data license", True, "bi bi-unlock"),
+    ("Restricted Access", "Government use only", False, "bi bi-lock"),
 ]
 
 FORMATS_DATA = [
-    ("CSV", "Comma-separated values", "text/csv", True, "fa fa-file-csv"),
-    ("JSON", "JavaScript Object Notation", "application/json", True, "fa fa-file-code"),
-    ("XML", "Extensible Markup Language", "application/xml", True, "fa fa-file-code"),
-    ("PDF", "Portable Document Format", "application/pdf", False, "fa fa-file-pdf"),
-    ("XLSX", "Excel spreadsheet", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", True, "fa fa-file-excel"),
+    ("CSV", "Comma-separated values", "text/csv", True, "bi bi-filetype-csv"),
+    ("JSON", "JavaScript Object Notation", "application/json", True, "bi bi-filetype-json"),
+    ("XML", "Extensible Markup Language", "application/xml", True, "bi bi-filetype-xml"),
+    ("PDF", "Portable Document Format", "application/pdf", False, "bi bi-filetype-pdf"),
+    ("XLSX", "Excel spreadsheet", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", True, "bi bi-filetype-xlsx"),
+    ("XLS", "Excel 97-2003 spreadsheet", "application/vnd.ms-excel", True, "bi bi-filetype-xls"),
+    ("ODS", "OpenDocument Spreadsheet", "application/vnd.oasis.opendocument.spreadsheet", True, "bi bi-file-earmark-spreadsheet"),
+    ("DOC", "Microsoft Word document", "application/msword", False, "bi bi-filetype-doc"),
+    ("DOCX", "Microsoft Word document", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", False, "bi bi-filetype-docx"),
+    ("RTF", "Rich Text Format", "application/rtf", False, "bi bi-file-earmark-text"),
+    ("HTML", "HyperText Markup Language", "text/html", False, "bi bi-filetype-html"),
+    ("ZIP", "Compressed archive", "application/zip", False, "bi bi-file-earmark-zip"),
 ]
 
 
 def create_users(count=10):
     """Create sample users"""
     users = []
-    for i in range(count):
+    
+    # First, always create the admin user
+    admin_user, created = User.objects.get_or_create(
+        username='admin',
+        defaults={
+            'email': 'admin@example.com',
+            'first_name': 'Admin',
+            'last_name': 'User',
+            'is_staff': True,
+            'is_superuser': True,
+            'is_active': True
+        }
+    )
+    if created:
+        admin_user.date_joined = fake.date_time_between(start_date='-2y', end_date='now', tzinfo=timezone.get_current_timezone())
+        admin_user.save()
+        users.append(admin_user)
+        print(f"   Created admin user: {admin_user.email}")
+    
+    # Then create the remaining users
+    remaining_count = count - 1 if created else count
+    for i in range(remaining_count):
         username = fake.user_name()
         # Ensure unique usernames
         while User.objects.filter(username=username).exists():
@@ -69,21 +97,8 @@ def create_users(count=10):
     return users
 
 
-def create_licenses():
-    """Create predefined licenses"""
-    licenses = []
-    for title, description, is_open, icon in LICENSES_DATA:
-        license_obj, created = License.objects.get_or_create(
-            slug=slugify(title),
-            defaults={
-                'title': title,
-                'description': description,
-                'is_open': is_open,
-                'icon': icon,
-            }
-        )
-        licenses.append(license_obj)
-    return licenses
+# NOTE: Licenses and Formats are now loaded from fixtures
+# No longer creating them in factories
 
 
 def create_topics():
@@ -104,24 +119,6 @@ def create_topics():
     return topics
 
 
-def create_formats():
-    """Create predefined formats"""
-    formats = []
-    for title, description, mime_type, is_data_format, icon in FORMATS_DATA:
-        format_obj, created = Format.objects.get_or_create(
-            slug=slugify(title),
-            defaults={
-                'title': title,
-                'description': description,
-                'mime_type': mime_type,
-                'is_data_format': is_data_format,
-                'icon': icon,
-            }
-        )
-        formats.append(format_obj)
-    return formats
-
-
 def create_organisations(users, count=12):
     """Create government organisations"""
     organisations = []
@@ -129,13 +126,21 @@ def create_organisations(users, count=12):
     
     for i in range(min(count, len(available_orgs))):
         title = available_orgs[i]
+        requesting_user = random.choice(users)
+        staff_users = [u for u in users if u.is_staff]
+        approving_user = random.choice(staff_users) if staff_users else users[0]
+        
         org, created = Organisation.objects.get_or_create(
             slug=slugify(title),
             defaults={
                 'title': title,
                 'description': fake.paragraph(nb_sentences=4),
                 'url': fake.url(),
+                'requested_by': requesting_user,
                 'manager': random.choice(users),
+                'status': 'approved',  # Make organisations approved
+                'approved_by': approving_user,
+                'approval_date': fake.date_time_between(start_date='-6m', end_date='-1m', tzinfo=timezone.get_current_timezone()),
                 'is_active': True,
                 'created': fake.date_time_between(start_date='-1y', end_date='now', tzinfo=timezone.get_current_timezone()),
             }
@@ -229,6 +234,22 @@ def create_resources(datasets, formats, count=200):
     """Create sample resources"""
     resources = []
     
+    # Map fixture files to formats
+    fixture_files = {
+        'CSV': 'app/fixtures/file_example_CSV_5000.csv',
+        'JSON': 'app/fixtures/file_example_JSON_1kb.json',
+        'XML': 'app/fixtures/file_example_XML_24kb.xml',
+        'PDF': 'app/fixtures/file-sample_150kB.pdf',
+        'XLSX': 'app/fixtures/file_example_XLSX_50.xlsx',
+        'XLS': 'app/fixtures/file_example_XLS_50.xls',
+        'ODS': 'app/fixtures/file_example_ODS_100.ods',
+        'DOC': 'app/fixtures/file-sample_100kB.doc',
+        'DOCX': 'app/fixtures/file-sample_100kB.docx',
+        'RTF': 'app/fixtures/file-sample_100kB.rtf',
+        'HTML': 'app/fixtures/file-sample.htm',
+        'ZIP': 'app/fixtures/file_sample_zip_2MB.zip',
+    }
+    
     for i in range(count):
         dataset = random.choice(datasets)
         title = f"{fake.word().title()} {fake.word().title()} Data"
@@ -245,19 +266,45 @@ def create_resources(datasets, formats, count=200):
         
         format_obj = random.choice(formats)
         
+        # Randomly decide between file upload or URL (50/50 chance)
+        use_file = fake.boolean()
+        file_path = None
+        url = None
+        
+        if use_file and format_obj.title.upper() in fixture_files:
+            # Use fixture file for this format
+            file_path = fixture_files[format_obj.title.upper()]
+            url = ""  # Clear URL when using file
+        else:
+            # Use URL instead
+            url = fake.url()
+        
         resource = Resource.objects.create(
             title=title,
             slug=slug,
             description=fake.paragraph(nb_sentences=3),
             dataset=dataset,
             format=format_obj,
-            url=fake.url() if fake.boolean(chance_of_getting_true=30) else "",
+            url=url,
             size=fake.random_int(min=1024, max=10485760),  # 1KB to 10MB
             mimetype=format_obj.mime_type,
             is_preview_available=format_obj.is_data_format,
             download_count=fake.random_int(min=0, max=500),
             created=created_date,
         )
+        
+        # If we have a file path, copy the fixture file to the resource
+        if file_path:
+            import os
+            from django.core.files import File
+            from django.conf import settings
+            
+            fixture_file_path = os.path.join(settings.BASE_DIR, file_path)
+            if os.path.exists(fixture_file_path):
+                with open(fixture_file_path, 'rb') as f:
+                    file_name = os.path.basename(fixture_file_path)
+                    resource.file.save(file_name, File(f), save=True)
+        
         resources.append(resource)
     
     return resources

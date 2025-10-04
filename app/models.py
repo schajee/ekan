@@ -285,6 +285,16 @@ class Resource(models.Model):
     def get_absolute_url(self):
         return reverse('app:resource', kwargs={'slug': self.slug})
     
+    def clean(self):
+        """Validate that either file or URL is provided"""
+        from django.core.exceptions import ValidationError
+        
+        if not self.file and not self.url:
+            raise ValidationError("Either a file upload or URL must be provided.")
+        
+        if self.file and self.url:
+            raise ValidationError("Provide either a file upload OR a URL, not both.")
+    
     def save(self, *args, **kwargs):
         if not self.slug:
             base_slug = slugify(self.title)
@@ -312,11 +322,26 @@ class Resource(models.Model):
         import pandas as pd
         import json
         
-        if not self.file or not self.can_preview():
+        if not self.can_preview():
             return None
         
+        # Only preview uploaded files, not URLs
+        if not self.file:
+            if self.url:
+                return {
+                    'type': 'url_only',
+                    'data': 'This resource is available via URL. Visit the link to view the content.',
+                    'url': self.url
+                }
+            else:
+                return {
+                    'type': 'error',
+                    'data': 'No file or URL available for this resource.'
+                }
+        
+        # Handle file-based previews only
         try:
-            file_path = self.file.path if hasattr(self.file, 'path') else self.file.url
+            file_path = self.file.path
             format_upper = self.format.title.upper() if self.format else ''
             
             if format_upper == 'CSV':

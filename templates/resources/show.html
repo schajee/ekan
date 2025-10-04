@@ -94,11 +94,11 @@
                                     {% endif %}
                                     {% if rel_resource.size %}
                                     <small class="text-muted">
-                                        <i class="fas fa-file me-1"></i>{{ rel_resource.size|filesizeformat }}
+                                        <i class="bi bi-file-earmark me-1"></i>{{ rel_resource.size|filesizeformat }}
                                     </small>
                                     {% endif %}
                                     <small class="text-muted">
-                                        <i class="fas fa-clock me-1"></i>{{ rel_resource.updated|timesince }} ago
+                                        <i class="bi bi-clock me-1"></i>{{ rel_resource.updated|timesince }} ago
                                     </small>
                                 </div>
                             </div>
@@ -110,7 +110,7 @@
                 {% if resource.dataset.resource_count > 6 %}
                 <div class="mt-3 text-center">
                     <a href="{% url 'app:dataset' resource.dataset.slug %}" class="btn btn-outline-secondary btn-sm">
-                        <i class="fas fa-list me-2"></i>View All {{ resource.dataset.resource_count }} Resources
+                        <i class="bi bi-list me-2"></i>View All {{ resource.dataset.resource_count }} Resources
                     </a>
                 </div>
                 {% endif %}
@@ -126,13 +126,19 @@
             <div class="card-body">
                 <h6 class="card-title">Quick Actions</h6>
                 <div class="d-grid gap-2">
-                    <a href="{% url 'app:resource_download' resource.slug %}" class="btn btn-success">
-                        <i class="fas fa-download me-2"></i>Download Resource
-                    </a>
-                    {% if resource.can_preview %}
-                    <a href="{% url 'app:resource_preview' slug=resource.slug %}" class="btn btn-outline-success">
-                        <i class="fas fa-eye me-2"></i>Preview Data
-                    </a>
+                    {% if resource.file %}
+                        <a href="{% url 'app:resource_download' resource.slug %}" class="btn btn-success">
+                            <i class="bi bi-download me-2"></i>Download Resource
+                        </a>
+                        {% if resource.is_preview_available %}
+                        <a href="{% url 'app:resource_preview' slug=resource.slug %}" class="btn btn-outline-success">
+                            <i class="bi bi-eye me-2"></i>Preview Data
+                        </a>
+                        {% endif %}
+                    {% elif resource.url %}
+                        <a href="{{ resource.url }}" target="_blank" class="btn btn-primary">
+                            <i class="bi bi-box-arrow-up-right me-2"></i>Visit URL
+                        </a>
                     {% endif %}
                 </div>
             </div>

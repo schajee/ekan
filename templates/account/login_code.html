@@ -1,0 +1,67 @@
+{% extends 'layouts/auth.html' %}
+{% load i18n %}
+
+{% block auth_content %}
+<div class="text-center mb-4">
+    <h2 class="h3 mb-2">{% trans "Enter Sign-In Code" %}</h2>
+    <p class="text-muted">{% trans "We've sent a code to" %} {{ email }}. {% trans "The code expires shortly, so please enter it soon." %}</p>
+</div>
+
+{% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+                <div>{{ error }}</div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<form method="post" action="">
+    {% csrf_token %}
+    
+    <div class="mb-4">
+        <label for="{{ form.code.id_for_label }}" class="form-label">{% trans "Code:" %}</label>
+        <input type="text" class="form-control text-center" id="{{ form.code.id_for_label }}" 
+               name="{{ form.code.name }}" value="{{ form.code.value|default:'' }}" 
+               placeholder="{% trans 'Enter 6-digit code' %}" maxlength="6" required
+               style="font-size: 1.5rem; letter-spacing: 0.5rem;">
+        {% if form.code.help_text %}
+            <div class="form-text">{{ form.code.help_text }}</div>
+        {% endif %}
+    </div>
+    
+    <div class="d-grid gap-2">
+        <button type="submit" name="action" value="confirm" class="btn btn-primary">
+            <i class="bi bi-shield-check me-2"></i>{% trans "Confirm" %}
+        </button>
+        <a href="{% url 'account_login' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-2"></i>{% trans "Cancel" %}
+        </a>
+    </div>
+    
+    {% if form.redirect_field_value %}
+        <input type="hidden" name="{{ form.redirect_field_name }}" value="{{ form.redirect_field_value }}">
+    {% endif %}
+</form>
+
+<div class="text-center mt-4">
+    <p class="text-muted small">{% trans "Didn't receive the code?" %}</p>
+    <a href="#" class="text-decoration-none" onclick="location.reload()">
+        <i class="bi bi-arrow-clockwise me-1"></i>{% trans "Resend code" %}
+    </a>
+</div>
+
+<div class="mt-4 text-center small text-muted">
+    <i class="bi bi-shield-check me-1"></i>
+    {% trans "This verification step helps keep your account secure" %}
+</div>
+{% endblock %}

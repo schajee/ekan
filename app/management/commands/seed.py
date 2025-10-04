@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User
 from django.db import transaction
 from app.factories import (
-    create_users, create_licenses, create_topics, create_formats,
+    create_users, create_topics,
     create_organisations, create_organisation_members, create_datasets, create_resources
 )
 from app.models import Organisation, OrganisationMember, License, Topic, Dataset, Format, Resource
@@ -84,7 +84,7 @@ class Command(BaseCommand):
             raise CommandError(f'Seeding failed: {str(e)}')
 
     def clear_data(self):
-        """Clear existing data (except superusers)"""
+        """Clear existing data (except superusers and fixtures)"""
         self.stdout.write('🗑️  Clearing existing data...')
         
         # Delete in correct order to avoid foreign key issues
@@ -92,8 +92,10 @@ class Command(BaseCommand):
         Dataset.objects.all().delete()
         Organisation.objects.all().delete()
         Topic.objects.all().delete()
-        Format.objects.all().delete()
-        License.objects.all().delete()
+        
+        # Don't delete formats and licenses - they come from fixtures
+        # Format.objects.all().delete()
+        # License.objects.all().delete()
         
         # Delete regular users (keep superusers)
         User.objects.filter(is_superuser=False).delete()
@@ -105,18 +107,25 @@ class Command(BaseCommand):
         
         self.stdout.write('🌱 Starting data seeding...')
         
-        # Create base data first
-        self.stdout.write('📝 Creating licenses...')
-        licenses = create_licenses()
-        self.stdout.write(f'   Created {len(licenses)} licenses')
+        # Formats and licenses are loaded from fixtures, so we don't create them here
+        self.stdout.write('� Using formats from fixtures...')
+        formats = list(Format.objects.all())
+        if not formats:
+            self.stdout.write(self.style.WARNING('⚠️  No formats found! Load fixtures first: python manage.py loaddata formats'))
+        else:
+            self.stdout.write(f'   Found {len(formats)} formats')
         
+        self.stdout.write('📝 Using licenses from fixtures...')
+        licenses = list(License.objects.all())
+        if not licenses:
+            self.stdout.write(self.style.WARNING('⚠️  No licenses found! Load fixtures first: python manage.py loaddata licenses'))
+        else:
+            self.stdout.write(f'   Found {len(licenses)} licenses')
+        
+        # Create topics (still generated)
         self.stdout.write('🏷️  Creating topics...')
         topics = create_topics()
         self.stdout.write(f'   Created {len(topics)} topics')
-        
-        self.stdout.write('📄 Creating formats...')
-        formats = create_formats()
-        self.stdout.write(f'   Created {len(formats)} formats')
         
         # Create users
         self.stdout.write(f'👥 Creating {users_count} users...')

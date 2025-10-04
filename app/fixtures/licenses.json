@@ -1,0 +1,50 @@
+[
+  {
+    "model": "app.license",
+    "pk": 9,
+    "fields": {
+      "title": "Public Domain",
+      "slug": "public-domain",
+      "description": "No copyright restrictions",
+      "url": "",
+      "icon": "bi bi-c-circle",
+      "is_open": true
+    }
+  },
+  {
+    "model": "app.license",
+    "pk": 10,
+    "fields": {
+      "title": "Creative Commons Attribution",
+      "slug": "creative-commons-attribution",
+      "description": "Free to use with attribution",
+      "url": "",
+      "icon": "bi bi-cc-circle",
+      "is_open": true
+    }
+  },
+  {
+    "model": "app.license",
+    "pk": 11,
+    "fields": {
+      "title": "Open Government License",
+      "slug": "open-government-license",
+      "description": "Open government data license",
+      "url": "",
+      "icon": "bi bi-unlock",
+      "is_open": true
+    }
+  },
+  {
+    "model": "app.license",
+    "pk": 12,
+    "fields": {
+      "title": "Restricted Access",
+      "slug": "restricted-access",
+      "description": "Government use only",
+      "url": "",
+      "icon": "bi bi-lock",
+      "is_open": false
+    }
+  }
+]

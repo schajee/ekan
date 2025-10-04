@@ -6,7 +6,9 @@
   {% elif resource.format.title == 'PDF' %}text-bg-danger
   {% elif resource.format.title == 'XLSX' %}text-bg-warning
   {% else %}text-bg-secondary
-  {% endif %} text-decoration-none fw-semibold">{{ resource.format|upper }}</a>
+  {% endif %} text-decoration-none fw-semibold">
+  {% if resource.file %}<i class="{{ resource.format.icon }} me-1"></i>{% elif resource.url %}<i class="bi bi-link-45deg me-1"></i>{% endif %}{{ resource.format|upper }}
+</a>
 {% else %}
 <span class="badge 
   {% if resource.format.title == 'CSV' %}text-bg-success
@@ -15,5 +17,7 @@
   {% elif resource.format.title == 'PDF' %}text-bg-danger
   {% elif resource.format.title == 'XLSX' %}text-bg-warning
   {% else %}text-bg-secondary
-  {% endif %} text-decoration-none fw-semibold">{{ resource.format|upper }}</span>
+  {% endif %} text-decoration-none fw-semibold">
+  {% if resource.file %}<i class="{{ resource.format.icon }} me-1"></i>{% elif resource.url %}<i class="bi bi-link-45deg me-1"></i>{% endif %}{{ resource.format|upper }}
+</span>
 {% endif %}

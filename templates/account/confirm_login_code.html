@@ -1,0 +1,95 @@
+{% extends 'layouts/auth.html' %}
+{% load i18n %}
+{% load allauth account %}
+
+{% block auth_content %}
+<div class="text-center mb-4">
+    <h2 class="h3 mb-2">{% trans "Enter Sign-In Code" %}</h2>
+    <p class="text-muted">
+        {% trans "We've sent a code to" %} 
+        {% if email %}
+            <a href="mailto:{{ email }}" class="text-decoration-none">{{ email }}</a>
+        {% else %}
+            <a href="tel:{{ phone }}" class="text-decoration-none">{{ phone }}</a>
+        {% endif %}. 
+        {% trans "The code expires shortly, so please enter it soon." %}
+    </p>
+</div>
+
+{% if verify_form.errors %}
+    <div class="alert alert-danger" role="alert">
+        {% for field, errors in verify_form.errors.items %}
+            {% for error in errors %}
+                <div>{{ error }}</div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<form method="post" action="{% url 'account_confirm_login_code' %}">
+    {% csrf_token %}
+    
+    <div class="mb-4">
+        <label for="{{ verify_form.code.id_for_label }}" class="form-label">{% trans "Code:" %}</label>
+        <input type="text" class="form-control text-center" id="{{ verify_form.code.id_for_label }}" 
+               name="{{ verify_form.code.name }}" value="{{ verify_form.code.value|default:'' }}" 
+               placeholder="{% trans 'Enter verification code' %}" maxlength="6" required
+               style="font-size: 1.5rem; letter-spacing: 0.5rem;">
+        {% if verify_form.code.help_text %}
+            <div class="form-text">{{ verify_form.code.help_text }}</div>
+        {% endif %}
+    </div>
+    
+    <div class="d-grid gap-2 mb-3">
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-shield-check me-2"></i>{% trans "Confirm" %}
+        </button>
+        
+        {% if can_resend %}
+        <button type="submit" form="resend" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-clockwise me-2"></i>{% trans "Request new code" %}
+        </button>
+        {% endif %}
+        
+        {% if cancel_url %}
+        <a href="{{ cancel_url }}" class="btn btn-outline-secondary">
+            <i class="bi bi-x-circle me-2"></i>{% trans "Cancel" %}
+        </a>
+        {% else %}
+        <button type="submit" form="logout-from-stage" class="btn btn-outline-secondary">
+            <i class="bi bi-x-circle me-2"></i>{% trans "Cancel" %}
+        </button>
+        {% endif %}
+    </div>
+    
+    {{ redirect_field }}
+</form>
+
+{% if can_resend %}
+<form id="resend" method="post" action="{% url 'account_confirm_login_code' %}">
+    <input type="hidden" name="action" value="resend">
+    {{ redirect_field }}
+    {% csrf_token %}
+</form>
+{% endif %}
+
+{% if not cancel_url %}
+<form id="logout-from-stage" method="post" action="{% url 'account_logout' %}">
+    <input type="hidden" name="next" value="{% url 'account_login' %}">
+    {% csrf_token %}
+</form>
+{% endif %}
+
+<div class="mt-4 text-center small text-muted">
+    <i class="bi bi-shield-check me-1"></i>
+    {% trans "This verification step helps keep your account secure" %}
+</div>
+{% endblock %}

@@ -1,0 +1,146 @@
+[
+  {
+    "model": "app.format",
+    "pk": 21,
+    "fields": {
+      "title": "CSV",
+      "slug": "csv",
+      "description": "Comma-separated values",
+      "icon": "bi bi-filetype-csv",
+      "mime_type": "text/csv",
+      "is_data_format": true
+    }
+  },
+  {
+    "model": "app.format",
+    "pk": 22,
+    "fields": {
+      "title": "JSON",
+      "slug": "json",
+      "description": "JavaScript Object Notation",
+      "icon": "bi bi-filetype-json",
+      "mime_type": "application/json",
+      "is_data_format": true
+    }
+  },
+  {
+    "model": "app.format",
+    "pk": 23,
+    "fields": {
+      "title": "XML",
+      "slug": "xml",
+      "description": "Extensible Markup Language",
+      "icon": "bi bi-filetype-xml",
+      "mime_type": "application/xml",
+      "is_data_format": true
+    }
+  },
+  {
+    "model": "app.format",
+    "pk": 24,
+    "fields": {
+      "title": "PDF",
+      "slug": "pdf",
+      "description": "Portable Document Format",
+      "icon": "bi bi-filetype-pdf",
+      "mime_type": "application/pdf",
+      "is_data_format": false
+    }
+  },
+  {
+    "model": "app.format",
+    "pk": 25,
+    "fields": {
+      "title": "XLSX",
+      "slug": "xlsx",
+      "description": "Excel spreadsheet",
+      "icon": "bi bi-filetype-xlsx",
+      "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "is_data_format": true
+    }
+  },
+  {
+    "model": "app.format",
+    "pk": 26,
+    "fields": {
+      "title": "XLS",
+      "slug": "xls",
+      "description": "Excel 97-2003 spreadsheet",
+      "icon": "bi bi-filetype-xls",
+      "mime_type": "application/vnd.ms-excel",
+      "is_data_format": true
+    }
+  },
+  {
+    "model": "app.format",
+    "pk": 27,
+    "fields": {
+      "title": "ODS",
+      "slug": "ods",
+      "description": "OpenDocument Spreadsheet",
+      "icon": "bi bi-file-earmark-spreadsheet",
+      "mime_type": "application/vnd.oasis.opendocument.spreadsheet",
+      "is_data_format": true
+    }
+  },
+  {
+    "model": "app.format",
+    "pk": 28,
+    "fields": {
+      "title": "DOC",
+      "slug": "doc",
+      "description": "Microsoft Word document",
+      "icon": "bi bi-filetype-doc",
+      "mime_type": "application/msword",
+      "is_data_format": false
+    }
+  },
+  {
+    "model": "app.format",
+    "pk": 29,
+    "fields": {
+      "title": "DOCX",
+      "slug": "docx",
+      "description": "Microsoft Word document",
+      "icon": "bi bi-filetype-docx",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "is_data_format": false
+    }
+  },
+  {
+    "model": "app.format",
+    "pk": 30,
+    "fields": {
+      "title": "RTF",
+      "slug": "rtf",
+      "description": "Rich Text Format",
+      "icon": "bi bi-file-earmark-text",
+      "mime_type": "application/rtf",
+      "is_data_format": false
+    }
+  },
+  {
+    "model": "app.format",
+    "pk": 31,
+    "fields": {
+      "title": "HTML",
+      "slug": "html",
+      "description": "HyperText Markup Language",
+      "icon": "bi bi-filetype-html",
+      "mime_type": "text/html",
+      "is_data_format": false
+    }
+  },
+  {
+    "model": "app.format",
+    "pk": 32,
+    "fields": {
+      "title": "ZIP",
+      "slug": "zip",
+      "description": "Compressed archive",
+      "icon": "bi bi-file-earmark-zip",
+      "mime_type": "application/zip",
+      "is_data_format": false
+    }
+  }
+]

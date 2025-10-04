@@ -26,9 +26,9 @@ class HomeView(EKANMetaMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'featured_datasets': Dataset.objects.filter(is_published=True, is_featured=True)[:6],
-            'topics': Topic.objects.filter(is_featured=True)[:9],
-            'recent_datasets': Dataset.objects.filter(is_published=True).order_by('-created')[:8],
+            'featured_datasets': Dataset.objects.filter(is_published=True, is_featured=True)[:12],
+            'topics': Topic.objects.filter(is_featured=True)[:12],
+            'recent_datasets': Dataset.objects.filter(is_published=True).order_by('-created')[:12],
         })
         return context
 
@@ -132,6 +132,14 @@ class ResourcePreviewView(DetailView):
             dataset__is_published=True
         )
     
+    def dispatch(self, request, *args, **kwargs):
+        """Redirect URL-based resources to detail page since they can't be previewed"""
+        resource = self.get_object()
+        if not resource.file and resource.url:
+            from django.shortcuts import redirect
+            return redirect('app:resource', slug=resource.slug)
+        return super().dispatch(request, *args, **kwargs)
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         max_rows = int(self.request.GET.get('rows', 100))
@@ -169,7 +177,7 @@ class OrganisationListView(OrganisationMetaMixin, ListView):
     model = Organisation
     template_name = 'organisations/index.html'
     context_object_name = 'organisations'
-    paginate_by = getattr(settings, 'EKAN_ITEMS_PER_PAGE', 20)
+    paginate_by = 12
     
     meta_title = 'Organizations | EKAN'
     meta_description = 'Browse government organizations and their published datasets on the EKAN open data portal.'
@@ -227,7 +235,7 @@ class TopicListView(TopicMetaMixin, ListView):
     model = Topic
     template_name = 'topics/index.html'
     context_object_name = 'topics'
-    paginate_by = getattr(settings, 'EKAN_ITEMS_PER_PAGE', 20)
+    paginate_by = 12
     
     meta_title = 'Topics | EKAN'
     meta_description = 'Browse datasets by topic category to find data related to specific themes and subjects.'

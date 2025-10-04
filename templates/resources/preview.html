@@ -8,7 +8,7 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <p class="mb-1">
-            <span class="badge text-bg-warning text-dark">{{ resource.format.title|upper }}</span>
+            <span class="badge text-bg-warning text-dark"><i class="{{ resource.format.icon }} me-1"></i>{{ resource.format.title|upper }}</span>
             {% if preview_data.shape %}
             <span class="text-muted">{{ preview_data.shape.0 }} rows × {{ preview_data.shape.1 }} columns</span>
             {% if preview_data.preview_shape and preview_data.preview_shape.0 < preview_data.shape.0 %}
@@ -69,7 +69,7 @@
                 <h6 class="mb-0">JSON Preview</h6>
             </div>
             <div class="card-body">
-                <pre class="bg-light p-3 rounded"><code>{{ preview_data.data }}</code></pre>
+                <pre class="bg-light p-3 rounded" style="white-space: pre-wrap;"><code>{{ preview_data.data }}</code></pre>
             </div>
         </div>
         

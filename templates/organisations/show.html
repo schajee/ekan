@@ -42,7 +42,7 @@
                 </div>
                 <div class="">
                     <a href="{% url 'app:datasets' %}?organisation={{ organisation.slug }}" class="btn btn-success">
-                        <i class="fas fa-database me-2"></i>View All Datasets
+                        <i class="bi bi-database me-2"></i>View All Datasets
                     </a>
                 </div>
             </div>
@@ -94,7 +94,7 @@
                     <div class="col-md-6 mb-4">
                         <div class="d-flex align-items-center p-2 border rounded">
                             <div class="avatar-circle me-3">
-                                <i class="fas fa-user"></i>
+                                <i class="bi bi-person"></i>
                             </div>
                             <div class="flex-grow-1">
                                 <h6 class="mb-1">{{ member.display_name }}</h6>
@@ -105,7 +105,7 @@
                                 {% if member.is_public_contact and member.contact_email %}
                                     <div class="mt-1">
                                         <a href="mailto:{{ member.contact_email }}" class="btn btn-outline-secondary btn-sm">
-                                            <i class="fas fa-envelope me-1"></i>Contact
+                                            <i class="bi bi-envelope me-1"></i>Contact
                                         </a>
                                     </div>
                                 {% endif %}
@@ -149,7 +149,7 @@
                 <h6 class="card-title">Organization Manager</h6>
                 <div class="d-flex align-items-center">
                     <div class="avatar-circle me-3">
-                        <i class="fas fa-user-tie"></i>
+                        <i class="bi bi-person-badge"></i>
                     </div>
                     <div>
                         <strong>{{ organisation.manager.get_full_name|default:organisation.manager.username }}</strong><br>

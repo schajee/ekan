@@ -2,13 +2,22 @@
 {% load custom_tags %}
 {% load humanize %}
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex justify-content-between align-items-center mb-2">
   <h3 class="mb-0">{{ page_obj.paginator.count|intcomma }} dataset{{ page_obj.paginator.count|pluralize }} found</h3>
   {% if request.GET.q %}
     <a href="{{ request.path }}" class="btn btn-outline-secondary btn-sm">
       <i class="bi bi-x-circle me-1"></i>Clear search
     </a>
   {% endif %}
+</div>
+
+<div class="mb-4">
+  <small class="text-muted">
+    Resource types: 
+    <i class="bi bi-filetype-pdf me-1"></i>File formats show file type icons 
+    <span class="mx-2">|</span>
+    <i class="bi bi-link-45deg me-1"></i>URLs show link icon
+  </small>
 </div>
 
 {% include 'partials/search.html' %}
