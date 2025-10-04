@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
     'django_browser_reload',
+    'meta',
     
     # Local apps
     'app',
@@ -190,7 +191,7 @@ REST_FRAMEWORK = {
 # EKAN specific settings
 EKAN_SITE_TITLE = "EKAN"
 EKAN_SITE_DESCRIPTION = "Open Data Portal for Government Organizations"
-EKAN_ITEMS_PER_PAGE = 20
+EKAN_ITEMS_PER_PAGE = 10
 EKAN_ALLOW_PUBLIC_REGISTRATION = True
 
 # Email Configuration
@@ -208,6 +209,14 @@ SECURE_HSTS_SECONDS = config('SECURE_HSTS_SECONDS', default=0, cast=int)
 SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)
 SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=False, cast=bool)
 CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)
+
+# Django Meta Settings
+META_SITE_PROTOCOL = config('META_SITE_PROTOCOL', default='http')
+META_SITE_DOMAIN = config('META_SITE_DOMAIN', default='localhost:8000')
+META_SITE_TYPE = 'website'
+META_SITE_NAME = 'EKAN - Easy Knowledge Archive Network'
+META_INCLUDE_KEYWORDS = ['open data', 'government data', 'datasets', 'transparency', 'public data']
+META_DEFAULT_KEYWORDS = ['open data', 'government', 'datasets', 'transparency']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

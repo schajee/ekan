@@ -2,6 +2,17 @@
 <form id="search" class="mb-4" action="{% url 'app:datasets' %}" method="get" autocomplete="off">
 {% else %}
 <form id="search" class="mb-4" method="get" autocomplete="off">
+  {% for key, value in request.GET.items %}
+    {% if key != 'q' and key != 'page' %}
+      <input type="hidden" name="{{ key }}" value="{{ value }}">
+    {% endif %}
+  {% endfor %}
 {% endif %}
-    <input class="form-control form-control-lg" type="search" name="search" value="{{ request.GET.search }}" placeholder="Search datasets...">
+  <div class="input-group">
+    <input class="form-control form-control-lg" type="search" name="q" value="{{ request.GET.q }}" placeholder="Search datasets, descriptions, and notes..." aria-label="Search datasets">
+    <button class="btn btn-secondary" type="submit">
+      <i class="bi bi-search"></i>
+      <span class="d-none d-sm-inline ms-1">Search</span>
+    </button>
+  </div>
 </form>

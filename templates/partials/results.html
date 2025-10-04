@@ -2,17 +2,42 @@
 {% load custom_tags %}
 {% load humanize %}
 
-<h3 class="mb-4">{{ paginator.count|intcomma }} dataset{{ paginator.count|pluralize }} found&hellip;</h3>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="mb-0">{{ page_obj.paginator.count|intcomma }} dataset{{ page_obj.paginator.count|pluralize }} found</h3>
+  {% if request.GET.q %}
+    <a href="{{ request.path }}" class="btn btn-outline-secondary btn-sm">
+      <i class="bi bi-x-circle me-1"></i>Clear search
+    </a>
+  {% endif %}
+</div>
+
 {% include 'partials/search.html' %}
 
 {% if request.GET|length > 0 %}
-<p class="lead mb-3">
-{% for key,value in request.GET.items %}
-{% query_del request key=key as query %}
-<a class="badge text-bg-secondary link-light" href="{{ request.path }}{% if query|length > 0 %}?{% endif %}{{ query }}">
-  {{ key|capfirst }}: {{ value }} <i class="bi bi-x ms-1"></i></a>
-{% endfor %}
-</p>
+<div class="mb-3">
+  <small class="text-muted">Active filters:</small>
+  <span>
+    {% for key,value in request.GET.items %}
+      {% if key != 'page' %}
+        {% query_del request key=key as query %}
+        <a class="badge text-bg-secondary link-light text-decoration-none me-1 mb-1 d-inline-block" href="{{ request.path }}{% if query|length > 0 %}?{% endif %}{{ query }}" title="Remove filter">
+          {% if key == 'q' %}
+            Search: "{{ value|truncatechars:30 }}"
+          {% elif key == 'organisation' %}
+            Organisation: {{ value }}
+          {% elif key == 'topic' %}
+            Topic: {{ value }}
+          {% elif key == 'license' %}
+            License: {{ value }}
+          {% else %}
+            {{ key|capfirst }}: {{ value }}
+          {% endif %}
+          <i class="bi bi-x ms-1"></i>
+        </a>
+      {% endif %}
+    {% endfor %}
+  </span>
+</div>
 {% endif %}
 
 

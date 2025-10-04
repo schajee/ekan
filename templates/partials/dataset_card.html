@@ -1,12 +1,21 @@
-<div class="card mb-3">
+{% load custom_tags %}
+<div class="card border-light-subtle mb-3">
   <div class="card-body">
-    <h4 class="card-title"><a class="link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url 'app:dataset' dataset.slug %}">{{ dataset.title }}</a></h4>
+    <h4 class="card-title">
+      <a class="link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url 'app:dataset' dataset.slug %}">
+        {% if request.GET.q %}{{ dataset.title|highlight_search:request.GET.q }}{% else %}{{ dataset.title }}{% endif %}
+      </a>
+    </h4>
     <p class="small">
       {% if 'organisations' not in request.path %}
-      <a class="link-secondary link-underline link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url 'app:organisation' dataset.organisation.slug %}">{{ dataset.organisation.title }}</a>
+      <a class="link-secondary link-underline link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url 'app:organisation' dataset.organisation.slug %}">
+        {% if request.GET.q %}{{ dataset.organisation.title|highlight_search:request.GET.q }}{% else %}{{ dataset.organisation.title }}{% endif %}
+      </a>
       {% endif %}
     </p>
-    <p>{{ dataset.description|truncatewords:50 }}</p>
+    <p>
+      {% if request.GET.q %}{{ dataset.description|truncatewords:50|highlight_search:request.GET.q }}{% else %}{{ dataset.description|truncatewords:50 }}{% endif %}
+    </p>
 
     {% if dataset.resources.all %}
     <p class="mb-0">

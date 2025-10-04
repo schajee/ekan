@@ -1,21 +1,25 @@
-{% if datasets.has_other_pages %}
-  <ul class="pagination justify-content-center mt-4">
-    {% if datasets.has_previous %}
-      <li class="page-item"><a class="page-link" href="?page={{ datasets.previous_page_number }}">&laquo;</a></li>
+{% load custom_tags %}
+{% if page_obj.has_other_pages %}
+  <ul class="pagination mt-4" style="--bs-pagination-active-bg: #dee2e6; --bs-pagination-active-border-color: #ced4da;">
+    {% if page_obj.has_previous %}
+      {% query_add request page=page_obj.previous_page_number as prev_url %}
+      <li class="page-item"><a class="page-link link-dark" href="?{{ prev_url }}">Previous</a></li>
     {% else %}
-      <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+      <li class="page-item disabled"><span class="page-link">Previous</span></li>
     {% endif %}
-    {% for i in datasets.paginator.page_range %}
-      {% if datasets.number == i %}
-        <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+    {% for i in page_obj.paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="page-item active"><span class="page-link link-dark">{{ i }}</span></li>
       {% else %}
-        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+        {% query_add request page=i as page_url %}
+        <li class="page-item"><a class="page-link link-dark" href="?{{ page_url }}">{{ i }}</a></li>
       {% endif %}
     {% endfor %}
-    {% if datasets.has_next %}
-      <li class="page-item"><a class="page-link" href="?page={{ datasets.next_page_number }}">&raquo;</a></li>
+    {% if page_obj.has_next %}
+      {% query_add request page=page_obj.next_page_number as next_url %}
+      <li class="page-item"><a class="page-link link-dark" href="?{{ next_url }}">Next</a></li>
     {% else %}
-      <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+      <li class="page-item disabled"><span class="page-link">Next</span></li>
     {% endif %}
   </ul>
 {% endif %}

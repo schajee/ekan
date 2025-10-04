@@ -36,24 +36,22 @@ def smart_breadcrumbs(context):
                 breadcrumbs.append({'title': dataset.title, 'url': None})
                 
         elif url_name == 'resource':
-            dataset_slug = kwargs.get('dataset_slug')
             resource_slug = kwargs.get('slug')
-            if dataset_slug and resource_slug:
-                dataset = get_object_or_404(Dataset, slug=dataset_slug, is_published=True)
-                resource = get_object_or_404(Resource, slug=resource_slug, dataset=dataset)
+            if resource_slug:
+                resource = get_object_or_404(Resource, slug=resource_slug, dataset__is_published=True)
+                dataset = resource.dataset
                 breadcrumbs.append({'title': 'Datasets', 'url': reverse('app:datasets')})
                 breadcrumbs.append({'title': dataset.title, 'url': reverse('app:dataset', kwargs={'slug': dataset.slug})})
                 breadcrumbs.append({'title': resource.title, 'url': None})
                 
         elif url_name == 'resource_preview':
-            dataset_slug = kwargs.get('dataset_slug')
             resource_slug = kwargs.get('slug')
-            if dataset_slug and resource_slug:
-                dataset = get_object_or_404(Dataset, slug=dataset_slug, is_published=True)
-                resource = get_object_or_404(Resource, slug=resource_slug, dataset=dataset)
+            if resource_slug:
+                resource = get_object_or_404(Resource, slug=resource_slug, dataset__is_published=True)
+                dataset = resource.dataset
                 breadcrumbs.append({'title': 'Datasets', 'url': reverse('app:datasets')})
                 breadcrumbs.append({'title': dataset.title, 'url': reverse('app:dataset', kwargs={'slug': dataset.slug})})
-                breadcrumbs.append({'title': resource.title, 'url': reverse('app:resource', kwargs={'dataset_slug': dataset.slug, 'slug': resource.slug})})
+                breadcrumbs.append({'title': resource.title, 'url': reverse('app:resource', kwargs={'slug': resource.slug})})
                 breadcrumbs.append({'title': 'Preview', 'url': None})
                 
         elif url_name == 'organisations':
@@ -173,3 +171,59 @@ def app_title():
 @register.simple_tag(name='app_name')
 def app_name():
     return getattr(settings, 'EKAN_SITE_TITLE', 'EKAN')
+
+
+@register.filter
+def highlight_search(text, query):
+    """Highlight search terms in text"""
+    if not query or not text:
+        return text
+    
+    import re
+    from django.utils.safestring import mark_safe
+    from django.utils.html import escape
+    
+    # Escape the text and query for safety
+    escaped_text = escape(str(text))
+    escaped_query = escape(str(query))
+    
+    # Create a case-insensitive regex pattern
+    pattern = re.compile(re.escape(escaped_query), re.IGNORECASE)
+    
+    # Replace matches with highlighted version
+    highlighted = pattern.sub(
+        f'<mark class="bg-warning bg-opacity-50">{escaped_query}</mark>',
+        escaped_text
+    )
+    
+    return mark_safe(highlighted)
+
+
+@register.simple_tag(takes_context=True)
+def search_results_summary(context):
+    """Generate a search results summary message"""
+    request = context.get('request')
+    if not request:
+        return ''
+    
+    query = request.GET.get('q', '')
+    filters = []
+    
+    # Check for active filters
+    if request.GET.get('organisation'):
+        filters.append(f"organisation: {request.GET.get('organisation')}")
+    if request.GET.get('topic'):
+        filters.append(f"topic: {request.GET.get('topic')}")
+    if request.GET.get('license'):
+        filters.append(f"license: {request.GET.get('license')}")
+    
+    # Build summary message
+    parts = []
+    if query:
+        parts.append(f'matching "{query}"')
+    if filters:
+        parts.append(f"filtered by {', '.join(filters)}")
+    
+    if parts:
+        return f"Results {' and '.join(parts)}"
+    return "All results"

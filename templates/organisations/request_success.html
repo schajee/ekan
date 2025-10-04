@@ -1,0 +1,44 @@
+{% extends 'layouts/page.html' %}
+{% load static %}
+
+{% block title %}Request Submitted | {{ block.super }}{% endblock %}
+{% block page_title %}Request Submitted Successfully{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="text-center">
+      <div class="mb-4">
+        <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+      </div>
+      
+      <h2 class="text-success mb-3">Thank You!</h2>
+      
+      <p class="lead mb-4">
+        Your organization registration request has been submitted successfully.
+      </p>
+      
+      <div class="alert alert-info text-start">
+        <h5 class="alert-heading">
+          <i class="bi bi-info-circle me-2"></i>What's Next?
+        </h5>
+        <ul class="mb-0">
+          <li>Our administrators will review your request</li>
+          <li>You'll receive an email notification with the decision</li>
+          <li>If approved, you'll be able to start publishing datasets</li>
+          <li>The review process typically takes 1-3 business days</li>
+        </ul>
+      </div>
+      
+      <div class="d-grid gap-2 d-md-flex justify-content-center mt-4">
+        <a href="{% url 'app:organisations' %}" class="btn btn-primary">
+          <i class="bi bi-building me-1"></i>Browse Organizations
+        </a>
+        <a href="{% url 'app:home' %}" class="btn btn-outline-secondary">
+          <i class="bi bi-house me-1"></i>Go Home
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

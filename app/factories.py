@@ -3,7 +3,7 @@ from faker import Faker
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.utils import timezone
-from .models import Organisation, License, Topic, Dataset, Format, Resource
+from .models import Organisation, OrganisationMember, License, Topic, Dataset, Format, Resource
 
 fake = Faker()
 
@@ -142,6 +142,42 @@ def create_organisations(users, count=12):
         )
         organisations.append(org)
     return organisations
+
+
+def create_organisation_members(organisations, users):
+    """Create organisation members with various roles"""
+    members = []
+    roles = ['admin', 'manager', 'coordinator', 'editor', 'analyst', 'viewer']
+    job_titles = [
+        'Data Manager', 'Senior Analyst', 'Information Officer', 'Research Coordinator',
+        'Database Administrator', 'Policy Analyst', 'Statistics Officer', 'Data Scientist',
+        'Information Systems Manager', 'Research Assistant', 'Data Entry Specialist'
+    ]
+    
+    for org in organisations:
+        # Create 2-5 members per organization
+        num_members = random.randint(2, 5)
+        selected_users = random.sample(users, min(num_members, len(users)))
+        
+        for i, user in enumerate(selected_users):
+            # First member is often an admin/manager, others have varied roles
+            role = 'admin' if i == 0 else random.choice(roles)
+            
+            member, created = OrganisationMember.objects.get_or_create(
+                organisation=org,
+                user=user,
+                defaults={
+                    'role': role,
+                    'title': random.choice(job_titles),
+                    'phone': fake.phone_number() if random.choice([True, False]) else '',
+                    'email': fake.email() if random.choice([True, False]) else '',
+                    'is_public_contact': random.choice([True, False, False]),  # 1/3 chance
+                    'is_active': True,
+                }
+            )
+            members.append(member)
+    
+    return members
 
 
 def create_datasets(organisations, licenses, users, topics, count=50):

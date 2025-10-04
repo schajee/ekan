@@ -1,5 +1,5 @@
 {% if style == "link" %}
-<a href="{% url 'app:resource' resource.dataset.slug resource.slug %}" class="badge
+<a href="{% url 'app:resource' slug=resource.slug %}" class="badge
   {% if resource.format.title == 'CSV' %}text-bg-success
   {% elif resource.format.title == 'JSON' %}text-bg-info
   {% elif resource.format.title == 'XML' %}text-bg-primary

@@ -1,6 +1,8 @@
 {% extends 'layouts/page.html' %}
 {% load static %}
 
+{% block title %}{{ dataset.title }} | EKAN{% endblock %}
+
 {% block page_title %} {{ dataset.title }} {% endblock %}
 
 {% block content %}
@@ -38,12 +40,12 @@
     
     <h3 class="mb-4 d-flex justify-content-between">Data and Resources</h3>
     {% if dataset.resources.all %}
-    <ul class="list-group list-group-flush mb-5">
+    <ul class="list-group mb-5">
       {% for resource in dataset.resources.all %}
       <li class="list-group-item d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center flex-grow-1">
           <i class="{{ resource.format.icon }} me-2 text-secondary"></i>
-          <a class="link-dark" href="{% url 'app:resource' dataset.slug resource.slug %}">{{ resource.title }}</a>
+          <a class="link-dark" href="{% url 'app:resource' slug=resource.slug %}">{{ resource.title }}</a>
           <span class="ms-2">{% include 'partials/resource_tag.html' with resource=resource %}</span>
         </div>
       </li>

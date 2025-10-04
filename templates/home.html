@@ -4,23 +4,20 @@
 
 {% block content %}
 <section class="bg-light">
-  <div class="container">
+  {% include 'partials/search.html' %}
 
-    {% include 'partials/search.html' %}
-
-    <h3 class="my-5 text-center">Browse Topics</h3>
-    {% if topics %}
-    <div class="row">
-      {% for topic in topics %}
-      <div class="col-lg-4 col-md-6 mb-4">
-        {% include 'partials/topic_card.html' with topic=topic %}
-      </div>
-      {% endfor %}
+  <h3 class="my-5 text-center">Browse Topics</h3>
+  {% if topics %}
+  <div class="row">
+    {% for topic in topics %}
+    <div class="col-lg-4 col-md-6 mb-4">
+      {% include 'partials/topic_card.html' with topic=topic %}
     </div>
-    {% else %}
-    {% include 'partials/empty.html' %}
-    {% endif %}
+    {% endfor %}
   </div>
+  {% else %}
+  {% include 'partials/empty.html' %}
+  {% endif %}
 </section>
 
 {% endblock %}

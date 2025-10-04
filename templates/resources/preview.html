@@ -18,7 +18,7 @@
         </p>
     </div>
     <div>
-        <a href="{% url 'app:resource' resource.dataset.slug resource.slug %}" class="btn btn-secondary btn-sm">
+        <a href="{% url 'app:resource' slug=resource.slug %}" class="btn btn-secondary btn-sm">
             <i class="bi bi-arrow-left"></i> Back to Resource
         </a>
         {% if resource.file %}

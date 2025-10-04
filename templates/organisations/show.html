@@ -1,22 +1,187 @@
 {% extends 'layouts/page.html' %}
 {% load humanize %}
 
-{% block page_title %} {{ organisation.title}} {% endblock %}
+{% block title %}{{ organisation.title }} | EKAN{% endblock %}
+
+{% block page_title %}{{ organisation.title }}{% endblock %}
 
 {% block content %}
 
-<p class="lead">{{ organisation.description }}</p>
-{% if organisation.url %}
-<p class="mb-5">More information: <a href="{{ organisation.url }}">{{ organisation.url }}</a></p>
-{% endif %}
+<div class="row">
+    <!-- Main Content -->
+    <div class="col-lg-8">
+        <!-- About Section -->
+        <div class="card border-light-subtle mb-4">
+            <div class="card-body">
+                <h5 class="card-title">About</h5>
+                {% if organisation.description %}
+                    <p class="card-text">{{ organisation.description }}</p>
+                {% else %}
+                    <p class="text-muted">No description available for this organization.</p>
+                {% endif %}
+                
+                {% if organisation.url %}
+                <div class="mt-3">
+                    <a href="{{ organisation.url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-external-link-alt me-2"></i>Visit Website
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
 
-<section class="row">
-  <aside class="sidebar col-3">
-    {% include 'partials/sidebar.html' %}
-  </aside>
-  <article class="col-9">
-    {% include 'partials/results.html' %}
-  </article>
-</section>
+        <!-- Statistics Section -->
+        <div class="card border-light-subtle mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Publication Statistics</h5>
+                
+                <div class="row mb-3">
+                    <div class="col-sm-6 col-md-3 mb-2">
+                        <div class="text-center p-2 bg-light rounded">
+                            <h4 class="text-primary mb-0">{{ dataset_count|default:0 }}</h4>
+                            <small class="text-muted">Dataset{{ dataset_count|pluralize }}</small>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3 mb-2">
+                        <div class="text-center p-2 bg-light rounded">
+                            <h4 class="text-success mb-0">{{ resource_count|default:0 }}</h4>
+                            <small class="text-muted">Resource{{ resource_count|pluralize }}</small>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3 mb-2">
+                        <div class="text-center p-2 bg-light rounded">
+                            <h4 class="text-info mb-0">{{ active_members.count|default:0 }}</h4>
+                            <small class="text-muted">Member{{ active_members.count|pluralize }}</small>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3 mb-2">
+                        <div class="text-center p-2 bg-light rounded">
+                            <h4 class="text-warning mb-0">{{ public_contacts.count|default:0 }}</h4>
+                            <small class="text-muted">Contact{{ public_contacts.count|pluralize }}</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <a href="{% url 'app:datasets' %}?organisation={{ organisation.slug }}" class="btn btn-primary">
+                        <i class="fas fa-database me-2"></i>View All Datasets
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Members Section -->
+        {% if active_members %}
+        <div class="card border-light-subtle">
+            <div class="card-body">
+                <h5 class="card-title">Team Members</h5>
+                
+                <div class="row">
+                    {% for member in active_members %}
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center p-2 border rounded">
+                            <div class="avatar-circle me-3">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">{{ member.display_name }}</h6>
+                                <span class="badge bg-primary mb-1">{{ member.get_role_display }}</span>
+                                {% if member.title %}
+                                    <div><small class="text-muted">{{ member.title }}</small></div>
+                                {% endif %}
+                                {% if member.is_public_contact and member.contact_email %}
+                                    <div class="mt-1">
+                                        <a href="mailto:{{ member.contact_email }}" class="btn btn-outline-secondary btn-sm">
+                                            <i class="fas fa-envelope me-1"></i>Contact
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+        <!-- Quick Info -->
+        <div class="card border-light-subtle mb-3">
+            <div class="card-body">
+                <h6 class="card-title">Quick Info</h6>
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Status:</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge bg-success">{{ organisation.get_status_display }}</span>
+                    </dd>
+                    
+                    <dt class="col-sm-4">Created:</dt>
+                    <dd class="col-sm-8">{{ organisation.created|date:"M d, Y" }}</dd>
+                    
+                    {% if organisation.approval_date %}
+                    <dt class="col-sm-4">Approved:</dt>
+                    <dd class="col-sm-8">{{ organisation.approval_date|date:"M d, Y" }}</dd>
+                    {% endif %}
+                </dl>
+            </div>
+        </div>
+
+        <!-- Manager Info -->
+        {% if organisation.manager %}
+        <div class="card border-light-subtle mb-3">
+            <div class="card-body">
+                <h6 class="card-title">Organization Manager</h6>
+                <div class="d-flex align-items-center">
+                    <div class="avatar-circle me-3">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div>
+                        <strong>{{ organisation.manager.get_full_name|default:organisation.manager.username }}</strong><br>
+                        <small class="text-muted">Manager</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Recent Datasets -->
+        {% if recent_datasets %}
+        <div class="card border-light-subtle">
+            <div class="card-body">
+                <h6 class="card-title">Recent Datasets</h6>
+                <div class="list-group list-group-flush">
+                    {% for dataset in recent_datasets %}
+                    <div class="list-group-item px-0 py-2">
+                        <h6 class="mb-1">
+                            <a href="{{ dataset.get_absolute_url }}" class="text-decoration-none">{{ dataset.title|truncatechars:40 }}</a>
+                        </h6>
+                        <small class="text-muted">
+                            {{ dataset.resource_count }} resource{{ dataset.resource_count|pluralize }} • 
+                            {{ dataset.updated|timesince }} ago
+                        </small>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+}
+</style>
 
 {% endblock %}

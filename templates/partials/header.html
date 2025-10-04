@@ -38,9 +38,6 @@
                 <li><a class="dropdown-item" href="{% url 'app:account' %}">
                   <i class="bi bi-person me-2"></i>My Account
                 </a></li>
-                <li><a class="dropdown-item" href="{% url 'account_email' %}">
-                  <i class="bi bi-envelope me-2"></i>Email Settings
-                </a></li>
                 {% if request.user.is_superuser %}
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="{% url 'admin:index' %}">

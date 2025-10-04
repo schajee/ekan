@@ -1,6 +1,6 @@
-<div class="card h-100">
+<div class="card border-light-subtle h-100">
   <div class="card-body">
-    <h5 class="card-title"><a class="stretched-link link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url 'app:organisation' organisation.slug %}">{{ organisation.title }}</a></h5>
+    <h5 class="card-title"><a class="stretched-link link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url 'app:datasets' %}?organisation={{ organisation.slug }}">{{ organisation.title }}</a></h5>
     <p class="mb-0 small">{{ organisation.description|truncatewords:30 }}</p>
   </div>
   <div class="card-footer bg-transparent border-0 pt-0">

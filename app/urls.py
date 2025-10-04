@@ -15,15 +15,14 @@ urlpatterns = [
     path('datasets/<slug:slug>/', views.DatasetDetailView.as_view(), name='dataset'),
     
     # Resources  
-    path('datasets/<slug:dataset_slug>/resources/<slug:slug>/', 
-         views.ResourceDetailView.as_view(), name='resource'),
-    path('datasets/<slug:dataset_slug>/resources/<slug:slug>/preview/', 
-         views.ResourcePreviewView.as_view(), name='resource_preview'),
-    path('resources/<slug:slug>/download/', 
-         views.ResourceDownloadView.as_view(), name='resource_download'),
+    path('resources/<slug:slug>/', views.ResourceDetailView.as_view(), name='resource'),
+    path('resources/<slug:slug>/preview/', views.ResourcePreviewView.as_view(), name='resource_preview'),
+    path('resources/<slug:slug>/download/', views.ResourceDownloadView.as_view(), name='resource_download'),
     
     # Organisations
     path('organisations/', views.OrganisationListView.as_view(), name='organisations'),
+    path('organisations/register/', views.OrganisationRegistrationView.as_view(), name='organisation_register'),
+    path('organisations/requests/success/', views.OrganisationRequestSuccessView.as_view(), name='organisation_request_success'),
     path('organisations/<slug:slug>/', views.OrganisationDetailView.as_view(), name='organisation'),
     
     # Topics
@@ -48,8 +47,5 @@ urlpatterns = [
     
     # Debug endpoint (only in DEBUG mode)
     path('debug/', views.DebugView.as_view(), name='debug'),
-    
-    # Generic page handler for template compatibility (keep last)
-    path('<str:slug>/', views.PageView.as_view(), name='page'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
   + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

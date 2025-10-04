@@ -33,8 +33,8 @@ class Command(BaseCommand):
                 
                 resource = dataset.resources.first()
                 if resource:
-                    test_urls.append(('app:resource', {'dataset_slug': dataset.slug, 'slug': resource.slug}, f'Resource: {resource.title}'))
-                    test_urls.append(('app:resource_preview', {'dataset_slug': dataset.slug, 'slug': resource.slug}, f'Preview: {resource.title}'))
+                    test_urls.append(('app:resource', {'slug': resource.slug}, f'Resource: {resource.title}'))
+                    test_urls.append(('app:resource_preview', {'slug': resource.slug}, f'Preview: {resource.title}'))
             
             org = Organisation.objects.filter(is_active=True).first()
             if org:

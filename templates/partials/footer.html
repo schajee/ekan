@@ -5,15 +5,15 @@
     <div class="row pt-5">
       <div class="col-md-4">
         <h3>Get Involved</h3>
-        <p class="mb-0"><a class="link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url 'app:page' 'faqs' %}">Frequently Asked Questions</a></p>
+        <p class="mb-0"><a class="link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url 'app:faqs' %}">Frequently Asked Questions</a></p>
       </div>
       <div class="col-md-4">
         <h3>Start Publishing</h3>
-        <p class="mb-0"><a class="link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url 'app:page' 'contact' %}">Register your organisation</a> to publish data</p>
+        <p class="mb-0"><a class="link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url 'app:organisation_register' %}">Register your organisation</a> to publish data</p>
       </div>
       <div class="col-md-4">
         <h3>Get in touch</h3>
-        <p class="mb-0"><a class="link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url 'app:page' 'contact' %}">Contact us</a> for help and support</p>
+        <p class="mb-0"><a class="link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url 'app:contact' %}">Contact us</a> for help and support</p>
       </div>
     </div>
   </div>
@@ -44,11 +44,11 @@
       </div>
       <div class="col-md-10">
         <ul class="nav justify-content-end">
-          <li class="nav-item"><a class="nav-link link-dark" href="{% url 'app:page' 'about' %}">About</a></li>
-          <li class="nav-item"><a class="nav-link link-dark" href="{% url 'app:page' 'faqs' %}">FAQs</a></li>
-          <li class="nav-item"><a class="nav-link link-dark" href="{% url 'app:page' 'contact' %}">Contact</a></li>
-          <li class="nav-item"><a class="nav-link link-dark" href="{% url 'app:page' 'terms' %}">Terms of Use</a></li>
-          <li class="nav-item"><a class="nav-link link-dark" href="{% url 'app:page' 'privacy' %}">Privacy Policy</a></li>
+          <li class="nav-item"><a class="nav-link link-dark" href="{% url 'app:about' %}">About</a></li>
+          <li class="nav-item"><a class="nav-link link-dark" href="{% url 'app:faqs' %}">FAQs</a></li>
+          <li class="nav-item"><a class="nav-link link-dark" href="{% url 'app:contact' %}">Contact</a></li>
+          <li class="nav-item"><a class="nav-link link-dark" href="{% url 'app:terms' %}">Terms of Use</a></li>
+          <li class="nav-item"><a class="nav-link link-dark" href="{% url 'app:privacy' %}">Privacy Policy</a></li>
           <li class="nav-item"><a class="nav-link link-dark" href="https://github.com/schajee/ekan"
               target="_blank">Source Code</a></li>
         </ul>

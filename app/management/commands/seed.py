@@ -3,9 +3,9 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from app.factories import (
     create_users, create_licenses, create_topics, create_formats,
-    create_organisations, create_datasets, create_resources
+    create_organisations, create_organisation_members, create_datasets, create_resources
 )
-from app.models import Organisation, License, Topic, Dataset, Format, Resource
+from app.models import Organisation, OrganisationMember, License, Topic, Dataset, Format, Resource
 
 
 class Command(BaseCommand):
@@ -127,6 +127,11 @@ class Command(BaseCommand):
         self.stdout.write(f'🏛️  Creating {orgs_count} organisations...')
         organisations = create_organisations(users, orgs_count)
         self.stdout.write(f'   Created {len(organisations)} organisations')
+        
+        # Create organisation members
+        self.stdout.write('👥 Creating organisation members...')
+        members = create_organisation_members(organisations, users)
+        self.stdout.write(f'   Created {len(members)} organisation members')
         
         # Create datasets
         self.stdout.write(f'📊 Creating {datasets_count} datasets...')

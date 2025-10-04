@@ -2,42 +2,185 @@
 {% load static %}
 {% load humanize %}
 
-{% block page_title %} {{ resource.title}} {% endblock %}
+{% block title %}{{ resource.title }} | {{ resource.dataset.title }} | EKAN{% endblock %}
+
+{% block page_title %}{{ resource.title }}{% endblock %}
 
 {% block content %}
 
 {% if resource.description %}
-<div class="lead mb-5">{{ resource.description|linebreaks }}</div>
+<div class="lead mb-4">{{ resource.description|linebreaks }}</div>
 {% endif %}
+<div class="row">
+    <!-- Main Content -->
+    <div class="col-lg-8">
 
-<h3 class="mb-4">Additional Information</h3>
-<dl class="row">
-  <dt class="col-sm-4 col-md-3 col-lg-2">Identifier</dt>
-  <dd class="col-sm-8 col-md-9 col-lg-10">{{ resource.slug }}</dd>
-  <dt class="col-sm-4 col-md-3 col-lg-2">Dataset</dt>
-  <dd class="col-sm-8 col-md-9 col-lg-10"><a class="link-dark"
-      href="{% url 'app:dataset' resource.dataset.slug %}">{{ resource.dataset.title }}</a></dd>
-  <dt class="col-sm-4 col-md-3 col-lg-2">Organisation</dt>
-  <dd class="col-sm-8 col-md-9 col-lg-10"><a class="link-dark"
-      href="{{ resource.dataset.organisation.url }}">{{ resource.dataset.organisation.title }}</a></dd>
-  <dt class="col-sm-4 col-md-3 col-lg-2">Issued Date</dt>
-  <dd class="col-sm-8 col-md-9 col-lg-10">{{ resource.created|date:"j F Y" }}</dd>
-  <dt class="col-sm-4 col-md-3 col-lg-2">Last Updated</dt>
-  <dd class="col-sm-8 col-md-9 col-lg-10">{{ resource.updated|date:"j F Y" }}</dd>
-  <dt class="col-sm-4 col-md-3 col-lg-2">Access URL</dt>
-  <dd class="col-sm-8 col-md-9 col-lg-10">
-    {% if resource.file %}
-    <a class="link-dark" href="{{ request.get_host }}{% get_media_prefix %}{{ resource.file }}">{{ request.get_host }}{% get_media_prefix %}{{ resource.file }}</a>
-    {% elif resource.url %}
-    <a class="link-dark" href="{{ resource.url }}">{{ resource.url }}</a>
-    {% else %}
-    <span>No access URL available.</span>
-    {% endif %}
-  </dd>
-  <dt class="col-sm-4 col-md-3 col-lg-2">File Format</dt>
-  <dd class="col-sm-8 col-md-9 col-lg-10">{% include 'partials/resource_tag.html' with resource=resource %}</dd>
-  <dt class="col-sm-4 col-md-3 col-lg-2">File Size</dt>
-  <dd class="col-sm-8 col-md-9 col-lg-10">{{ resource.size|filesizeformat }}</dd>
-</dl>
+        
+
+        <!-- Additional Information -->
+        <div class="card border-light-subtle">
+            <div class="card-header border-bottom border-light-subtle">
+                <h5 class="mb-0">Resource Details</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4 col-md-3">Identifier</dt>
+                    <dd class="col-sm-8 col-md-9"><code>{{ resource.slug }}</code></dd>
+                    
+                    <dt class="col-sm-4 col-md-3">Dataset</dt>
+                    <dd class="col-sm-8 col-md-9">
+                        <a href="{% url 'app:dataset' resource.dataset.slug %}" class="link-dark">
+                            {{ resource.dataset.title }}
+                        </a>
+                    </dd>
+                    
+                    <dt class="col-sm-4 col-md-3">Organisation</dt>
+                    <dd class="col-sm-8 col-md-9">
+                        <a href="{{ resource.dataset.organisation.get_absolute_url }}" class="link-dark">
+                            {{ resource.dataset.organisation.title }}
+                        </a>
+                    </dd>
+                    
+                    <dt class="col-sm-4 col-md-3">File Format</dt>
+                    <dd class="col-sm-8 col-md-9">{% include 'partials/resource_tag.html' with resource=resource %}</dd>
+                    
+                    <dt class="col-sm-4 col-md-3">File Size</dt>
+                    <dd class="col-sm-8 col-md-9">
+                        {% if resource.size %}
+                            {{ resource.size|filesizeformat }}
+                        {% else %}
+                            <span class="text-muted">Unknown</span>
+                        {% endif %}
+                    </dd>
+                    
+                    <dt class="col-sm-4 col-md-3">Created</dt>
+                    <dd class="col-sm-8 col-md-9">{{ resource.created|date:"F d, Y" }}</dd>
+                    
+                    <dt class="col-sm-4 col-md-3">Last Updated</dt>
+                    <dd class="col-sm-8 col-md-9">{{ resource.updated|date:"F d, Y" }}</dd>
+                    
+                    {% if resource.mimetype %}
+                    <dt class="col-sm-4 col-md-3">MIME Type</dt>
+                    <dd class="col-sm-8 col-md-9"><code>{{ resource.mimetype }}</code></dd>
+                    {% endif %}
+                    
+                    <dt class="col-sm-4 col-md-3">Download Count</dt>
+                    <dd class="col-sm-8 col-md-9">{{ resource.download_count|default:0 }} time{{ resource.download_count|pluralize }}</dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- Related Resources -->
+        {% if related_resources %}
+        <div class="card border-light-subtle mt-4">
+            <div class="card-header border-bottm border-light-subtle">
+                <h5 class="mb-0">Related Resources</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    {% for rel_resource in related_resources %}
+                    <div class="list-group-item px-0 py-3 border-bottom">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-2">
+                                    <a href="{{ rel_resource.get_absolute_url }}" class="text-decoration-none">
+                                        {{ rel_resource.title }}
+                                    </a>
+                                </h6>
+                                {% if rel_resource.description %}
+                                <p class="text-muted mb-2 small">{{ rel_resource.description|truncatewords:20 }}</p>
+                                {% endif %}
+                                <div class="d-flex align-items-center gap-3">
+                                    {% if rel_resource.format %}
+                                        {% include 'partials/resource_tag.html' with resource=rel_resource %}
+                                    {% endif %}
+                                    {% if rel_resource.size %}
+                                    <small class="text-muted">
+                                        <i class="fas fa-file me-1"></i>{{ rel_resource.size|filesizeformat }}
+                                    </small>
+                                    {% endif %}
+                                    <small class="text-muted">
+                                        <i class="fas fa-clock me-1"></i>{{ rel_resource.updated|timesince }} ago
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                {% if resource.dataset.resource_count > 6 %}
+                <div class="mt-3 text-center">
+                    <a href="{% url 'app:dataset' resource.dataset.slug %}" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-list me-2"></i>View All {{ resource.dataset.resource_count }} Resources
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+        <!-- Quick Actions -->
+        <div class="card border-light-subtle mb-3">
+            <div class="card-body">
+                <h6 class="card-title">Quick Actions</h6>
+                <div class="d-grid gap-2">
+                    <a href="{% url 'app:resource_download' resource.slug %}" class="btn btn-secondary">
+                        <i class="fas fa-download me-2"></i>Download Resource
+                    </a>
+                    {% if resource.can_preview %}
+                    <a href="{% url 'app:resource_preview' slug=resource.slug %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-eye me-2"></i>Preview Data
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Access Information -->
+        <div class="card border-light-subtle mb-3">
+            <div class="card-body">
+                <h6 class="card-title">Access Information</h6>
+                {% if resource.file %}
+                    <p class="mb-2"><strong>Type:</strong> File Upload</p>
+                    <p class="mb-0">
+                        <strong>Direct URL:</strong><br>
+                        <small class="text-muted font-monospace">{{ request.get_host }}{{ resource.file.url }}</small>
+                    </p>
+                {% elif resource.url %}
+                    <p class="mb-2"><strong>Type:</strong> External URL</p>
+                    <p class="mb-0">
+                        <strong>URL:</strong><br>
+                        <a href="{{ resource.url }}" target="_blank" class="text-break">{{ resource.url }}</a>
+                    </p>
+                {% else %}
+                    <p class="text-muted mb-0">No access URL available.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Related Dataset -->
+        <div class="card border-light-subtle">
+            <div class="card-body">
+                <h6 class="card-title">Related Dataset</h6>
+                <h6 class="mb-2">
+                    <a href="{% url 'app:dataset' resource.dataset.slug %}" class="text-decoration-none">
+                        {{ resource.dataset.title }}
+                    </a>
+                </h6>
+                {% if resource.dataset.description %}
+                <p class="text-muted small mb-2">{{ resource.dataset.description|truncatewords:20 }}</p>
+                {% endif %}
+                <small class="text-muted">
+                    {{ resource.dataset.resource_count }} resource{{ resource.dataset.resource_count|pluralize }} •
+                    Updated {{ resource.dataset.updated|timesince }} ago
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

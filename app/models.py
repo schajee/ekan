@@ -3,10 +3,23 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.text import slugify
+from django.utils import timezone
 
 
 class Organisation(models.Model):
     """Government entities that publish datasets"""
+    
+    # Status choices for approval workflow
+    STATUS_PENDING = 'pending'
+    STATUS_APPROVED = 'approved'
+    STATUS_REJECTED = 'rejected'
+    
+    STATUS_CHOICES = [
+        (STATUS_PENDING, 'Pending Review'),
+        (STATUS_APPROVED, 'Approved'),
+        (STATUS_REJECTED, 'Rejected'),
+    ]
+    
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, max_length=200)
     description = models.TextField(blank=True)
@@ -14,6 +27,17 @@ class Organisation(models.Model):
     logo = models.ImageField(upload_to='organisations/', blank=True, null=True)
     manager = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, 
                                help_text="Staff member responsible for this organisation")
+    
+    # Registration workflow fields
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING)
+    requested_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='organisation_requests',
+                                   help_text="User who requested this organisation")
+    approved_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL,
+                                  related_name='approved_organisations',
+                                  help_text="Admin who approved/rejected this request")
+    approval_date = models.DateTimeField(null=True, blank=True)
+    rejection_reason = models.TextField(blank=True, help_text="Reason for rejection")
+    
     is_active = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -25,12 +49,105 @@ class Organisation(models.Model):
         return self.title
     
     def get_absolute_url(self):
-        return reverse('organisations:detail', kwargs={'slug': self.slug})
+        return reverse('app:organisation', kwargs={'slug': self.slug})
+    
+    @property
+    def is_approved(self):
+        return self.status == self.STATUS_APPROVED
+    
+    @property
+    def is_pending(self):
+        return self.status == self.STATUS_PENDING
+    
+    @property
+    def is_rejected(self):
+        return self.status == self.STATUS_REJECTED
+    
+    def approve(self, approved_by_user):
+        """Approve the organisation request"""
+        self.status = self.STATUS_APPROVED
+        self.approved_by = approved_by_user
+        self.approval_date = timezone.now()
+        self.save()
+    
+    def reject(self, rejected_by_user, reason=""):
+        """Reject the organisation request"""
+        self.status = self.STATUS_REJECTED
+        self.approved_by = rejected_by_user
+        self.approval_date = timezone.now()
+        self.rejection_reason = reason
+        self.save()
     
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+    
+    @property
+    def dataset_count(self):
+        """Get total number of published datasets"""
+        return self.datasets.filter(is_published=True).count()
+    
+    @property
+    def resource_count(self):
+        """Get total number of resources across all datasets"""
+        return sum(dataset.resource_count for dataset in self.datasets.filter(is_published=True))
+    
+    @property
+    def active_members(self):
+        """Get active organization members"""
+        return self.members.filter(is_active=True).select_related('user')
+    
+    @property
+    def public_contacts(self):
+        """Get members who are public contacts"""
+        return self.members.filter(is_active=True, is_public_contact=True).select_related('user')
+
+
+class OrganisationMember(models.Model):
+    """Members and their roles within organizations"""
+    
+    ROLE_ADMIN = 'admin'
+    ROLE_EDITOR = 'editor'
+    ROLE_VIEWER = 'viewer'
+    ROLE_MANAGER = 'manager'
+    ROLE_ANALYST = 'analyst'
+    ROLE_COORDINATOR = 'coordinator'
+    
+    ROLE_CHOICES = [
+        (ROLE_ADMIN, 'Administrator'),
+        (ROLE_MANAGER, 'Manager'),
+        (ROLE_COORDINATOR, 'Coordinator'),
+        (ROLE_EDITOR, 'Data Editor'),
+        (ROLE_ANALYST, 'Data Analyst'),
+        (ROLE_VIEWER, 'Viewer'),
+    ]
+    
+    organisation = models.ForeignKey(Organisation, on_delete=models.CASCADE, related_name='members')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='organisation_memberships')
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default=ROLE_VIEWER)
+    title = models.CharField(max_length=100, blank=True, help_text="Job title within the organization")
+    phone = models.CharField(max_length=20, blank=True)
+    email = models.EmailField(blank=True, help_text="Work email (if different from user email)")
+    is_public_contact = models.BooleanField(default=False, help_text="Show contact info publicly")
+    
+    joined_date = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        unique_together = ['organisation', 'user']
+        ordering = ['role', 'user__first_name', 'user__last_name']
+
+    def __str__(self):
+        return f"{self.user.get_full_name() or self.user.username} - {self.get_role_display()} at {self.organisation.title}"
+    
+    @property
+    def display_name(self):
+        return self.user.get_full_name() or self.user.username
+    
+    @property
+    def contact_email(self):
+        return self.email or self.user.email
 
 
 class License(models.Model):
@@ -66,7 +183,7 @@ class Topic(models.Model):
         return self.title
     
     def get_absolute_url(self):
-        return reverse('topics:detail', kwargs={'slug': self.slug})
+        return reverse('app:topic', kwargs={'slug': self.slug})
 
 
 class Dataset(models.Model):
@@ -103,7 +220,7 @@ class Dataset(models.Model):
         return self.title
     
     def get_absolute_url(self):
-        return reverse('datasets:detail', kwargs={'slug': self.slug})
+        return reverse('app:dataset', kwargs={'slug': self.slug})
     
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -166,7 +283,7 @@ class Resource(models.Model):
         return self.title
     
     def get_absolute_url(self):
-        return reverse('resources:detail', kwargs={'slug': self.slug})
+        return reverse('app:resource', kwargs={'slug': self.slug})
     
     def save(self, *args, **kwargs):
         if not self.slug:

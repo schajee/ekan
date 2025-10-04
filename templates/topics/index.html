@@ -1,10 +1,38 @@
 {% extends 'layouts/page.html' %}
-{% block title %}{{ block.super }} - Topics{% endblock %}
+{% load humanize %}
+{% block title %}Topics | {{ block.super }}{% endblock %}
 
 {% block page_title %} Topics {% endblock %}
 
 {% block content %}
-<h3 class="mb-4">{{ topics|length }} topic{{ topics|pluralize }} found&hellip;</h3>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="mb-0">{{ paginator.count|intcomma }} topic{{ paginator.count|pluralize }} found</h3>
+  {% if request.GET.q %}
+    <a href="{{ request.path }}" class="btn btn-outline-secondary btn-sm">
+      <i class="bi bi-x-circle me-1"></i>Clear search
+    </a>
+  {% endif %}
+</div>
+
+<form class="mb-4" method="get" autocomplete="off">
+  <div class="input-group">
+    <input class="form-control form-control-lg" type="search" name="q" value="{{ request.GET.q }}" placeholder="Search topics..." aria-label="Search topics">
+    <button class="btn btn-secondary" type="submit">
+      <i class="bi bi-search"></i>
+      <span class="d-none d-sm-inline ms-1">Search</span>
+    </button>
+  </div>
+</form>
+
+{% if request.GET.q %}
+<div class="mb-3">
+  <small class="text-muted">Search results for: </small>
+    <span class="badge text-bg-primary">
+      "{{ request.GET.q|truncatechars:50 }}"
+    </span>
+</div>
+{% endif %}
+
 {% if topics %}
 <div class="row">
   {% for topic in topics %}
@@ -13,6 +41,7 @@
   </div>
   {% endfor %}
 </div>
+{% include 'partials/pager.html' %}
 {% else %}
 {% include 'partials/empty.html' %}
 {% endif %}
