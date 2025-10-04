@@ -1,11 +1,12 @@
 {% extends 'layouts/page.html' %}
 {% load custom_tags %}
 
+{% block title %}Privacy Policy | EKAN{% endblock %}
 {% block page_title %} Privacy Policy {% endblock %}
 
 {% block content %}
 
-  <h4 class="mb-3 border-bottom">Introduction</h4>
+  <h4 class="mb-4 border-bottom">Introduction</h4>
 
   <dl class="row">
     <dt class="col-2">Purpose</dt>
@@ -15,7 +16,7 @@
     <dd class="col-10">We may share your information with your consent or as required by law, and we will always let you know when we
       make significant changes to this Privacy Policy.</dd>
   </dl>
-  <h4 class="mb-3 mt-5 border-bottom">Information we collect</h4>
+  <h4 class="mb-4 mt-5 border-bottom">Information we collect</h4>
 
   <dl class="row">
     <dt class="col-2">Registration</dt>
@@ -29,12 +30,12 @@
     <dt class="col-2">Log Files</dt>
     <dd class="col-10">We collect information from the devices and networks that you use to access our Service.</dd>
   </dl>
-  <h4 class="mb-3 mt-5 border-bottom">How personal information is used</h4>
+  <h4 class="mb-4 mt-5 border-bottom">How personal information is used</h4>
 
   <dl class="row">
     <dt class="col-2">Consent</dt>
     <dd class="col-10">You agree that information you provide on your profile can be seen used by us as described in this Privacy
-      Policy and our <a href="{% url 'app:terms' %}">Terms of Use</a>.</dd>
+      Policy and our <a class="link-dark" href="{% url 'app:terms' %}">Terms of Use</a>.</dd>
     <dt class="col-2">Communication</dt>
     <dd class="col-10">We communicate with you using email. We may send you messages relating to the availability of the
       Service, security, or other service-related issues.</dd>
@@ -57,7 +58,7 @@
     <dt class="col-2">International Use</dt>
     <dd class="col-10">We may process your information outside the country where you live.</dd>
   </dl>
-  <h4 class="mb-3 mt-5 border-bottom">Choices &amp; Obligations</h4>
+  <h4 class="mb-4 mt-5 border-bottom">Choices &amp; Obligations</h4>
 
   <dl class="row">
     <dt class="col-2">Access / Closure</dt>
@@ -68,7 +69,7 @@
       even after you close your account if it is necessary to comply with our legal obligations, meet regulatory
       requirements, resolve disputes, prevent fraud and abuse, or enforce this agreement.</dd>
   </dl>
-  <h4 class="mb-3 mt-5 border-bottom">Important Information</h4>
+  <h4 class="mb-4 mt-5 border-bottom">Important Information</h4>
 
   <dl class="row">
     <dt class="col-2">Minimum Age</dt>

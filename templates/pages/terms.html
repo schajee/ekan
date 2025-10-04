@@ -1,6 +1,7 @@
 {% extends 'layouts/page.html' %}
 {% load custom_tags %}
 
+{% block title %}Terms of Use | EKAN{% endblock %}
 {% block page_title %} Terms of Use {% endblock %}
 
 {% block content %}
@@ -33,5 +34,5 @@
 </ul>
 <hr>
 <p>{% app_name %} provides a usage model for government organisations with a mandate from the state.</p>
-<p>Please <a href="{% url 'app:contact' %}">contact us</a> if you have any questions.</p>
+<p>Please <a class="link-dark" href="{% url 'app:contact' %}">contact us</a> if you have any questions.</p>
 {% endblock %}

@@ -5,17 +5,17 @@
 {% block page_title %} Organisations {% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-4">
   <h3 class="mb-0">{{ page_obj.paginator.count|intcomma }} organisation{{ page_obj.paginator.count|pluralize }} found</h3>
   <div>
     {% if request.user.is_authenticated %}
-      <a href="{% url 'app:organisation_register' %}" class="btn btn-outline-secondary btn-sm me-2">
-        <i class="bi bi-plus-circle me-1"></i>Register Organization
+      <a href="{% url 'app:organisation_register' %}" class="btn btn-outline-success btn-sm me-2">
+        Register Organization
       </a>
     {% endif %}
     {% if request.GET.q %}
-      <a href="{{ request.path }}" class="btn btn-outline-secondary btn-sm">
-        <i class="bi bi-x-circle me-1"></i>Clear search
+      <a href="{{ request.path }}" class="btn btn-outline-success btn-sm">
+        Clear search
       </a>
     {% endif %}
   </div>
@@ -24,7 +24,7 @@
 <form class="mb-4" method="get" autocomplete="off">
   <div class="input-group">
     <input class="form-control form-control-lg" type="search" name="q" value="{{ request.GET.q }}" placeholder="Search organisations..." aria-label="Search organisations">
-    <button class="btn btn-secondary" type="submit">
+    <button class="btn btn-success" type="submit">
       <i class="bi bi-search"></i>
       <span class="d-none d-sm-inline ms-1">Search</span>
     </button>
@@ -32,7 +32,7 @@
 </form>
 
 {% if request.GET.q %}
-<div class="mb-3">
+<div class="mb-4">
   <small class="text-muted">Search results for:</small>
     <span class="badge text-bg-primary">
       "{{ request.GET.q|truncatechars:50 }}"

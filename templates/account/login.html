@@ -28,20 +28,20 @@
 <form method="post" action="{% url 'account_login' %}">
     {% csrf_token %}
     
-    <div class="mb-3">
+    <div class="mb-4">
         <label for="{{ form.login.id_for_label }}" class="form-label">Email address</label>
         <input type="email" class="form-control" id="{{ form.login.id_for_label }}" 
                name="{{ form.login.name }}" value="{{ form.login.value|default:'' }}" 
                placeholder="Enter your email" required>
     </div>
     
-    <div class="mb-3">
+    <div class="mb-4">
         <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
         <input type="password" class="form-control" id="{{ form.password.id_for_label }}" 
                name="{{ form.password.name }}" placeholder="Enter your password" required>
     </div>
     
-    <div class="mb-3 form-check">
+    <div class="mb-4 form-check">
         <input type="checkbox" class="form-check-input" id="{{ form.remember.id_for_label }}" 
                name="{{ form.remember.name }}" {% if form.remember.value %}checked{% endif %}>
         <label class="form-check-label" for="{{ form.remember.id_for_label }}">
@@ -49,7 +49,7 @@
         </label>
     </div>
     
-    <button type="submit" class="btn btn-primary w-100 mb-3">Sign In</button>
+    <button type="submit" class="btn btn-success w-100 mb-4">Sign In</button>
     
     {% if form.redirect_field_value %}
         <input type="hidden" name="{{ form.redirect_field_name }}" value="{{ form.redirect_field_value }}">
@@ -57,7 +57,7 @@
 </form>
 
 <div class="text-center">
-    <a href="{% url 'account_reset_password' %}" class="text-decoration-none">
+    <a href="{% url 'account_reset_password' %}" class="link-dark">
         Forgot your password?
     </a>
 </div>
@@ -89,6 +89,6 @@
 
 <div class="text-center mt-4">
     <span class="text-muted">Don't have an account? </span>
-    <a href="{% url 'account_signup' %}" class="text-decoration-none">Sign up</a>
+    <a href="{% url 'account_signup' %}" class="link-dark">Sign up</a>
 </div>
 {% endblock %}

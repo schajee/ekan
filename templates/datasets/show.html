@@ -4,17 +4,14 @@
 {% block title %}{{ dataset.title }} | EKAN{% endblock %}
 
 {% block page_title %} {{ dataset.title }} {% endblock %}
+{% block page_description %} {{ dataset.description }} {% endblock %}
 
 {% block content %}
-
-{% if dataset.description %}
-<div class="lead mb-5">{{ dataset.description|linebreaks }}</div>
-{% endif %}
 
 <div class="row">
   <aside class="col-md-3">
 
-    <h5 class="mb-3">Organisation</h5>
+    <h5 class="mb-4">Organisation</h5>
     <p class="lead mb-1"><a class="link-dark" href="{% url 'app:organisation' dataset.organisation.slug %}">{{ dataset.organisation.title }}</a></p>
     
     {% if dataset.organisation.description %}
@@ -25,7 +22,7 @@
     <p class="mb-5">More Information: <a class="text-truncate link-dark" href="{{ dataset.organisation.url }}">{{ dataset.organisation.url }}</a></p>
     {% endif %}
 
-    <h5 class="mb-3">Topics</h5>
+    <h5 class="mb-4">Topics</h5>
     {% if dataset.topics.all %}<p>
       {% for topic in dataset.topics.all %}
       <a class="badge text-bg-secondary link-light" href="{% url 'app:datasets' %}?topic={{ topic.slug }}">

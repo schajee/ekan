@@ -28,7 +28,7 @@
 <form method="post" action="">
     {% csrf_token %}
     
-    <div class="mb-3">
+    <div class="mb-4">
         <label for="{{ form.code.id_for_label }}" class="form-label">Verification Code</label>
         <input type="text" class="form-control text-center" id="{{ form.code.id_for_label }}" 
                name="{{ form.code.name }}" value="{{ form.code.value|default:'' }}" 
@@ -39,7 +39,7 @@
         {% endif %}
     </div>
     
-    <button type="submit" class="btn btn-primary w-100 mb-3">Verify Code</button>
+    <button type="submit" class="btn btn-primary w-100 mb-4">Verify Code</button>
     
     {% if form.redirect_field_value %}
         <input type="hidden" name="{{ form.redirect_field_name }}" value="{{ form.redirect_field_value }}">

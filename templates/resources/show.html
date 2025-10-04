@@ -5,12 +5,10 @@
 {% block title %}{{ resource.title }} | {{ resource.dataset.title }} | EKAN{% endblock %}
 
 {% block page_title %}{{ resource.title }}{% endblock %}
+{% block page_description %}{{ resource.description }}{% endblock %}
 
 {% block content %}
 
-{% if resource.description %}
-<div class="lead mb-4">{{ resource.description|linebreaks }}</div>
-{% endif %}
 <div class="row">
     <!-- Main Content -->
     <div class="col-lg-8">
@@ -124,15 +122,15 @@
     <!-- Sidebar -->
     <div class="col-lg-4">
         <!-- Quick Actions -->
-        <div class="card border-light-subtle mb-3">
+        <div class="card border-light-subtle mb-4">
             <div class="card-body">
                 <h6 class="card-title">Quick Actions</h6>
                 <div class="d-grid gap-2">
-                    <a href="{% url 'app:resource_download' resource.slug %}" class="btn btn-secondary">
+                    <a href="{% url 'app:resource_download' resource.slug %}" class="btn btn-success">
                         <i class="fas fa-download me-2"></i>Download Resource
                     </a>
                     {% if resource.can_preview %}
-                    <a href="{% url 'app:resource_preview' slug=resource.slug %}" class="btn btn-outline-secondary">
+                    <a href="{% url 'app:resource_preview' slug=resource.slug %}" class="btn btn-outline-success">
                         <i class="fas fa-eye me-2"></i>Preview Data
                     </a>
                     {% endif %}
@@ -141,7 +139,7 @@
         </div>
 
         <!-- Access Information -->
-        <div class="card border-light-subtle mb-3">
+        <div class="card border-light-subtle mb-4">
             <div class="card-body">
                 <h6 class="card-title">Access Information</h6>
                 {% if resource.file %}
@@ -153,8 +151,8 @@
                 {% elif resource.url %}
                     <p class="mb-2"><strong>Type:</strong> External URL</p>
                     <p class="mb-0">
-                        <strong>URL:</strong><br>
-                        <a href="{{ resource.url }}" target="_blank" class="text-break">{{ resource.url }}</a>
+                        <strong>URL:</strong>
+                        <a href="{{ resource.url }}" target="_blank" class="text-break link-dark">{{ resource.url }}</a>
                     </p>
                 {% else %}
                     <p class="text-muted mb-0">No access URL available.</p>
@@ -162,24 +160,6 @@
             </div>
         </div>
 
-        <!-- Related Dataset -->
-        <div class="card border-light-subtle">
-            <div class="card-body">
-                <h6 class="card-title">Related Dataset</h6>
-                <h6 class="mb-2">
-                    <a href="{% url 'app:dataset' resource.dataset.slug %}" class="text-decoration-none">
-                        {{ resource.dataset.title }}
-                    </a>
-                </h6>
-                {% if resource.dataset.description %}
-                <p class="text-muted small mb-2">{{ resource.dataset.description|truncatewords:20 }}</p>
-                {% endif %}
-                <small class="text-muted">
-                    {{ resource.dataset.resource_count }} resource{{ resource.dataset.resource_count|pluralize }} •
-                    Updated {{ resource.dataset.updated|timesince }} ago
-                </small>
-            </div>
-        </div>
     </div>
 </div>
 

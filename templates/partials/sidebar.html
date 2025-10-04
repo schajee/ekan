@@ -4,7 +4,7 @@
 {% filters as filters %}
 
 {% if 'topics' not in request.path %}
-<h5 class="mb-3">Topics</h5>
+<h5 class="mb-4">Topics</h5>
 <ul class="list-unstyled mb-5">
   {% for topic in filters.topics %}
   <li><a class="d-block px-2 py-1 text-truncate link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover {% if request.GET.topic == topic.slug %}text-decoration-underline fw-semibold {% endif %}" href="?{% query_replace request topic=topic.slug %}">
@@ -16,7 +16,7 @@
 {% endif %}
 
 {% if 'organisations' not in request.path %}
-<h5 class="mb-3">Organisations</h5>
+<h5 class="mb-4">Organisations</h5>
 <ul class="list-unstyled mb-5">
   {% for org in filters.organisations %}
   <li><a class="d-block px-2 py-1 text-truncate link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover {% if request.GET.organisation == org.slug %}text-decoration-underline fw-semibold{% endif %}" href="?{% query_replace request organisation=org.slug %}">
@@ -27,7 +27,7 @@
 </ul>
 {% endif %}
 
-<h5 class="mb-3">Formats</h5>
+<h5 class="mb-4">Formats</h5>
 <ul class="list-unstyled mb-5">
   {% for format in filters.formats %}
   <li><a class="d-block px-2 py-1 text-truncate link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover {% if request.GET.format == format.slug %}text-decoration-underline fw-semibold{% endif %}" href="?{% query_add request format=format.slug %}">
@@ -37,7 +37,7 @@
   {% endfor %}
 </ul>
 
-<h5 class="mb-3">Licenses</h5>
+<h5 class="mb-4">Licenses</h5>
 <ul class="list-unstyled mb-5">
   {% for license in filters.licenses %}
   <li><a class="d-block px-2 py-1 text-truncate link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover {% if request.GET.license == license.slug %}text-decoration-underline fw-semibold{% endif %}" href="?{% query_add request license=license.slug %}">

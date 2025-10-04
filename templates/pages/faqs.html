@@ -1,28 +1,29 @@
 {% extends 'layouts/page.html' %}
 {% load custom_tags %}
 
+{% block title %}Frequently Asked Questions | EKAN{% endblock %}
 {% block page_title %} Frequently Asked Questions {% endblock %}
 
 {% block content %}
 <div class="faq">
 
   <p>Here you find answers to frequently asked questions about open government data and this site. For more information
-    please <a href="{% url 'app:contact' %}">contact us</a>.</p>
+    please <a class="link-dark" href="{% url 'app:contact' %}">contact us</a>.</p>
 
   <ol class="mb-5">
-    <li><a href="#q1">What is {% app_name %}?</a></li>
-    <li><a href="#q2">What are datasets and resources?</a></li>
-    <li><a href="#q3">How do I search for data?</a></li>
-    <li><a href="#q4">What file formats are supported?</a></li>
-    <li><a href="#q5">Can I preview data files before downloading?</a></li>
-    <li><a href="#q6">How do I download datasets?</a></li>
-    <li><a href="#q7">What are organizations and topics?</a></li>
-    <li><a href="#q8">Do I need an account to access data?</a></li>
-    <li><a href="#q9">What can I do with an account?</a></li>
-    <li><a href="#q10">What licenses apply to the data?</a></li>
-    <li><a href="#q11">How can I contact data publishers?</a></li>
-    <li><a href="#q12">How do I use advanced search features?</a></li>
-    <li><a href="#q13">How often is data updated?</a></li>
+    <li><a class="link-dark" href="#q1">What is {% app_name %}?</a></li>
+    <li><a class="link-dark" href="#q2">What are datasets and resources?</a></li>
+    <li><a class="link-dark" href="#q3">How do I search for data?</a></li>
+    <li><a class="link-dark" href="#q4">What file formats are supported?</a></li>
+    <li><a class="link-dark" href="#q5">Can I preview data files before downloading?</a></li>
+    <li><a class="link-dark" href="#q6">How do I download datasets?</a></li>
+    <li><a class="link-dark" href="#q7">What are organizations and topics?</a></li>
+    <li><a class="link-dark" href="#q8">Do I need an account to access data?</a></li>
+    <li><a class="link-dark" href="#q9">What can I do with an account?</a></li>
+    <li><a class="link-dark" href="#q10">What licenses apply to the data?</a></li>
+    <li><a class="link-dark" href="#q11">How can I contact data publishers?</a></li>
+    <li><a class="link-dark" href="#q12">How do I use advanced search features?</a></li>
+    <li><a class="link-dark" href="#q13">How often is data updated?</a></li>
   </ol>
 
   <h3 id="q1">What is {% app_name %}?</h3>
@@ -110,7 +111,7 @@
   <ul>
     <li><strong>Dataset-specific contacts:</strong> Look for author or maintainer contact information on individual dataset pages</li>
     <li><strong>Organization contacts:</strong> Visit the organization's page for general contact details</li>
-    <li><strong>General inquiries:</strong> Use our <a href="{% url 'app:contact' %}">contact form</a> if you need help reaching a data publisher</li>
+    <li><strong>General inquiries:</strong> Use our <a class="link-dark" href="{% url 'app:contact' %}">contact form</a> if you need help reaching a data publisher</li>
   </ul>
 
   <h3 id="q12">How do I use advanced search features?</h3>

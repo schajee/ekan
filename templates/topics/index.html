@@ -5,7 +5,7 @@
 {% block page_title %} Topics {% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-4">
   <h3 class="mb-0">{{ paginator.count|intcomma }} topic{{ paginator.count|pluralize }} found</h3>
   {% if request.GET.q %}
     <a href="{{ request.path }}" class="btn btn-outline-secondary btn-sm">
@@ -17,7 +17,7 @@
 <form class="mb-4" method="get" autocomplete="off">
   <div class="input-group">
     <input class="form-control form-control-lg" type="search" name="q" value="{{ request.GET.q }}" placeholder="Search topics..." aria-label="Search topics">
-    <button class="btn btn-secondary" type="submit">
+    <button class="btn btn-success" type="submit">
       <i class="bi bi-search"></i>
       <span class="d-none d-sm-inline ms-1">Search</span>
     </button>
@@ -25,7 +25,7 @@
 </form>
 
 {% if request.GET.q %}
-<div class="mb-3">
+<div class="mb-4">
   <small class="text-muted">Search results for: </small>
     <span class="badge text-bg-primary">
       "{{ request.GET.q|truncatechars:50 }}"

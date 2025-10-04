@@ -2,7 +2,7 @@
 {% load custom_tags %}
 {% load humanize %}
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-4">
   <h3 class="mb-0">{{ page_obj.paginator.count|intcomma }} dataset{{ page_obj.paginator.count|pluralize }} found</h3>
   {% if request.GET.q %}
     <a href="{{ request.path }}" class="btn btn-outline-secondary btn-sm">
@@ -14,7 +14,7 @@
 {% include 'partials/search.html' %}
 
 {% if request.GET|length > 0 %}
-<div class="mb-3">
+<div class="mb-4">
   <small class="text-muted">Active filters:</small>
   <span>
     {% for key,value in request.GET.items %}

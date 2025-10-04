@@ -4,7 +4,7 @@
 {% block auth_content %}
 {% if confirmation %}
     <div class="text-center mb-4">
-        <div class="mb-3">
+        <div class="mb-4">
             <i class="bi bi-check-circle text-success" style="font-size: 3rem;"></i>
         </div>
         <h2 class="h3 mb-2">Confirm email address</h2>
@@ -13,11 +13,11 @@
     
     <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
         {% csrf_token %}
-        <button type="submit" class="btn btn-success w-100 mb-3">Confirm Email Address</button>
+        <button type="submit" class="btn btn-success w-100 mb-4">Confirm Email Address</button>
     </form>
 {% else %}
     <div class="text-center mb-4">
-        <div class="mb-3">
+        <div class="mb-4">
             <i class="bi bi-x-circle text-danger" style="font-size: 3rem;"></i>
         </div>
         <h2 class="h3 mb-2">Invalid confirmation link</h2>

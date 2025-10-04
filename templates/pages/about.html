@@ -1,6 +1,7 @@
 {% extends 'layouts/page.html' %}
 {% load custom_tags %}
 
+{% block title %}About | EKAN{% endblock %}
 {% block page_title %} About {% endblock %}
 
 {% block content %}
@@ -8,12 +9,12 @@
     EKAN (Easy Knowledge Archive Network) is a comprehensive open data portal designed to make government and public data accessible, discoverable, and usable for everyone. Our platform serves as a central hub for datasets, resources, and information that drive transparency, innovation, and informed decision-making.
 </div>
 
-<h2 class="h4 mb-3">Our Mission</h2>
+<h2 class="h4 mb-4">Our Mission</h2>
 <p>We believe that open data is a cornerstone of democratic governance and societal progress. EKAN facilitates the sharing of high-quality datasets across government departments, research institutions, and organizations, enabling citizens, researchers, and businesses to access the information they need to create positive impact.</p>
 
-<h2 class="h4 mb-3 mt-5">What We Offer</h2>
+<h2 class="h4 mb-4 mt-5">What We Offer</h2>
 <div class="row mb-4">
-    <div class="col-md-6 mb-3">
+    <div class="col-md-6 mb-4">
         <div class="d-flex">
             <div class="me-3">
                 <i class="bi bi-database display-6 text-secondary"></i>
@@ -24,7 +25,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 mb-3">
+    <div class="col-md-6 mb-4">
         <div class="d-flex">
             <div class="me-3">
                 <i class="bi bi-search display-6 text-secondary"></i>
@@ -35,7 +36,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 mb-3">
+    <div class="col-md-6 mb-4">
         <div class="d-flex">
             <div class="me-3">
                 <i class="bi bi-file-earmark-code display-6 text-secondary"></i>
@@ -46,7 +47,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 mb-3">
+    <div class="col-md-6 mb-4">
         <div class="d-flex">
             <div class="me-3">
                 <i class="bi bi-shield-check display-6 text-secondary"></i>
@@ -59,17 +60,17 @@
     </div>
 </div>
 
-<h2 class="h4 mb-3">Open Data Standards</h2>
+<h2 class="h4 mb-4">Open Data Standards</h2>
 <p>EKAN follows international open data standards and best practices, ensuring our platform remains interoperable, accessible, and sustainable. We support various open licenses that allow for reuse, redistribution, and commercial use while maintaining proper attribution.</p>
 
-<h2 class="h4 mb-3 mt-5">For Developers</h2>
+<h2 class="h4 mb-4 mt-5">For Developers</h2>
 <p>Access our data programmatically through our comprehensive REST API. Whether you're building applications, conducting research, or creating visualizations, our API provides reliable access to all published datasets with proper authentication and rate limiting.</p>
 
 <div class="my-5">
-    <a href="{% url 'app:datasets' %}" class="btn btn-secondary me-3">
+    <a href="{% url 'app:datasets' %}" class="btn btn-success me-3">
         <i class="bi bi-database me-2"></i>Browse Datasets
     </a>
-    <a href="/api/" class="btn btn-outline-secondary">
+    <a href="/api/" class="btn btn-outline-success">
         <i class="bi bi-code-slash me-2"></i>API Documentation
     </a>
 </div>

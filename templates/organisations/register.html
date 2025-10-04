@@ -24,7 +24,7 @@
         <form method="post" enctype="multipart/form-data">
           {% csrf_token %}
           
-          <div class="mb-3">
+          <div class="mb-4">
             <label for="{{ form.title.id_for_label }}" class="form-label">
               Organization Name <span class="text-danger">*</span>
             </label>
@@ -41,7 +41,7 @@
             {% endif %}
           </div>
 
-          <div class="mb-3">
+          <div class="mb-4">
             <label for="{{ form.description.id_for_label }}" class="form-label">
               Description <span class="text-danger">*</span>
             </label>
@@ -58,7 +58,7 @@
             {% endif %}
           </div>
 
-          <div class="mb-3">
+          <div class="mb-4">
             <label for="{{ form.url.id_for_label }}" class="form-label">
               Website URL
             </label>
