@@ -1,0 +1,43 @@
+{% extends 'layouts/page.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block page_title %} {{ resource.title}} {% endblock %}
+
+{% block content %}
+
+{% if resource.description %}
+<div class="lead mb-5">{{ resource.description|linebreaks }}</div>
+{% endif %}
+
+<h3 class="mb-4">Additional Information</h3>
+<dl class="row">
+  <dt class="col-sm-4 col-md-3 col-lg-2">Identifier</dt>
+  <dd class="col-sm-8 col-md-9 col-lg-10">{{ resource.slug }}</dd>
+  <dt class="col-sm-4 col-md-3 col-lg-2">Dataset</dt>
+  <dd class="col-sm-8 col-md-9 col-lg-10"><a
+      href="{% url 'app:dataset' resource.dataset.slug %}">{{ resource.dataset.title }}</a></dd>
+  <dt class="col-sm-4 col-md-3 col-lg-2">Organisation</dt>
+  <dd class="col-sm-8 col-md-9 col-lg-10"><a
+      href="{{ resource.dataset.organisation.url }}">{{ resource.dataset.organisation.title }}</a></dd>
+  <dt class="col-sm-4 col-md-3 col-lg-2">Issued Date</dt>
+  <dd class="col-sm-8 col-md-9 col-lg-10">{{ resource.created|date:"j F Y" }}</dd>
+  <dt class="col-sm-4 col-md-3 col-lg-2">Last Updated</dt>
+  <dd class="col-sm-8 col-md-9 col-lg-10">{{ resource.updated|date:"j F Y" }}</dd>
+  <dt class="col-sm-4 col-md-3 col-lg-2">Access URL</dt>
+  <dd class="col-sm-8 col-md-9 col-lg-10">
+    {% if resource.file %}
+    <a href="{{ request.get_host }}{% get_media_prefix %}{{ resource.file }}">{{ request.get_host }}{% get_media_prefix %}{{ resource.file }}</a>
+    {% elif resource.url %}
+    <a href="{{ resource.url }}">{{ resource.url }}</a>
+    {% else %}
+    <span>No access URL available.</span>
+    {% endif %}
+  </dd>
+  <dt class="col-sm-4 col-md-3 col-lg-2">File Format</dt>
+  <dd class="col-sm-8 col-md-9 col-lg-10">{% include 'partials/resource_tag.html' with resource=resource %}</dd>
+  <dt class="col-sm-4 col-md-3 col-lg-2">File Size</dt>
+  <dd class="col-sm-8 col-md-9 col-lg-10">{{ resource.size|filesizeformat }}</dd>
+</dl>
+
+{% endblock %}

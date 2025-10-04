@@ -1,0 +1,144 @@
+{% extends 'layouts/page.html' %}
+{% load custom_tags %}
+
+{% block page_title %} Frequently Asked Questions {% endblock %}
+
+{% block content %}
+<div class="faq">
+
+  <p>Here you find answers to frequently asked questions about open government data and this site. For more information
+    please <a href="{% url 'app:page' 'contact' %}">contact us</a>.</p>
+
+  <ol class="mb-5">
+    <li><a href="#q1">What is {% app_name %}?</a></li>
+    <li><a href="#q2">What are datasets and resources?</a></li>
+    <li><a href="#q3">How do I search for data?</a></li>
+    <li><a href="#q4">What file formats are supported?</a></li>
+    <li><a href="#q5">Can I preview data files before downloading?</a></li>
+    <li><a href="#q6">How do I download datasets?</a></li>
+    <li><a href="#q7">What are organizations and topics?</a></li>
+    <li><a href="#q8">Do I need an account to access data?</a></li>
+    <li><a href="#q9">What can I do with an account?</a></li>
+    <li><a href="#q10">What licenses apply to the data?</a></li>
+    <li><a href="#q11">How can I contact data publishers?</a></li>
+    <li><a href="#q12">How do I use advanced search features?</a></li>
+    <li><a href="#q13">How often is data updated?</a></li>
+  </ol>
+
+  <h3 id="q1">What is {% app_name %}?</h3>
+  <p>{% app_name %} is a tool for accessing open government data. It helps you find and download collections of data published by government agencies, research institutions, and other organizations. Once you find the data you need, you can preview it using maps, graphs and tables - whether you are a developer, journalist, researcher, NGO, citizen, or government staff member.</p>
+  <p>{% app_name %} offers a central point of access to open, freely accessible data from public administration ("open government data", or OGD). You can find more information <a href="{% url 'app:page' 'about' %}">here</a>.</p>
+
+  <h3 id="q2">What are datasets and resources?</h3>
+  <p>For {% app_name %} purposes, data is published in units called <strong>"datasets"</strong>. A dataset is a parcel of data - for example, it could be crime statistics for a region, spending figures for a government department, or temperature readings from weather stations.</p>
+  <p>A dataset contains two things:</p>
+  <ul>
+    <li><strong>Information or "metadata" about the data:</strong> The title and publisher, date, what formats it's available in, what license it's released under, etc.</li>
+    <li><strong>A number of "resources":</strong> These hold the actual data files. {% app_name %} can handle data in any format - CSV, Excel spreadsheets, XML files, PDF documents, image files, etc. A dataset can contain any number of resources, for example, different files might contain data for different years, or the same data in different formats.</li>
+  </ul>
+
+  <h3 id="q3">How do I search for data?</h3>
+  <p>To find datasets, type any combination of search words (e.g. "health", "transport", etc.) in the search box on any page. You can:</p>
+  <ul>
+    <li><strong>Browse results:</strong> View multiple pages of search results</li>
+    <li><strong>Refine your search:</strong> Modify your search terms and try again</li>
+    <li><strong>Use filters:</strong> Restrict results by tags, data formats, organizations, topics, or licenses using the filters in the left column</li>
+    <li><strong>Combine filters:</strong> Add and remove multiple filters to narrow down results</li>
+  </ul>
+  <p>You can also search within a specific organization by visiting their page and using the search box there.</p>
+
+  <h3 id="q4">What file formats are supported?</h3>
+  <p>{% app_name %} supports a wide variety of data formats including:</p>
+  <ul>
+    <li><strong>Tabular data:</strong> CSV (comma-separated values), Excel (XLSX), TSV (tab-separated values)</li>
+    <li><strong>Structured data:</strong> JSON, XML</li>
+    <li><strong>Documents:</strong> PDF, Word documents, HTML</li>
+    <li><strong>Images:</strong> Common image formats (JPG, PNG, etc.)</li>
+    <li><strong>Geographic data:</strong> Geospatial formats for mapping</li>
+    <li><strong>Other formats:</strong> Various government and industry-standard data formats</li>
+  </ul>
+
+  <h3 id="q5">Can I preview data files before downloading?</h3>
+  <p>Yes! {% app_name %} offers preview functionality for many file types:</p>
+  <ul>
+    <li><strong>CSV, Excel, and TSV files:</strong> View data in a formatted table with the first several rows displayed</li>
+    <li><strong>JSON and XML files:</strong> View structured data with proper formatting</li>
+    <li><strong>PDF and HTML files:</strong> Preview document content</li>
+    <li><strong>Images:</strong> View image files directly in the browser</li>
+  </ul>
+  <p>Look for the "Preview" button next to downloadable resources. Preview shows a sample of the data to help you determine if it meets your needs before downloading.</p>
+
+  <h3 id="q6">How do I download datasets?</h3>
+  <p>To download data:</p>
+  <ol>
+    <li>Find the dataset you're interested in using the search function</li>
+    <li>Navigate to the dataset page by clicking on its title</li>
+    <li>Browse the available resources (files) listed for that dataset</li>
+    <li>Click the "Download" button next to the resource you want</li>
+    <li>The file will be downloaded to your device</li>
+  </ol>
+  <p>Each dataset may contain multiple resources in different formats - choose the format that best suits your needs.</p>
+
+  <h3 id="q7">What are organizations and topics?</h3>
+  <p><strong>Organizations</strong> represent the government agencies, departments, or institutions that publish data on the portal. Each dataset is owned by one organization. You can browse datasets by organization to find data from specific government bodies. Each organization has its own page where you can find information about the organization and search within its datasets.</p>
+  <p><strong>Topics</strong> are subject categories that help organize datasets by theme or area of interest, such as environment, economy, health, education, etc. Topics make it easier to find related datasets across different organizations, allowing you to discover data on specific themes regardless of which agency published it.</p>
+
+  <h3 id="q8">Do I need an account to access data?</h3>
+  <p>No, registration is not needed to search for and download public data. You can browse all publicly available datasets and download files without creating an account.</p>
+
+  <h3 id="q9">What can I do with an account?</h3>
+  <p>Creating a free account provides additional features:</p>
+  <ul>
+    <li><strong>Follow datasets:</strong> Get notified when datasets you're interested in are updated</li>
+    <li><strong>Follow organizations:</strong> Receive notifications about new datasets from specific agencies</li>
+    <li><strong>Personal dashboard:</strong> View your news feed with updates on datasets and organizations you follow</li>
+    <li><strong>User profile:</strong> Manage your personal information and preferences</li>
+    <li><strong>Enhanced personalization:</strong> Customize your experience on the platform</li>
+  </ul>
+
+  <h3 id="q10">What licenses apply to the data?</h3>
+  <p>Each dataset comes with specific licensing information that defines how you can use the data. Common licenses include:</p>
+  <ul>
+    <li><strong>Open licenses:</strong> Allow free use, sharing, and modification with minimal restrictions</li>
+    <li><strong>Attribution licenses:</strong> Require crediting the data source when you use the data</li>
+    <li><strong>Restricted licenses:</strong> May have limitations on commercial use, redistribution, or modification</li>
+  </ul>
+  <p>License information is displayed on each dataset page. Always review the license terms before using data to ensure you comply with the usage requirements.</p>
+
+  <h3 id="q11">How can I contact data publishers?</h3>
+  <p>Each dataset page includes contact information for the publishing organization. You can:</p>
+  <ul>
+    <li><strong>Dataset-specific contacts:</strong> Look for author or maintainer contact information on individual dataset pages</li>
+    <li><strong>Organization contacts:</strong> Visit the organization's page for general contact details</li>
+    <li><strong>General inquiries:</strong> Use our <a href="{% url 'app:page' 'contact' %}">contact form</a> if you need help reaching a data publisher</li>
+  </ul>
+
+  <h3 id="q12">How do I use advanced search features?</h3>
+  <p>{% app_name %} supports both simple and advanced search:</p>
+  <p><strong>Simple Search:</strong></p>
+  <ul>
+    <li>Type words or phrases in the search box</li>
+    <li>Use <code>+word</code> to require a word (mandatory)</li>
+    <li>Use <code>-word</code> to exclude a word (prohibited)</li>
+    <li>Use <code>"exact phrase"</code> to search for exact phrases</li>
+  </ul>
+  <p><strong>Advanced Search (using field:term syntax):</strong></p>
+  <ul>
+    <li><code>title:health</code> - search for "health" in dataset titles</li>
+    <li><code>title:health*</code> - search for words starting with "health"</li>
+    <li><code>author:smith</code> - search for datasets by author "smith"</li>
+    <li><code>text:environment</code> - search across all text fields</li>
+  </ul>
+
+  <h3 id="q13">How often is data updated?</h3>
+  <p>Update frequency varies by dataset and depends on the publishing organization. Each dataset page shows:</p>
+  <ul>
+    <li><strong>Last updated:</strong> When the data was most recently modified</li>
+    <li><strong>Update frequency:</strong> How often the publisher typically updates the data (if specified)</li>
+    <li><strong>Data coverage period:</strong> The time period the data represents</li>
+    <li><strong>Activity stream:</strong> History of recent changes to the dataset</li>
+  </ul>
+  <p>For questions about specific dataset update schedules, contact the publishing organization directly using the contact information provided on the dataset page.</p>
+</div>
+
+{% endblock %}

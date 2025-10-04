@@ -1,0 +1,9 @@
+<div class="card h-100" style="border: none; box-shadow: none;">
+  <div class="card-body">
+    <h5 class="card-title"><a class="stretched-link" href="{% url 'app:organisation' organisation.slug %}">{{ organisation.title }}</a></h5>
+    <p class="mb-0 small">{{ organisation.description|truncatewords:30 }}</p>
+  </div>
+  <div class="card-footer bg-transparent border-0 pt-0">
+    <small class="text-muted fw-bold">{{ organisation.datasets.count }} dataset{{ organisation.datasets.count|pluralize }}</small>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+{% load static %}
+<ol class="breadcrumb p-0">
+{% if breadcrumbs %}
+{% for breadcrumb in breadcrumbs %}
+  {% if breadcrumb.url %}
+  <li class="breadcrumb-item">
+    <a href="{{ breadcrumb.url }}">{{ breadcrumb.title }}</a>
+  </li>
+  {% else %}
+  <li class="breadcrumb-item text-secondary">{{ breadcrumb.title }}</li>
+  {% endif %}
+{% endfor %}
+{% endif %}
+</ol>

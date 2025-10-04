@@ -1,0 +1,11 @@
+{% extends 'layouts/page.html' %}
+
+{% block page_title %} Not Found {% endblock %}
+
+{% block content %}
+<p class="lead">Oops... looks like the page you're looking for does not exist!</p>
+
+<form id="search" class="mb-4" action="{% url 'app:datasets' %}" method="get" autocomplete="off">
+    <input class="form-control form-control-lg" type="search" name="search" placeholder="Search datasets...">
+</form>
+{% endblock %}

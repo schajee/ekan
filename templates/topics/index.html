@@ -1,0 +1,19 @@
+{% extends 'layouts/page.html' %}
+{% block title %}{{ block.super }} - Topics{% endblock %}
+
+{% block page_title %} Topics {% endblock %}
+
+{% block content %}
+<h3 class="mb-4">{{ topics|length }} topic{{ topics|pluralize }} found&hellip;</h3>
+{% if topics %}
+<div class="row">
+  {% for topic in topics %}
+  <div class="col-lg-4 col-md-6 mb-4">
+    {% include 'partials/topic_card.html' with topic=topic %}
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+{% include 'partials/empty.html' %}
+{% endif %}
+{% endblock %}

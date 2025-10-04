@@ -1,0 +1,143 @@
+{% extends 'layouts/page.html' %}
+{% load static %}
+
+{% block page_title %}Preview: {{ resource.title }}{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <p class="mb-1">
+            <span class="badge text-bg-warning text-dark">{{ resource.format.title|upper }}</span>
+            {% if preview_data.shape %}
+            <span class="text-muted">{{ preview_data.shape.0 }} rows × {{ preview_data.shape.1 }} columns</span>
+            {% if preview_data.preview_shape and preview_data.preview_shape.0 < preview_data.shape.0 %}
+            <span class="text-muted">(showing first {{ preview_data.preview_shape.0 }})</span>
+            {% endif %}
+            {% endif %}
+        </p>
+    </div>
+    <div>
+        <a href="{% url 'app:resource' resource.dataset.slug resource.slug %}" class="btn btn-secondary btn-sm">
+            <i class="bi bi-arrow-left"></i> Back to Resource
+        </a>
+        {% if resource.file %}
+        <a href="{{ resource.file.url }}" class="btn btn-primary btn-sm" download>
+            <i class="bi bi-download"></i> Download
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+{% if preview_data %}
+    {% if preview_data.type == 'dataframe' %}
+        <div class="card" style="border: none; box-shadow: none;">
+            <div class="card-header bg-light">
+                <h6 class="mb-0">Data Preview 
+                    {% if preview_data.preview_shape and preview_data.shape and preview_data.preview_shape.0 < preview_data.shape.0 %}
+                    (showing first {{ preview_data.preview_shape.0 }} of {{ preview_data.shape.0 }} rows)
+                    {% endif %}
+                </h6>
+                {% if preview_data.columns %}
+                <small class="text-muted">
+                    Columns: {% for col in preview_data.columns %}
+                        <span class="badge bg-light text-dark me-1">{{ col }}</span>
+                    {% endfor %}
+                </small>
+                {% endif %}
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    {{ preview_data.data|safe }}
+                </div>
+            </div>
+        </div>
+        
+        {% if preview_data.preview_shape and preview_data.shape and preview_data.preview_shape.0 < preview_data.shape.0 %}
+        <div class="mt-3">
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i>
+                This preview shows the first {{ preview_data.preview_shape.0 }} rows out of {{ preview_data.shape.0 }} total rows.
+                <a href="{{ resource.file.url }}" class="alert-link">Download the full file</a> to see all data.
+            </div>
+        </div>
+        {% endif %}
+        
+    {% elif preview_data.type == 'json' %}
+        <div class="card" style="border: none; box-shadow: none;">
+            <div class="card-header bg-light">
+                <h6 class="mb-0">JSON Preview</h6>
+            </div>
+            <div class="card-body">
+                <pre class="bg-light p-3 rounded"><code>{{ preview_data.data }}</code></pre>
+            </div>
+        </div>
+        
+    {% elif preview_data.type == 'xml' %}
+        <div class="card" style="border: none; box-shadow: none;">
+            <div class="card-header bg-light">
+                <h6 class="mb-0">XML Preview</h6>
+            </div>
+            <div class="card-body">
+                <pre class="bg-light p-3 rounded"><code>{{ preview_data.data }}</code></pre>
+            </div>
+        </div>
+        
+    {% elif preview_data.type == 'error' %}
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle"></i>
+            {{ preview_data.data }}
+        </div>
+    {% endif %}
+    
+{% else %}
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle"></i>
+        Preview not available for this file type or the file could not be processed.
+    </div>
+{% endif %}
+
+<div class="mt-5">
+    <h5>About this Resource</h5>
+    <dl class="row">
+        <dt class="col-3">Format</dt>
+        <dd class="col-9">{{ resource.format.title }}</dd>
+        <dt class="col-3">Size</dt>
+        <dd class="col-9">{{ resource.size|filesizeformat }}</dd>
+        <dt class="col-3">Updated</dt>
+        <dd class="col-9">{{ resource.updated|date:"j F Y" }}</dd>
+    </dl>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Custom table styling for previews */
+.table-responsive table {
+    font-size: 0.875rem;
+}
+
+.table td, .table th {
+    padding: 0.5rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 200px;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+pre code {
+    font-size: 0.8rem;
+    max-height: 500px;
+    overflow-y: auto;
+}
+</style>
+{% endblock %}

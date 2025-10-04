@@ -1,0 +1,19 @@
+{% if style == "link" %}
+<a href="{% url 'app:resource' resource.dataset.slug resource.slug %}" class="badge
+  {% if resource.format.title == 'CSV' %}text-bg-success
+  {% elif resource.format.title == 'JSON' %}text-bg-info
+  {% elif resource.format.title == 'XML' %}text-bg-primary
+  {% elif resource.format.title == 'PDF' %}text-bg-danger
+  {% elif resource.format.title == 'XLSX' %}text-bg-warning
+  {% else %}text-bg-secondary
+  {% endif %} text-decoration-none fw-semibold">{{ resource.format|upper }}</a>
+{% else %}
+<span class="badge 
+  {% if resource.format.title == 'CSV' %}text-bg-success
+  {% elif resource.format.title == 'JSON' %}text-bg-info
+  {% elif resource.format.title == 'XML' %}text-bg-primary
+  {% elif resource.format.title == 'PDF' %}text-bg-danger
+  {% elif resource.format.title == 'XLSX' %}text-bg-warning
+  {% else %}text-bg-secondary
+  {% endif %} text-decoration-none fw-semibold">{{ resource.format|upper }}</span>
+{% endif %}

@@ -1,0 +1,26 @@
+{% load static %}
+{% load custom_tags %}
+{% load humanize %}
+
+<h3 class="mb-4">{{ paginator.count|intcomma }} dataset{{ paginator.count|pluralize }} found&hellip;</h3>
+{% include 'partials/search.html' %}
+
+{% if request.GET|length > 0 %}
+<p class="lead mb-3">
+{% for key,value in request.GET.items %}
+{% query_del request key=key as query %}
+<a class="badge text-bg-secondary link-light" href="{{ request.path }}{% if query|length > 0 %}?{% endif %}{{ query }}">
+  {{ key|capfirst }}: {{ value }} <i class="bi bi-x ms-1"></i></a>
+{% endfor %}
+</p>
+{% endif %}
+
+
+{% if datasets %}
+  {% for dataset in datasets %}
+    {% include 'partials/dataset_card.html' %}
+  {% endfor %}
+  {% include 'partials/pager.html' %}
+{% else %}
+  {% include 'partials/empty.html' %}
+{% endif %}

@@ -1,0 +1,58 @@
+{% load static %}
+{% load custom_tags %}
+<section class="bg-secondary-subtle">
+  <div class="container">
+    <div class="row pt-5">
+      <div class="col-md-4">
+        <h3>Get Involved</h3>
+        <p class="mb-0"><a class="link-dark" href="{% url 'app:page' 'faqs' %}"><u>Frequently Asked Questions</u></a></p>
+      </div>
+      <div class="col-md-4">
+        <h3>Start Publishing</h3>
+        <p class="mb-0"><a class="link-dark" href="{% url 'app:page' 'contact' %}"><u>Register your organisation</u></a> to publish data</p>
+      </div>
+      <div class="col-md-4">
+        <h3>Get in touch</h3>
+        <p class="mb-0"><a class="link-dark" href="{% url 'app:page' 'contact' %}"><u>Contact us</u></a> for help and support</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="bg-secondary-subtle">
+  <div class="container">
+    {% stats as stats %}
+    <div class="d-flex justify-content-between py-5">
+      <p class="mb-0"><span class="fs-1 fw-bold d-block text-secondary">{{ stats.datasets }}</span> Dataset{{ stats.datasets|pluralize }}</p>
+      <p class="mb-0"><span class="fs-1 fw-bold d-block text-secondary">{{ stats.organisations }}</span> Organisation{{ stats.organisations|pluralize }}</p>
+      <p class="mb-0"><span class="fs-1 fw-bold d-block text-secondary">{{ stats.topics }}</span> Topic{{ stats.topics|pluralize }}</p>
+      <p class="mb-0"><span class="fs-1 fw-bold d-block text-secondary">{{ stats.users }}</span> User{{ stats.users|pluralize }}</p>
+    </div>
+  </div>
+</section>
+<section class="bg-secondary-subtle">
+  <div class="container">
+    <footer class="row pb-5">
+      <div class="col-md-2">
+        <ul class="list-inline d-flex align-items-center justify-content-between mb-0">
+          <li class="list-inline-item"><a href="https://www.facebook.com" class="link-secondary"><i
+                class="bi bi-facebook" style="font-size: 2rem;"></i></a></li>
+          <li class="list-inline-item"><a href="https://www.twitter.com" class="link-secondary"><i
+                class="bi bi-twitter" style="font-size: 2rem;"></i></a></li>
+          <li class="list-inline-item"><a href="https://www.github.com" class="link-secondary"><i
+                class="bi bi-github" style="font-size: 2rem;"></i></a></li>
+        </ul>
+      </div>
+      <div class="col-md-10">
+        <ul class="nav justify-content-end">
+          <li class="nav-item"><a class="nav-link link-dark" href="{% url 'app:page' 'about' %}">About</a></li>
+          <li class="nav-item"><a class="nav-link link-dark" href="{% url 'app:page' 'faqs' %}">FAQs</a></li>
+          <li class="nav-item"><a class="nav-link link-dark" href="{% url 'app:page' 'contact' %}">Contact</a></li>
+          <li class="nav-item"><a class="nav-link link-dark" href="{% url 'app:page' 'terms' %}">Terms of Use</a></li>
+          <li class="nav-item"><a class="nav-link link-dark" href="{% url 'app:page' 'privacy' %}">Privacy Policy</a></li>
+          <li class="nav-item"><a class="nav-link link-dark" href="https://github.com/schajee/ekan"
+              target="_blank">Source Code</a></li>
+        </ul>
+      </div>
+    </footer>
+  </div>
+</section>

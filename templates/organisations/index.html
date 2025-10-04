@@ -1,0 +1,19 @@
+{% extends 'layouts/page.html' %}
+{% block title %}{{ block.super }} - Organisations{% endblock %}
+
+{% block page_title %} Organisations {% endblock %}
+
+{% block content %}
+<h3 class="mb-4">{{ organisations|length }} organisation{{ organisations|pluralize }} found&hellip;</h3>
+{% if organisations %}
+<div class="row">
+  {% for organisation in organisations %}
+  <div class="col-lg-4 col-md-6 mb-4">
+    {% include 'partials/organisation_card.html' with organisation=organisation %}
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+{% include 'partials/empty.html' %}
+{% endif %}
+{% endblock %}

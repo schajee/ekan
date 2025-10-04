@@ -1,0 +1,58 @@
+{% extends 'layouts/page.html' %}
+{% block title %}{{ block.super }} - My Account{% endblock %}
+{% block page_title %} My Account {% endblock %}
+
+{% block content %}
+
+<div class="card">
+  <header class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a class="nav-link text-dark {% if page == 'account' %} active {% endif %}" href="{% url 'app:account' %}"><i class="bi bi-person me-1 text-muted"></i> Account</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-dark {% if page == 'organisations' %} active {% endif %}" href="{% url 'app:account_page' 'organisations' %}"><i class="bi bi-folder2-open me-1 text-muted"></i> Organisations</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-dark {% if page == 'datasets' %} active {% endif %}" href="{% url 'app:account_page' 'datasets' %}"><i class="bi bi-files me-1 text-muted"></i> Datasets</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-dark {% if page == 'resources' %} active {% endif %}" href="{% url 'app:account_page' 'resources' %}"><i class="bi bi-link me-1 text-muted"></i> Resources</a>
+      </li>
+      {% if page == 'organisations' %}
+        {% if perms.web.add_organisation %}
+        <li class="nav-item ms-auto">
+          <a class="nav-link text-dark active"
+            href="{% url 'admin:web_organisation_add' %}"><i class="bi bi-plus text-danger"></i></a>
+        </li>
+        {% endif %}
+      {% elif page == 'datasets' %}
+        {% if perms.web.add_dataset %}
+        <li class="nav-item ms-auto">
+          <a class="nav-link text-dark active" href="{% url 'admin:web_dataset_add' %}"><i
+              class="bi bi-plus text-danger"></i></a>
+        </li>
+        {% endif %}
+      {% elif page == 'resources' %}
+        {% if perms.web.add_resource %}
+        <li class="nav-item ms-auto">
+          <a class="nav-link text-dark active" href="{% url 'admin:web_resource_add' %}"><i
+              class="bi bi-plus text-danger"></i></a>
+        </li>
+        {% endif %}
+      {% endif %}
+    </ul>
+  </header>
+  <main class="card-body">
+    <div class="tab-content">
+      <div class="tab-pane active" id="account">
+        {% with 'account/'|add:page|add:'.html' as template %}
+        {% include template with form=form %}
+        {% endwith %}
+      </div>
+    </div>
+  </main>
+</div>
+
+
+{% endblock %}

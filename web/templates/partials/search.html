@@ -1,7 +1,0 @@
-{% if request.path == '/' %}
-<form id="search" class="mb-4" action="{% url 'web:datasets' %}" method="get" autocomplete="off">
-{% else %}
-<form id="search" class="mb-4" method="get" autocomplete="off">
-{% endif %}
-    <input class="form-control form-control-lg" type="search" name="search" value="{{ request.GET.search }}" placeholder="Search datasets...">
-</form>
