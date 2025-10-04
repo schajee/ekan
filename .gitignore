@@ -20,6 +20,9 @@ var/
 env/
 .env/
 
+# Environment Variables
+.env
+
 # Django
 db.sqlite3
 media/
