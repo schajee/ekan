@@ -1,0 +1,10 @@
+{% extends 'layouts/page.html' %}
+{% load custom_tags %}
+
+{% block title %}Edit Dataset - {{ object.title }}{% endblock %}
+{% block page_title %}Edit Dataset{% endblock %}
+{% block page_description %}Update {{ object.title }}{% endblock %}
+
+{% block content %}
+{% include 'datasets/_form.html' %}
+{% endblock %}

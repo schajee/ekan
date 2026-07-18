@@ -1,0 +1,89 @@
+{% extends 'layouts/page.html' %}
+{% load humanize %}
+{% load custom_tags %}
+
+{% block title %}{{ organisation.title }} - Datasets | EKAN{% endblock %}
+{% block page_title %}{{ organisation.title }} - Datasets{% endblock %}
+{% block page_description %}All datasets published by {{ organisation.title }}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <!-- Main Content -->
+    <div class="col-lg-8">
+        
+        <!-- Datasets list -->
+        {% if datasets %}
+            <div class="row">
+                {% for dataset in datasets %}
+                <div class="col-md-6 mb-4">
+                    {% include 'partials/dataset_card_alt.html' with dataset=dataset %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if is_paginated %}
+            <nav aria-label="Datasets pagination">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">First</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                        </li>
+                    {% endif %}
+                    
+                    <li class="page-item active">
+                        <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                    </li>
+                    
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+
+        {% else %}
+            <div class="card border-light-subtle">
+                <div class="card-body text-center">
+                    <h5 class="card-title">No Datasets Found</h5>
+                    {% if user.is_authenticated and user_can_manage %}
+                        <p class="text-muted">This organization doesn't have any datasets yet.</p>
+                        <a href="{% url 'app:dataset_create' org_slug=organisation.slug %}" class="btn btn-success">
+                            Create First Dataset
+                        </a>
+                    {% else %}
+                        <p class="text-muted">This organization hasn't published any datasets yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+        <!-- Quick actions for managers -->
+        {% if user.is_authenticated and user_can_manage %}
+        <div class="card border-light-subtle mb-4">
+            <div class="card-body">
+                <h6 class="card-title">Quick Actions</h6>
+                <div class="d-grid gap-2">
+                    <a href="{% url 'app:dataset_create' org_slug=organisation.slug %}" class="btn btn-success">
+                        Add New Dataset
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

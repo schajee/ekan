@@ -1,0 +1,10 @@
+{% extends 'layouts/page.html' %}
+{% load custom_tags %}
+
+{% block title %}Edit Organization - {{ object.title }}{% endblock %}
+{% block page_title %}Edit Organization{% endblock %}
+{% block page_description %}Update {{ object.title }}{% endblock %}
+
+{% block content %}
+{% include 'organisations/_form.html' %}
+{% endblock %}

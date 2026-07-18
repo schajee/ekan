@@ -1,12 +1,11 @@
 <div class="card border-light-subtle h-100">
   <div class="card-body">
-    <i class="{{ topic.icon }} float-end ms-3 text-muted" style="font-size: 3rem;"></i>
     <h5 class="card-title">
         <a class="stretched-link link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url 'app:datasets' %}?topic={{ topic.slug }}">{{ topic.title }}</a>
     </h5>
     <p class="mb-0 small">{{ topic.description|truncatewords:20 }}</p>
   </div>
   <div class="card-footer bg-transparent border-0 pt-0">
-    <small class="text-muted">{{ topic.datasets.count }} dataset{{ topic.datasets.count|pluralize }}</small>
+    <small class="text-muted">{{ topic.published_dataset_count }} dataset{{ topic.published_dataset_count|pluralize }}</small>
   </div>
 </div>

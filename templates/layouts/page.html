@@ -16,11 +16,11 @@
   <section>
     <header class="container py-3">
       <h1>{% block page_title %}{% endblock %}</h1>
-      <p class="lead mb-0">{% block page_description %}{% endblock %}</p>
+      {% comment %} <p class="lead mb-0">{% block page_description %}{% endblock %}</p> {% endcomment %}
     </header>
   </section>
 
-  <section class="py-5">
+  <section class="py-3">
     <div class="container">
       {% if messages %}
         {% for message in messages %}

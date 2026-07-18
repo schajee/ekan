@@ -1,0 +1,90 @@
+<div class="card">
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>Please correct the following errors:</strong>
+                    <ul class="mb-0 mt-2">
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label for="{{ form.title.id_for_label }}" class="form-label">
+                            Organization Name <span class="text-danger">*</span>
+                        </label>
+                        {{ form.title }}
+                        {% if form.title.help_text %}
+                            <div class="form-text">{{ form.title.help_text }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label for="{{ form.description.id_for_label }}" class="form-label">
+                            Description <span class="text-danger">*</span>
+                        </label>
+                        {{ form.description }}
+                        {% if form.description.help_text %}
+                            <div class="form-text">{{ form.description.help_text }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="{{ form.url.id_for_label }}" class="form-label">
+                            Website URL
+                        </label>
+                        {{ form.url }}
+                        {% if form.url.help_text %}
+                            <div class="form-text">{{ form.url.help_text }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="{{ form.logo.id_for_label }}" class="form-label">
+                            Logo
+                        </label>
+                        {{ form.logo }}
+                        {% if form.logo.help_text %}
+                            <div class="form-text">{{ form.logo.help_text }}</div>
+                        {% endif %}
+                        {% if object.logo %}
+                            <div class="mt-2">
+                                <small class="text-muted">
+                                    Current logo:
+                                    <a href="{{ object.logo.url }}" class="link-primary" target="_blank">{{ object.logo.name }}</a>
+                                </small>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success">
+                    {% if object %}Save Changes{% else %}Create Organization{% endif %}
+                </button>
+                <a href="{% if object %}{% url 'app:organisation' slug=object.slug %}{% else %}{% url 'app:organisations' %}{% endif %}" class="btn btn-outline-secondary">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

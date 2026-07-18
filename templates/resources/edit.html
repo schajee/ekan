@@ -1,0 +1,10 @@
+{% extends 'layouts/page.html' %}
+{% load custom_tags %}
+
+{% block title %}Edit Resource - {{ object.title }}{% endblock %}
+{% block page_title %}Edit Resource{% endblock %}
+{% block page_description %}Update {{ object.title }}{% endblock %}
+
+{% block content %}
+{% include 'resources/_form.html' %}
+{% endblock %}

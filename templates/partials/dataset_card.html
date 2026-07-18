@@ -1,11 +1,11 @@
 {% load custom_tags %}
 <div class="card border-light-subtle mb-4">
   <div class="card-body">
-    <h4 class="card-title">
-      <a class="link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url 'app:dataset' dataset.slug %}">
+    <h5 class="card-title">
+      <a class="stretched-link link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url 'app:dataset' dataset.slug %}">
         {% if request.GET.q %}{{ dataset.title|highlight_search:request.GET.q }}{% else %}{{ dataset.title }}{% endif %}
       </a>
-    </h4>
+    </h5>
     <p class="small">
       {% if 'organisations' not in request.path %}
       <a class="link-secondary link-underline link-underline-opacity-0 link-underline-opacity-100-hover" href="{% url 'app:organisation' dataset.organisation.slug %}">
@@ -16,13 +16,22 @@
     <p>
       {% if request.GET.q %}{{ dataset.description|truncatewords:50|highlight_search:request.GET.q }}{% else %}{{ dataset.description|truncatewords:50 }}{% endif %}
     </p>
-
-    {% if dataset.resources.all %}
-    <p class="mb-0">
-      {% for resource in dataset.resources.all %}
-      {% include 'partials/resource_tag.html' with resource=resource style='link' %}
-      {% endfor %}
-    </p>
-    {% endif %}
   </div>
+  
+  {% if dataset.resources.all %}
+  <div class="card-footer bg-transparent border-0 pt-0">
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex gap-2">
+        <small class="text-muted">{{ dataset.resource_count }} resource{{ dataset.resource_count|pluralize }}</small>
+        <small class="text-muted">Updated {{ dataset.last_resource_update|date:"M d, Y" }}</small>
+      </div>
+      <div class="d-flex gap-1">
+        {% distinct_formats dataset.resources.all as unique_resources %}
+        {% for resource in unique_resources %}
+          {% include 'partials/resource_tag.html' with resource=resource %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
 </div>

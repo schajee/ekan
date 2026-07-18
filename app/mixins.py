@@ -66,20 +66,23 @@ class ResourceMetaMixin(EKANMetaMixin):
     
     def get_meta_title(self, context=None):
         if hasattr(self, 'object') and self.object:
-            return f"{self.object.title} | {self.object.dataset.title} | EKAN"
+            resource_name = f"Resource {str(self.object.id)[:8]}"
+            return f"{resource_name} | {self.object.dataset.title} | EKAN"
         return "Resource | EKAN"
     
     def get_meta_description(self, context=None):
         if hasattr(self, 'object') and self.object:
-            desc = self.object.description or f"Resource: {self.object.title}"
-            return f"{desc} (Format: {self.object.format.title})"
+            resource_name = f"Resource {str(self.object.id)[:8]}"
+            format_info = f" (Format: {self.object.format.title})" if self.object.format else ""
+            return f"{resource_name} from {self.object.dataset.title}{format_info}"
         return "Download data resource"
     
     def get_meta_keywords(self, context=None):
         keywords = list(self.meta_keywords)
         if hasattr(self, 'object') and self.object:
+            if self.object.format:
+                keywords.append(self.object.format.title.lower())
             keywords.extend([
-                self.object.format.title.lower(),
                 self.object.dataset.title,
                 'download'
             ])

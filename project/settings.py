@@ -103,18 +103,37 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-# Allauth configuration
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-ACCOUNT_LOGIN_METHODS = ['email']
-ACCOUNT_SIGNUP_FIELDS = ['email*']
+# Allauth configuration - Minimal setup
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_LOGIN_METHODS = ['username']
+ACCOUNT_SIGNUP_FIELDS = ['email', 'username*', 'password1*', 'password2*']
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_LOGOUT_ON_GET = False
-ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
-ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
-ACCOUNT_PASSWORD_MIN_LENGTH = 8
-ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USERNAME_BLACKLIST = ['admin', 'administrator', 'root', 'system']
-ACCOUNT_EMAIL_SUBJECT_PREFIX = '[EKAN] '
+ACCOUNT_PASSWORD_MIN_LENGTH = 1
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False
+
+# Completely disable all MFA/codes
+ACCOUNT_LOGIN_BY_CODE_ENABLED = False
+
+# Social account configuration
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_QUERY_EMAIL = True
+
+# Social account providers configuration
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+            'openid',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
 
 WSGI_APPLICATION = 'project.wsgi.application'
 
@@ -222,3 +241,11 @@ META_DEFAULT_KEYWORDS = ['open data', 'government', 'datasets', 'transparency']
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# SESSION_COOKIE_DOMAIN = ".floods.pk"
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://localhost:8000",
+#     "https://*.floods.pk",
+#     "https://floods.pk",
+# ]
+# SESSION_ENGINE = "django.contrib.sessions.backends.db"

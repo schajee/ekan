@@ -50,22 +50,22 @@
     
     <div class="d-grid gap-2 mb-3">
         <button type="submit" class="btn btn-primary">
-            <i class="bi bi-shield-check me-2"></i>{% trans "Confirm" %}
+            {% trans "Confirm" %}
         </button>
         
         {% if can_resend %}
         <button type="submit" form="resend" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-clockwise me-2"></i>{% trans "Request new code" %}
+            {% trans "Request new code" %}
         </button>
         {% endif %}
         
         {% if cancel_url %}
         <a href="{{ cancel_url }}" class="btn btn-outline-secondary">
-            <i class="bi bi-x-circle me-2"></i>{% trans "Cancel" %}
+            {% trans "Cancel" %}
         </a>
         {% else %}
         <button type="submit" form="logout-from-stage" class="btn btn-outline-secondary">
-            <i class="bi bi-x-circle me-2"></i>{% trans "Cancel" %}
+            {% trans "Cancel" %}
         </button>
         {% endif %}
     </div>

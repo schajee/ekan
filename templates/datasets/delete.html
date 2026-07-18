@@ -1,0 +1,36 @@
+{% extends 'layouts/page.html' %}
+
+{% block title %}Delete Dataset - {{ dataset.title }}{% endblock %}
+{% block page_title %}Delete Dataset{% endblock %}
+{% block page_description %}Are you sure you want to delete "{{ dataset.title }}"?{% endblock %}
+
+{% block content %}
+<div class="card border-light-subtle mb-5">
+    <div class="card-body">
+        <div class="alert alert-danger">
+            <h5 class="alert-heading">Warning!</h5>
+            <p class="mb-0">You are about to permanently delete this dataset and all its resources. This action cannot be undone.</p>
+        </div>
+        
+        <h6>Dataset Details:</h6>
+        <ul class="list-unstyled">
+            <li><strong>Title:</strong> {{ dataset.title }}</li>
+            <li><strong>Organisation:</strong> {{ dataset.organisation.title }}</li>
+            <li><strong>Resources:</strong> {{ dataset.resources.count }} resource{{ dataset.resources.count|pluralize }}</li>
+            <li><strong>Created:</strong> {{ dataset.created|date:"F d, Y" }}</li>
+        </ul>
+        
+        <form method="post" class="mt-4">
+            {% csrf_token %}
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">
+                    Yes, Delete Dataset
+                </button>
+                <a href="{% url 'app:dataset' slug=dataset.slug %}" class="btn btn-outline-secondary">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

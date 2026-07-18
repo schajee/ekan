@@ -1,0 +1,62 @@
+<div class="card border-light-subtle mb-5">
+  <div class="card-body">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %} {% if form.errors %}
+      <div class="alert alert-danger">
+        <strong>Please correct the following errors:</strong>
+        <ul class="mb-0 mt-2">
+          {% for field, errors in form.errors.items %} {% for error in errors %}
+          <li>{{ error }}</li>
+          {% endfor %} {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      <div class="mb-3">
+        <label for="{{ form.format.id_for_label }}" class="form-label">Format</label>
+        {{ form.format }} {% if form.format.help_text %}
+        <div class="form-text">{{ form.format.help_text }}</div>
+        {% endif %}
+      </div>
+
+      <div class="mb-3">
+        <label for="{{ form.file.id_for_label }}" class="form-label">Upload File</label>
+        {{ form.file }} {% if form.file.help_text %}
+        <div class="form-text">{{ form.file.help_text }}</div>
+        {% endif %} {% if object.file %}
+        <div class="mt-2">
+          <small class="text-muted">
+            Current file:
+            <a href="{{ object.file.url }}" class="link-primary" target="_blank">{{ object.file.name }}</a>
+          </small>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="mb-3">
+        <label for="{{ form.url.id_for_label }}" class="form-label">External URL</label>
+        {{ form.url }} {% if form.url.help_text %}
+        <div class="form-text">{{ form.url.help_text }}</div>
+        {% endif %} {% if object.url %}
+        <div class="mt-2">
+          <small class="text-muted">
+            Current URL:
+            <a href="{{ object.url }}" target="_blank">{{ object.url }}</a>
+          </small>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-success">
+          {% if object %}Save Changes{% else %}Add Resource{% endif %}
+        </button>
+        <a
+          href="{% if object %}{% url 'app:resource' dataset_slug=object.dataset.slug uuid=object.id %}{% else %}{% url 'app:dataset' slug=dataset.slug %}{% endif %}"
+          class="btn btn-outline-secondary">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="card border-light-subtle h-100">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+            <h6 class="card-title mb-0">
+                <a href="{{ dataset.get_absolute_url }}" class="stretched-link link-dark  link-underline link-underline-opacity-0 link-underline-opacity-100-hover">{{ dataset.title }}</a>
+            </h6>
+            {% if not dataset.is_published %}
+                <span class="badge bg-warning text-dark">Draft</span>
+            {% else %}
+                <span class="badge bg-success">Published</span>
+            {% endif %}
+        </div>
+        
+        {% if dataset.description %}
+            <p class="card-text text-muted small mb-0">{{ dataset.description|truncatechars:120 }}</p>
+        {% endif %}
+    </div>
+    
+    <div class="card-footer bg-transparent border-0 pt-0">
+        <div class="d-flex justify-content-between align-items-center">
+            <small class="text-muted">
+                {{ dataset.resource_count }} resource{{ dataset.resource_count|pluralize }}
+            </small>
+            <small class="text-muted">
+                {{ dataset.updated|timesince }} ago
+            </small>
+        </div>
+    </div>
+</div>

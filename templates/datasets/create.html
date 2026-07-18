@@ -1,0 +1,10 @@
+{% extends 'layouts/page.html' %}
+{% load custom_tags %}
+
+{% block title %}Create Dataset - {{ organisation.title }}{% endblock %}
+{% block page_title %}Create Dataset{% endblock %}
+{% block page_description %}Add a new dataset to {{ organisation.title }}{% endblock %}
+
+{% block content %}
+{% include 'datasets/_form.html' %}
+{% endblock %}

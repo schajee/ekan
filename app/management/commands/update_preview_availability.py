@@ -20,7 +20,7 @@ class Command(BaseCommand):
                 updated_count += 1
                 
                 status = '✅ Preview available' if resource.is_preview_available else '❌ No preview'
-                self.stdout.write(f'   📄 {resource.title} ({resource.format}): {status}')
+                self.stdout.write(f'   📄 Resource {str(resource.id)[:8]} ({resource.format}): {status}')
         
         self.stdout.write('')
         self.stdout.write(self.style.SUCCESS(f'✅ Updated {updated_count} resources'))
@@ -48,6 +48,6 @@ class Command(BaseCommand):
         if previewable > 0:
             sample_resource = Resource.objects.filter(is_preview_available=True).first()
             if sample_resource:
-                self.stdout.write(f'   Visit: /datasets/{sample_resource.dataset.slug}/resources/{sample_resource.slug}/preview/')
+                self.stdout.write(f'   Visit: /datasets/{sample_resource.dataset.slug}/resources/{sample_resource.id}/preview/')
         else:
             self.stdout.write('   No previewable resources found. Upload CSV, XLSX, or JSON files to test.')

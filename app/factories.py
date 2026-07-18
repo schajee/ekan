@@ -3,7 +3,7 @@ from faker import Faker
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.utils import timezone
-from .models import Organisation, OrganisationMember, License, Topic, Dataset, Format, Resource
+from .models import Organisation, Topic, Dataset, Resource
 
 fake = Faker()
 
@@ -16,18 +16,18 @@ GOVT_ORGANISATIONS = [
 ]
 
 TOPICS_DATA = [
-    ("Education", "bi bi-mortarboard", "#007bff"),
-    ("Health", "bi bi-heart-pulse", "#dc3545"),
-    ("Environment", "bi bi-tree", "#28a745"),
-    ("Transport", "bi bi-car-front", "#6c757d"),
-    ("Economy", "bi bi-graph-up", "#fd7e14"),
-    ("Agriculture", "bi bi-flower1", "#20c997"),
-    ("Energy", "bi bi-lightning", "#ffc107"),
-    ("Tourism", "bi bi-geo-alt", "#e83e8c"),
-    ("Social Services", "bi bi-people", "#6f42c1"),
-    ("Justice", "bi bi-scales", "#17a2b8"),
-    ("Defense", "bi bi-shield", "#343a40"),
-    ("Technology", "bi bi-cpu", "#007bff"),
+    ("Education", "#007bff"),
+    ("Health", "#dc3545"),
+    ("Environment", "#28a745"),
+    ("Transport", "#6c757d"),
+    ("Economy", "#fd7e14"),
+    ("Agriculture", "#20c997"),
+    ("Energy", "#ffc107"),
+    ("Tourism", "#e83e8c"),
+    ("Social Services", "#6f42c1"),
+    ("Justice", "#17a2b8"),
+    ("Defense", "#343a40"),
+    ("Technology", "#007bff"),
 ]
 
 LICENSES_DATA = [
@@ -54,33 +54,14 @@ FORMATS_DATA = [
 
 
 def create_users(count=10):
-    """Create sample users"""
+    """Create sample users (excluding admin and demo users)"""
     users = []
     
-    # First, always create the admin user
-    admin_user, created = User.objects.get_or_create(
-        username='admin',
-        defaults={
-            'email': 'admin@example.com',
-            'first_name': 'Admin',
-            'last_name': 'User',
-            'is_staff': True,
-            'is_superuser': True,
-            'is_active': True
-        }
-    )
-    if created:
-        admin_user.date_joined = fake.date_time_between(start_date='-2y', end_date='now', tzinfo=timezone.get_current_timezone())
-        admin_user.save()
-        users.append(admin_user)
-        print(f"   Created admin user: {admin_user.email}")
-    
-    # Then create the remaining users
-    remaining_count = count - 1 if created else count
-    for i in range(remaining_count):
+    # Create regular users
+    for i in range(count):
         username = fake.user_name()
-        # Ensure unique usernames
-        while User.objects.filter(username=username).exists():
+        # Ensure unique usernames and avoid reserved names
+        while User.objects.filter(username=username).exists() or username in ['admin', 'demo']:
             username = fake.user_name()
         
         user = User.objects.create_user(
@@ -104,13 +85,12 @@ def create_users(count=10):
 def create_topics():
     """Create predefined topics"""
     topics = []
-    for title, icon, color in TOPICS_DATA:
+    for title, color in TOPICS_DATA:
         topic, created = Topic.objects.get_or_create(
             slug=slugify(title),
             defaults={
                 'title': title,
                 'description': fake.paragraph(nb_sentences=3),
-                'icon': icon,
                 'color': color,
                 'is_featured': fake.boolean(chance_of_getting_true=40),
             }
@@ -145,44 +125,15 @@ def create_organisations(users, count=12):
                 'created': fake.date_time_between(start_date='-1y', end_date='now', tzinfo=timezone.get_current_timezone()),
             }
         )
+        
+        # Add 2-5 users to this organisation
+        num_users = random.randint(2, 5)
+        selected_users = random.sample(users, min(num_users, len(users)))
+        for user in selected_users:
+            org.users.add(user)
+        
         organisations.append(org)
     return organisations
-
-
-def create_organisation_members(organisations, users):
-    """Create organisation members with various roles"""
-    members = []
-    roles = ['admin', 'manager', 'coordinator', 'editor', 'analyst', 'viewer']
-    job_titles = [
-        'Data Manager', 'Senior Analyst', 'Information Officer', 'Research Coordinator',
-        'Database Administrator', 'Policy Analyst', 'Statistics Officer', 'Data Scientist',
-        'Information Systems Manager', 'Research Assistant', 'Data Entry Specialist'
-    ]
-    
-    for org in organisations:
-        # Create 2-5 members per organization
-        num_members = random.randint(2, 5)
-        selected_users = random.sample(users, min(num_members, len(users)))
-        
-        for i, user in enumerate(selected_users):
-            # First member is often an admin/manager, others have varied roles
-            role = 'admin' if i == 0 else random.choice(roles)
-            
-            member, created = OrganisationMember.objects.get_or_create(
-                organisation=org,
-                user=user,
-                defaults={
-                    'role': role,
-                    'title': random.choice(job_titles),
-                    'phone': fake.phone_number() if random.choice([True, False]) else '',
-                    'email': fake.email() if random.choice([True, False]) else '',
-                    'is_public_contact': random.choice([True, False, False]),  # 1/3 chance
-                    'is_active': True,
-                }
-            )
-            members.append(member)
-    
-    return members
 
 
 def create_datasets(organisations, licenses, users, topics, count=50):
@@ -203,16 +154,19 @@ def create_datasets(organisations, licenses, users, topics, count=50):
         created_date = fake.date_time_between(start_date='-8m', end_date='now', tzinfo=timezone.get_current_timezone())
         is_published = fake.boolean(chance_of_getting_true=80)
         
+        organisation = random.choice(organisations)
+        # Select maintainer from the organisation's users if available, otherwise any user
+        maintainer = random.choice(list(organisation.users.all())) if organisation.users.exists() else random.choice(users)
+        
         dataset = Dataset.objects.create(
             title=title,
             slug=slug,
             description=fake.paragraph(nb_sentences=5),
             notes=fake.text(max_nb_chars=500) if fake.boolean(chance_of_getting_true=60) else "",
-            organisation=random.choice(organisations),
+            organisation=organisation,
             license=random.choice(licenses),
             author=random.choice(users),
-            maintainer_name=fake.name() if fake.boolean(chance_of_getting_true=70) else "",
-            maintainer_email=fake.email() if fake.boolean(chance_of_getting_true=70) else "",
+            maintainer=maintainer,
             is_published=is_published,
             is_featured=fake.boolean(chance_of_getting_true=20),
             created=created_date,
@@ -252,11 +206,6 @@ def create_resources(datasets, formats, count=200):
     
     for i in range(count):
         dataset = random.choice(datasets)
-        title = f"{fake.word().title()} {fake.word().title()} Data"
-        
-        # Create unique slug
-        base_slug = slugify(title)
-        slug = f"{base_slug}-{fake.uuid4()[:8]}"
         
         created_date = fake.date_time_between(
             start_date=dataset.created, 
@@ -280,9 +229,6 @@ def create_resources(datasets, formats, count=200):
             url = fake.url()
         
         resource = Resource.objects.create(
-            title=title,
-            slug=slug,
-            description=fake.paragraph(nb_sentences=3),
             dataset=dataset,
             format=format_obj,
             url=url,

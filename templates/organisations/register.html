@@ -5,23 +5,9 @@
 {% block page_title %}Register New Organization{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-8 col-lg-6">
+<form id="org-registration-form" method="post" enctype="multipart/form-data">
     <div class="card">
-      <div class="card-header">
-        <h4 class="mb-0">
-          <i class="bi bi-building me-2"></i>
-          Organization Registration Request
-        </h4>
-      </div>
       <div class="card-body">
-        <div class="alert alert-info">
-          <i class="bi bi-info-circle me-2"></i>
-          <strong>Registration Process:</strong> Your organization request will be reviewed by our administrators. 
-          You'll be notified once it's approved and you can start publishing datasets.
-        </div>
-
-        <form method="post" enctype="multipart/form-data">
           {% csrf_token %}
           
           <div class="mb-4">
@@ -99,18 +85,20 @@
               {% endfor %}
             </div>
           {% endif %}
-
-          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <a href="{% url 'app:organisations' %}" class="btn btn-outline-secondary">
-              <i class="bi bi-arrow-left me-1"></i>Cancel
-            </a>
-            <button type="submit" class="btn btn-primary">
-              <i class="bi bi-send me-1"></i>Submit Request
+        </div>
+        
+        <div class="card-footer bg-transparent border-0">
+          <div class="d-flex gap-2">
+            <button type="submit" form="org-registration-form" class="btn btn-success">
+              Submit Request
             </button>
+            <a href="{% url 'app:organisations' %}" class="btn btn-outline-secondary">
+              Cancel
+            </a>
           </div>
-        </form>
+        </div>
       </div>
-    </div>
+    </form>
 
     <div class="mt-4">
       <h5>What happens next?</h5>
@@ -121,6 +109,4 @@
         <li>You can check the status via the admin console or contact support</li>
       </ol>
     </div>
-  </div>
-</div>
 {% endblock %}

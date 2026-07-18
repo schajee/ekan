@@ -18,12 +18,12 @@
         </p>
     </div>
     <div>
-        <a href="{% url 'app:resource' slug=resource.slug %}" class="btn btn-outline-success btn-sm">
-            <i class="bi bi-arrow-left"></i> Back to Resource
+        <a href="{% url 'app:resource' dataset_slug=resource.dataset.slug uuid=resource.id %}" class="btn btn-outline-success">
+            Back to Resource
         </a>
         {% if resource.file %}
-        <a href="{{ resource.file.url }}" class="btn btn-primary btn-sm" download>
-            <i class="bi bi-download"></i> Download
+        <a href="{{ resource.file.url }}" class="btn btn-primary" download>
+            Download
         </a>
         {% endif %}
     </div>

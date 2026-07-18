@@ -13,17 +13,30 @@ urlpatterns = [
     # Datasets
     path('datasets/', views.DatasetListView.as_view(), name='datasets'),
     path('datasets/<slug:slug>/', views.DatasetDetailView.as_view(), name='dataset'),
+    path('datasets/<slug:slug>/edit/', views.DatasetUpdateView.as_view(), name='dataset_edit'),
+    path('datasets/<slug:slug>/delete/', views.DatasetDeleteView.as_view(), name='dataset_delete'),
+    path('datasets/<slug:slug>/publish/', views.DatasetPublishView.as_view(), name='dataset_publish'),
     
-    # Resources  
-    path('resources/<slug:slug>/', views.ResourceDetailView.as_view(), name='resource'),
-    path('resources/<slug:slug>/preview/', views.ResourcePreviewView.as_view(), name='resource_preview'),
-    path('resources/<slug:slug>/download/', views.ResourceDownloadView.as_view(), name='resource_download'),
+    # Dataset creation for organizations
+    path('organisations/<slug:org_slug>/datasets/create/', views.DatasetCreateView.as_view(), name='dataset_create'),
+    
+    # Resources (nested under datasets)
+    # Resource creation for datasets (must come before resource detail to avoid conflicts)
+    path('datasets/<slug:dataset_slug>/resources/create/', views.ResourceCreateView.as_view(), name='resource_create'),
+    
+    path('datasets/<slug:dataset_slug>/resources/<uuid:uuid>/', views.ResourceDetailView.as_view(), name='resource'),
+    path('datasets/<slug:dataset_slug>/resources/<uuid:uuid>/preview/', views.ResourcePreviewView.as_view(), name='resource_preview'),
+    path('datasets/<slug:dataset_slug>/resources/<uuid:uuid>/download/', views.ResourceDownloadView.as_view(), name='resource_download'),
+    path('datasets/<slug:dataset_slug>/resources/<uuid:uuid>/edit/', views.ResourceUpdateView.as_view(), name='resource_edit'),
+    path('datasets/<slug:dataset_slug>/resources/<uuid:uuid>/delete/', views.ResourceDeleteView.as_view(), name='resource_delete'),
     
     # Organisations
     path('organisations/', views.OrganisationListView.as_view(), name='organisations'),
     path('organisations/register/', views.OrganisationRegistrationView.as_view(), name='organisation_register'),
     path('organisations/requests/success/', views.OrganisationRequestSuccessView.as_view(), name='organisation_request_success'),
     path('organisations/<slug:slug>/', views.OrganisationDetailView.as_view(), name='organisation'),
+    path('organisations/<slug:slug>/edit/', views.OrganisationEditView.as_view(), name='organisation_edit'),
+    path('organisations/<slug:slug>/datasets/', views.OrganisationDatasetListView.as_view(), name='organisation_datasets'),
     
     # Topics
     path('topics/', views.TopicListView.as_view(), name='topics'),

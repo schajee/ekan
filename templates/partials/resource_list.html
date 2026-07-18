@@ -1,0 +1,31 @@
+{% load custom_tags %}
+
+<!-- Resource List Partial -->
+<div class="card border-light-subtle mb-5">
+  <ul class="list-group list-group-flush">
+    {% for resource in resources %}
+    <li class="list-group-item list-group-item-action">
+      <div class="d-flex justify-content-between align-items-start">
+        <div class="flex-grow-1">
+          <h6 class="mb-1">
+            <a
+              href="{% url 'app:resource' dataset_slug=resource.dataset.slug uuid=resource.id %}"
+              class="stretched-link link-dark link-underline link-underline-opacity-0 link-underline-opacity-100-hover">
+              {{ resource.title }}
+            </a>
+          </h6>
+          <small class="text-muted">
+            {% if show_dataset %} Dataset:
+            <a href="{% url 'app:dataset' slug=resource.dataset.slug %}" class="link-dark">
+              {{ resource.dataset.title }}
+            </a>
+            • {% endif %} {% if resource.size %} {{ resource.size|filesizeformat }} • 
+            {% endif %} Updated {{ resource.updated|date:"M d, Y" }}
+          </small>
+        </div>
+        <div class="ms-2">{% include 'partials/resource_tag.html' with resource=resource %}</div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

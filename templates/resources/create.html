@@ -1,0 +1,10 @@
+{% extends 'layouts/page.html' %}
+{% load custom_tags %}
+
+{% block title %}Add Resource - {{ dataset.title }}{% endblock %}
+{% block page_title %}Add New Resource{% endblock %}
+{% block page_description %}Upload a file or link to a resource for {{ dataset.title }}{% endblock %}
+
+{% block content %}
+{% include 'resources/_form.html' %}
+{% endblock %}

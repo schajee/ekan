@@ -1,0 +1,15 @@
+https://data.floods.pk {
+    # Compress responses using zstd or gzip
+    encode zstd gzip
+
+    # Serve static assets directly through Caddy
+    handle_path /static/* {
+        root * /home/code4pk/ekan/staticfiles
+        file_server
+    }
+
+    # Reverse proxy all other traffic to Gunicorn
+    handle {
+        reverse_proxy 127.0.0.1:8000
+    }
+}

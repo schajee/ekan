@@ -4,8 +4,17 @@ from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from app.models import Dataset, Organisation, Topic, Format, License, Resource
 from django.contrib.auth.models import User
+import os
 
 register = template.Library()
+
+
+@register.filter
+def basename(value):
+    """Extract the filename from a file path"""
+    if value:
+        return os.path.basename(value)
+    return value
 
 
 @register.inclusion_tag('partials/breadcrumbs.html', takes_context=True)
@@ -35,23 +44,60 @@ def smart_breadcrumbs(context):
                 breadcrumbs.append({'title': 'Datasets', 'url': reverse('app:datasets')})
                 breadcrumbs.append({'title': dataset.title, 'url': None})
                 
+        elif url_name == 'dataset_create':
+            org_slug = kwargs.get('org_slug')
+            if org_slug:
+                org = get_object_or_404(Organisation, slug=org_slug, is_active=True)
+                breadcrumbs.append({'title': 'Organisations', 'url': reverse('app:organisations')})
+                breadcrumbs.append({'title': org.title, 'url': reverse('app:organisation', kwargs={'slug': org.slug})})
+                breadcrumbs.append({'title': 'Create Dataset', 'url': None})
+                
+        elif url_name == 'dataset_edit':
+            dataset_slug = kwargs.get('slug')
+            if dataset_slug:
+                dataset = get_object_or_404(Dataset, slug=dataset_slug)
+                breadcrumbs.append({'title': 'Datasets', 'url': reverse('app:datasets')})
+                breadcrumbs.append({'title': dataset.title, 'url': reverse('app:dataset', kwargs={'slug': dataset.slug})})
+                breadcrumbs.append({'title': 'Edit', 'url': None})
+                
         elif url_name == 'resource':
-            resource_slug = kwargs.get('slug')
-            if resource_slug:
-                resource = get_object_or_404(Resource, slug=resource_slug, dataset__is_published=True)
+            resource_uuid = kwargs.get('uuid')
+            dataset_slug = kwargs.get('dataset_slug')
+            if resource_uuid and dataset_slug:
+                resource = get_object_or_404(Resource, id=resource_uuid, dataset__slug=dataset_slug, dataset__is_published=True)
                 dataset = resource.dataset
                 breadcrumbs.append({'title': 'Datasets', 'url': reverse('app:datasets')})
                 breadcrumbs.append({'title': dataset.title, 'url': reverse('app:dataset', kwargs={'slug': dataset.slug})})
                 breadcrumbs.append({'title': resource.title, 'url': None})
                 
-        elif url_name == 'resource_preview':
-            resource_slug = kwargs.get('slug')
-            if resource_slug:
-                resource = get_object_or_404(Resource, slug=resource_slug, dataset__is_published=True)
+        elif url_name == 'resource_create':
+            dataset_slug = kwargs.get('dataset_slug')
+            if dataset_slug:
+                dataset = get_object_or_404(Dataset, slug=dataset_slug)
+                breadcrumbs.append({'title': 'Datasets', 'url': reverse('app:datasets')})
+                breadcrumbs.append({'title': dataset.title, 'url': reverse('app:dataset', kwargs={'slug': dataset.slug})})
+                breadcrumbs.append({'title': 'Add Resource', 'url': None})
+                
+        elif url_name == 'resource_edit':
+            resource_uuid = kwargs.get('uuid')
+            dataset_slug = kwargs.get('dataset_slug')
+            if resource_uuid and dataset_slug:
+                resource = get_object_or_404(Resource, id=resource_uuid, dataset__slug=dataset_slug)
                 dataset = resource.dataset
                 breadcrumbs.append({'title': 'Datasets', 'url': reverse('app:datasets')})
                 breadcrumbs.append({'title': dataset.title, 'url': reverse('app:dataset', kwargs={'slug': dataset.slug})})
-                breadcrumbs.append({'title': resource.title, 'url': reverse('app:resource', kwargs={'slug': resource.slug})})
+                breadcrumbs.append({'title': resource.title, 'url': reverse('app:resource', kwargs={'dataset_slug': dataset.slug, 'uuid': resource.id})})
+                breadcrumbs.append({'title': 'Edit', 'url': None})
+                
+        elif url_name == 'resource_preview':
+            resource_uuid = kwargs.get('uuid')
+            dataset_slug = kwargs.get('dataset_slug')
+            if resource_uuid and dataset_slug:
+                resource = get_object_or_404(Resource, id=resource_uuid, dataset__slug=dataset_slug, dataset__is_published=True)
+                dataset = resource.dataset
+                breadcrumbs.append({'title': 'Datasets', 'url': reverse('app:datasets')})
+                breadcrumbs.append({'title': dataset.title, 'url': reverse('app:dataset', kwargs={'slug': dataset.slug})})
+                breadcrumbs.append({'title': resource.title, 'url': reverse('app:resource', kwargs={'dataset_slug': dataset.slug, 'uuid': resource.id})})
                 breadcrumbs.append({'title': 'Preview', 'url': None})
                 
         elif url_name == 'organisations':
@@ -63,6 +109,18 @@ def smart_breadcrumbs(context):
                 org = get_object_or_404(Organisation, slug=org_slug, is_active=True)
                 breadcrumbs.append({'title': 'Organisations', 'url': reverse('app:organisations')})
                 breadcrumbs.append({'title': org.title, 'url': None})
+                
+        elif url_name == 'organisation_datasets':
+            org_slug = kwargs.get('slug')
+            if org_slug:
+                org = get_object_or_404(Organisation, slug=org_slug, is_active=True)
+                breadcrumbs.append({'title': 'Organisations', 'url': reverse('app:organisations')})
+                breadcrumbs.append({'title': org.title, 'url': reverse('app:organisation', kwargs={'slug': org.slug})})
+                breadcrumbs.append({'title': 'Datasets', 'url': None})
+                
+        elif url_name == 'organisation_register':
+            breadcrumbs.append({'title': 'Organisations', 'url': reverse('app:organisations')})
+            breadcrumbs.append({'title': 'Register Organization', 'url': None})
                 
         elif url_name == 'topics':
             breadcrumbs.append({'title': 'Topics', 'url': None})
@@ -112,8 +170,8 @@ def smart_breadcrumbs(context):
 def get_stats():
     """ Returns top-level stats """
     stats = {
-        'datasets': Dataset.objects.count(),
-        'organisations': Organisation.objects.count(),
+        'datasets': Dataset.objects.filter(is_published=True).count(),
+        'organisations': Organisation.objects.filter(is_active=True, status=Organisation.STATUS_APPROVED).count(),
         'topics': Topic.objects.count(),
         'users': User.objects.count()
     }
@@ -124,7 +182,7 @@ def get_stats():
 def get_filters():
     """ Returns sidebar filters """
     filters = {
-        'organisations': Organisation.objects.all(),
+        'organisations': Organisation.objects.filter(is_active=True, status=Organisation.STATUS_APPROVED),
         'topics': Topic.objects.all(),
         'licenses': License.objects.all(),
         'formats': Format.objects.all()
@@ -171,6 +229,14 @@ def app_title():
 @register.simple_tag(name='app_name')
 def app_name():
     return getattr(settings, 'EKAN_SITE_TITLE', 'EKAN')
+
+
+@register.filter
+def can_manage(organisation, user):
+    """Check if user can manage the organisation"""
+    if not user or not user.is_authenticated:
+        return False
+    return organisation.can_user_manage(user)
 
 
 @register.filter
@@ -227,3 +293,17 @@ def search_results_summary(context):
     if parts:
         return f"Results {' and '.join(parts)}"
     return "All results"
+
+
+@register.simple_tag
+def distinct_formats(resources):
+    """Get distinct formats from a list of resources"""
+    seen_formats = set()
+    distinct_resources = []
+    
+    for resource in resources:
+        if resource.format and resource.format.title not in seen_formats:
+            seen_formats.add(resource.format.title)
+            distinct_resources.append(resource)
+    
+    return distinct_resources
