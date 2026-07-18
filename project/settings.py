@@ -242,10 +242,10 @@ META_DEFAULT_KEYWORDS = ['open data', 'government', 'datasets', 'transparency']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# SESSION_COOKIE_DOMAIN = ".floods.pk"
-# CSRF_TRUSTED_ORIGINS = [
-#     "http://localhost:8000",
-#     "https://*.floods.pk",
-#     "https://floods.pk",
-# ]
-# SESSION_ENGINE = "django.contrib.sessions.backends.db"
+if not DEBUG:
+    SESSION_COOKIE_DOMAIN = ".floods.pk"
+    CSRF_TRUSTED_ORIGINS = [
+        "https://*.floods.pk",
+        "https://floods.pk",
+    ]
+    SESSION_ENGINE = "django.contrib.sessions.backends.db"

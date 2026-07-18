@@ -249,6 +249,7 @@ dependencies = [
     { name = "djangorestframework" },
     { name = "factory-boy" },
     { name = "faker" },
+    { name = "gunicorn" },
     { name = "openpyxl" },
     { name = "pandas" },
     { name = "pillow" },
@@ -269,6 +270,7 @@ requires-dist = [
     { name = "djangorestframework", specifier = ">=3.16.1" },
     { name = "factory-boy", specifier = ">=3.3.3" },
     { name = "faker", specifier = ">=37.8.0" },
+    { name = "gunicorn", specifier = ">=26.0.0" },
     { name = "openpyxl", specifier = ">=3.1.5" },
     { name = "pandas", specifier = ">=2.2.3" },
     { name = "pillow", specifier = ">=11.3.0" },
@@ -308,6 +310,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/3a/da/1336008d39e5d4076dddb4e0f3a52ada41429274bf558a3cc28030d324a3/faker-37.8.0.tar.gz", hash = "sha256:090bb5abbec2b30949a95ce1ba6b20d1d0ed222883d63483a0d4be4a970d6fb8", size = 1912113, upload-time = "2025-09-15T20:24:13.592Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f5/11/02ebebb09ff2104b690457cb7bc6ed700c9e0ce88cf581486bb0a5d3c88b/faker-37.8.0-py3-none-any.whl", hash = "sha256:b08233118824423b5fc239f7dd51f145e7018082b4164f8da6a9994e1f1ae793", size = 1953940, upload-time = "2025-09-15T20:24:11.482Z" },
+]
+
+[[package]]
+name = "gunicorn"
+version = "26.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "packaging" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/6d/b7/a4a3f632f823e432ce6bc65f62961b7980c898c77f075a2f7118cb3846fe/gunicorn-26.0.0.tar.gz", hash = "sha256:ca9346f85e3a4aeeb64d491045c16b9a35647abd37ea15efe53080eb8b090baf", size = 727286, upload-time = "2026-05-05T06:38:25.529Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e6/40/9c2384fc2be4ad25dd4a49decd5ad9ea5a3639814c11bd40ab77cb9f0a14/gunicorn-26.0.0-py3-none-any.whl", hash = "sha256:40233d26a5f0d1872916188c276e21641155111c2853f0c2cd55260aec0d24fc", size = 212009, upload-time = "2026-05-05T06:38:23.007Z" },
 ]
 
 [[package]]
@@ -381,6 +395,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/3d/f9/88d94a75de065ea32619465d2f77b29a0469500e99012523b91cc4141cd1/openpyxl-3.1.5.tar.gz", hash = "sha256:cf0e3cf56142039133628b5acffe8ef0c12bc902d2aadd3e0fe5878dc08d1050", size = 186464, upload-time = "2024-06-28T14:03:44.161Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c0/da/977ded879c29cbd04de313843e76868e6e13408a94ed6b987245dc7c8506/openpyxl-3.1.5-py2.py3-none-any.whl", hash = "sha256:5282c12b107bffeef825f4617dc029afaf41d0ea60823bbb665ef3079dc79de2", size = 250910, upload-time = "2024-06-28T14:03:41.161Z" },
+]
+
+[[package]]
+name = "packaging"
+version = "26.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d7/f1/e7a6dd94a8d4a5626c03e4e99c87f241ba9e350cd9e6d75123f992427270/packaging-26.2.tar.gz", hash = "sha256:ff452ff5a3e828ce110190feff1178bb1f2ea2281fa2075aadb987c2fb221661", size = 228134, upload-time = "2026-04-24T20:15:23.917Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/df/b2/87e62e8c3e2f4b32e5fe99e0b86d576da1312593b39f47d8ceef365e95ed/packaging-26.2-py3-none-any.whl", hash = "sha256:5fc45236b9446107ff2415ce77c807cee2862cb6fac22b8a73826d0693b0980e", size = 100195, upload-time = "2026-04-24T20:15:22.081Z" },
 ]
 
 [[package]]
